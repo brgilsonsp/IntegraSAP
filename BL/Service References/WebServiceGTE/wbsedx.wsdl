@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://en.wikipedia.org/wiki/Tempuri/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://en.wikipedia.org/wiki/Tempuri/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://en.wikipedia.org/wiki/Tempuri/">
+      <s:element name="funcsync">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pXMLRequest" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="funcsyncResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="funcsyncResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="funcsyncSoapIn">
+    <wsdl:part name="parameters" element="tns:funcsync" />
+  </wsdl:message>
+  <wsdl:message name="funcsyncSoapOut">
+    <wsdl:part name="parameters" element="tns:funcsyncResponse" />
+  </wsdl:message>
+  <wsdl:portType name="wbsedxSoap">
+    <wsdl:operation name="funcsync">
+      <wsdl:input message="tns:funcsyncSoapIn" />
+      <wsdl:output message="tns:funcsyncSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wbsedxSoap" type="tns:wbsedxSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="funcsync">
+      <soap:operation soapAction="http://en.wikipedia.org/wiki/Tempuri/funcsync" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wbsedxSoap12" type="tns:wbsedxSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="funcsync">
+      <soap12:operation soapAction="http://en.wikipedia.org/wiki/Tempuri/funcsync" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wbsedx">
+    <wsdl:port name="wbsedxSoap" binding="tns:wbsedxSoap">
+      <soap:address location="https://46.165.168.135/edxqas/wbsedx.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wbsedxSoap12" binding="tns:wbsedxSoap12">
+      <soap12:address location="https://46.165.168.135/edxqas/wbsedx.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

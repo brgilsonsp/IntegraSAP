@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C70B2D74-0326-4D28-80F3-EBA49B3B64D2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DAL</RootNamespace>
+    <AssemblyName>DAL</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataBase.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataBase.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataBase.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataBase.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataBase.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="ObjectMessages\Msg3AtualizaDetalheEmbarque.cs" />
+    <Compile Include="ObjectMessages\ConsultaGTE.cs" />
+    <Compile Include="ObjectMessages\Embarque.cs" />
+    <Compile Include="ObjectMessages\Msg4AtualizaPrestacaConta.cs" />
+    <Compile Include="ObjectMessages\ObjServiceTrocaXMLConfig.cs" />
+    <Compile Include="ObjectMessages\PrestacaoContas.cs" />
+    <Compile Include="ObjectMessages\RetornoAtualizaGTE.cs" />
+    <Compile Include="ObjectMessages\Msg5RetornoConsultaPrestacaConta.cs" />
+    <Compile Include="ObjectMessages\RetornoFatalErrorGTE.cs" />
+    <Compile Include="ObjectMessages\Msg2RetornoDetalheEmbarque.cs" />
+    <Compile Include="ObjectMessages\Msg1RetornoListaEmbarque.cs" />
+    <Compile Include="ObjectMessages\SHPTEXT.cs" />
+    <Compile Include="ObjectMessages\Status.cs" />
+    <Compile Include="ObjectMessages\STR.cs" />
+    <Compile Include="ObjectMessages\TGTEPRD.cs" />
+    <Compile Include="ObjectMessages\TGTERES.cs" />
+    <Compile Include="ObjectMessages\TGTESHKN.cs" />
+    <Compile Include="ObjectMessages\TGTESHPN.cs" />
+    <Compile Include="ProcessDB\IDPrestacaConta.cs" />
+    <Compile Include="ProcessDB\UpdateConsultaPrestacaoContaRealizado.cs" />
+    <Compile Include="ProcessDB\SelectConsultaPrestConta.cs" />
+    <Compile Include="ProcessDB\SelectAtualizaPrestacaConta.cs" />
+    <Compile Include="ProcessDB\SelectDetalheEmbarque.cs" />
+    <Compile Include="ProcessDB\SelectListEmbarque.cs" />
+    <Compile Include="ProcessDB\SelectListaEmbarqueBD.cs" />
+    <Compile Include="ProcessDB\UdapteDetalheEmbarqueAtualizado.cs" />
+    <Compile Include="ProcessDB\SelectEmbarquetAtualizaDetalhe.cs" />
+    <Compile Include="ProcessDB\SelectEmbarqueAtualizacaPC.cs" />
+    <Compile Include="ProcessDB\IDEmbarque.cs" />
+    <Compile Include="ProcessDB\SelectDB.cs" />
+    <Compile Include="ProcessDB\UpdateAtualizaPrestConta.cs" />
+    <Compile Include="ProcessDB\UpdateDetalheEmbarqueConsultado.cs" />
+    <Compile Include="ProcessDB\UpdatePrestacaoContaEmbarqueAtualizado.cs" />
+    <Compile Include="ProcessDB\UpdateDetalheEmbarque.cs" />
+    <Compile Include="ProcessDB\UpdateResponseAtualizacaoGTE.cs" />
+    <Compile Include="ProcessDB\UpdateListaEmbarque.cs" />
+    <Compile Include="ProcessDB\UpdateDB.cs" />
+    <Compile Include="ProcessDB\UpdateSalvaPrestContaTXPNS.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="spConsultaAtualizacaoPC_TPCK_Result.cs">
+      <DependentUpon>DataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spConsultaAtualizacaoPC_TXPNS_Result.cs">
+      <DependentUpon>DataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spConsultaDetalheEmbarqueMAKTX_TEXT_Result.cs">
+      <DependentUpon>DataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spConsultaDetalheEmbarqueSHPTEXT_Result.cs">
+      <DependentUpon>DataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spConsultaDetalheEmbarqueTGTEPRD_Result.cs">
+      <DependentUpon>DataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spConsultaDetalheEmbarqueTGTERES_Result.cs">
+      <DependentUpon>DataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spConsultaDetalheEmbarqueTGTESHKN_Result.cs">
+      <DependentUpon>DataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spConsultaDetalheEmbarqueTGTESHPN_Result.cs">
+      <DependentUpon>DataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spConsultaEmbarquePrestacaoConta_Result.cs">
+      <DependentUpon>DataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spConsultaEmbarquesAtualizarDetalhe_Result.cs">
+      <DependentUpon>DataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spConsultaEmbarque_Result.cs">
+      <DependentUpon>DataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spConsultaListaEmbarque_Result.cs">
+      <DependentUpon>DataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spConsultaPC_Result.cs">
+      <DependentUpon>DataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spConsultaRequest_Result.cs">
+      <DependentUpon>DataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spObtemIDPrestacaoConta_Result.cs">
+      <DependentUpon>DataBase.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="DataBase.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DataBase.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="DataBase.edmx.diagram">
+      <DependentUpon>DataBase.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DataBase.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DataBase.edmx</DependentUpon>
+      <LastGenOutput>DataBase.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DataBase.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DataBase.edmx</DependentUpon>
+      <LastGenOutput>DataBase.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Util\Util.csproj">
+      <Project>{a0bd9c8e-a264-48f8-908b-8630c0a5f39d}</Project>
+      <Name>Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

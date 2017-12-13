@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BL", "BL\BL.csproj", "{91A4D5D2-BE18-475E-AF1E-5B1BF15BB91D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{C70B2D74-0326-4D28-80F3-EBA49B3B64D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util", "Util\Util.csproj", "{A0BD9C8E-A264-48F8-908B-8630C0A5F39D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "ApenasTeste\UI.csproj", "{E321972E-FC93-404F-82A5-3F92B952CF12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceTrocaXML", "ServiceTrocaXML\ServiceTrocaXML.csproj", "{1ABDAB69-9A0E-45B6-AD0D-88ADB4C2FF07}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "InstallerTrocaXml", "InstallerTrocaXml\InstallerTrocaXml.vdproj", "{B87B4251-7890-4BB0-8687-7C7CCA2033C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InicioProjeto", "InicioProjeto\InicioProjeto.csproj", "{89B938FA-4070-45BB-AE48-79A1DC45EC47}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{91A4D5D2-BE18-475E-AF1E-5B1BF15BB91D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91A4D5D2-BE18-475E-AF1E-5B1BF15BB91D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91A4D5D2-BE18-475E-AF1E-5B1BF15BB91D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91A4D5D2-BE18-475E-AF1E-5B1BF15BB91D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C70B2D74-0326-4D28-80F3-EBA49B3B64D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C70B2D74-0326-4D28-80F3-EBA49B3B64D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C70B2D74-0326-4D28-80F3-EBA49B3B64D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C70B2D74-0326-4D28-80F3-EBA49B3B64D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0BD9C8E-A264-48F8-908B-8630C0A5F39D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0BD9C8E-A264-48F8-908B-8630C0A5F39D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0BD9C8E-A264-48F8-908B-8630C0A5F39D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0BD9C8E-A264-48F8-908B-8630C0A5F39D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E321972E-FC93-404F-82A5-3F92B952CF12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E321972E-FC93-404F-82A5-3F92B952CF12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E321972E-FC93-404F-82A5-3F92B952CF12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E321972E-FC93-404F-82A5-3F92B952CF12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1ABDAB69-9A0E-45B6-AD0D-88ADB4C2FF07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ABDAB69-9A0E-45B6-AD0D-88ADB4C2FF07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1ABDAB69-9A0E-45B6-AD0D-88ADB4C2FF07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ABDAB69-9A0E-45B6-AD0D-88ADB4C2FF07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B87B4251-7890-4BB0-8687-7C7CCA2033C1}.Debug|Any CPU.ActiveCfg = Debug
+		{B87B4251-7890-4BB0-8687-7C7CCA2033C1}.Debug|Any CPU.Build.0 = Debug
+		{B87B4251-7890-4BB0-8687-7C7CCA2033C1}.Release|Any CPU.ActiveCfg = Release
+		{89B938FA-4070-45BB-AE48-79A1DC45EC47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89B938FA-4070-45BB-AE48-79A1DC45EC47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89B938FA-4070-45BB-AE48-79A1DC45EC47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89B938FA-4070-45BB-AE48-79A1DC45EC47}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
