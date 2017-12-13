@@ -8,6 +8,6 @@ namespace InicioProjeto
 {
     class Class1
     {
-        public void metodo() { }
+        public void metodo() {  }
     }
 }
