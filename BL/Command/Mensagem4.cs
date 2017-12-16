@@ -13,7 +13,7 @@ namespace BL.Command
 {
     class Mensagem4 : Mensagem, SaveData<Status, Embarque>
     {
-        public string SwapXmlWithGTE()
+        public string SwapXmlWithGTE(ConfigureService configureService)
         {
             string msgReturn = "";
             //Verifica se existe Prestação de Contas para Atualizar
@@ -21,7 +21,7 @@ namespace BL.Command
             if(listaEmbarque != null && listaEmbarque.Count > 0)//Possui Embarque para Envio da Prestação de Conta
             {
                 //Executa a Atualização da Prestação de Contas
-                msgReturn = executeSwapXML(listaEmbarque);
+                msgReturn = executeSwapXML(listaEmbarque,configureService);
             }
             else //Não existe Atualização de Prestação de Contas Pendente
             {
@@ -35,7 +35,7 @@ namespace BL.Command
         /// </summary>
         /// <param name="listEmbarque">List<Embarque></param>
         /// <returns>string</returns>
-        private string executeSwapXML(List<Embarque> listEmbarque)
+        private string executeSwapXML(List<Embarque> listEmbarque, ConfigureService configureService)
         {
             string msgReturn = "";
             foreach (Embarque embarque in listEmbarque)
@@ -47,7 +47,7 @@ namespace BL.Command
                     if (prestacaoContas != null)// Encontrou registro da Prestaçao de Contas
                     {
                         //Efetua a troca de Mensagem com o GTE, enviando o objeto e recebendo a string
-                        string xmlResponse = SwapWithGTE(prestacaoContas, embarque.SBELN);
+                        string xmlResponse = SwapWithGTE(prestacaoContas, embarque.SBELN, configureService);
 
                         //Desserializa o Xml Response
                         ObjectForDB<RetornoAtualizaGTE> objectForDB = new ObjectForDB<RetornoAtualizaGTE>();
@@ -92,32 +92,21 @@ namespace BL.Command
         /// </summary>
         /// <param name="prestacaoContas">Msg4AtualizaPrestacaoConta</param>
         /// <returns>string, resposta do GTE</returns>
-        private string SwapWithGTE(Msg4AtualizaPrestacaoConta prestacaoContas, string embarque)
+        private string SwapWithGTE(Msg4AtualizaPrestacaoConta prestacaoContas, string embarque, ConfigureService configureService)
         {
+            SaveXMLOriginal saveXml = new SaveXMLOriginal();
             //Serializa  XML Request
             XmlForGTE<Msg4AtualizaPrestacaoConta> xmlForGTE = new XmlForGTE<Msg4AtualizaPrestacaoConta>();
             string xmlRequest = xmlForGTE.serializeXmlForGTE(prestacaoContas);
+            saveXml.SaveXML(new ExportationMessageRequest(xmlRequest, embarque, 4, configureService));
 
             //Envio o Xml Request e retorna o Xml Response
             ComunicaGTE comunicaGTE = new ComunicaGTE();
             string xmlResponse = comunicaGTE.doRequestGTE(xmlRequest);
-            SaveXMLOriginal(xmlResponse, xmlRequest, embarque);
+            saveXml.SaveXML(new ExportationMessageResponse(xmlResponse, embarque, 4, configureService));
+
             return xmlResponse;
             
-        }
-
-        /// <summary>
-        /// Solicita a gravação do conteúdo XML que foi trocado com o GTE
-        /// </summary>
-        /// <param name="xmlResponse">string</param>
-        /// <param name="xmlRequest">string</param>
-        /// <param name="embarque">string</param>
-        public void SaveXMLOriginal(string xmlResponse, string xmlRequest, string embarque)
-        {
-            //Salva o Response do GTE em um arquivo XML
-            new SaveXMLOriginal().SaveXML(Option.MENSAGEM4, xmlRequest, embarque, true, false);
-            //Salva o Response do GTE em um arquivo XML
-            new SaveXMLOriginal().SaveXML(Option.MENSAGEM4, xmlResponse, embarque, false, true);
         }
 
         /// <summary>

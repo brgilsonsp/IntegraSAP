@@ -31,7 +31,7 @@ namespace ApenasTeste
         {
             try
             {
-                ObjServiceTrocaXMLConfig objSalvo = new ConfigureService().GetConfigService();
+                ObjServiceTrocaXMLConfig objSalvo = new ConfigureService().GetConfigService;
                 txtDelayProcess.Text = GetAppSetting(objSalvo.appSettings, Option.DELAY_PROCCESS);
                 txtPathDB.Text = RemovePontoVirgula(GetPathDB(objSalvo.connectionStrings.add));
                 txtPwdDB.Text = RemovePontoVirgula(GetPwd(objSalvo.connectionStrings.add));

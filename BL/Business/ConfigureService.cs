@@ -1,19 +1,39 @@
 ﻿using DAL.ObjectMessages;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Configuration;
 using Util.InnerUtil;
-using System.ServiceModel;
 using System.IO;
 
 namespace BL.Business
 {
+    /// <summary>
+    /// Manipula o arquivo de configuração do serviço
+    /// </summary>
     public class ConfigureService
     {
         private Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
+        /// <summary>
+        /// Retorna o Caminho raiz definido pelo usuário aonde o arquivo de Log será salvo
+        /// </summary>
+        public string RootLog { get { return RootForSaveLog(); } }
+
+        /// <summary>
+        /// Verifica se o usuário permitiu a gravação do arquivo XML
+        /// </summary>
+        public bool IsSaveXml { get { return GetSaveXML(); } }
+
+        /// <summary>
+        /// Obtém o delay que esta configurado no arquvio de configuração do serviço
+        /// </summary>
+        public int GetDelay { get { return GetDelayConfigured(); } }
+
+        /// <summary>
+        /// Obtem uma instância com os valores da configuração do serviço
+        /// </summary>
+        public ObjServiceTrocaXMLConfig GetConfigService { get { return GetConfigServiceConfigured(); } }
+
+        #region Métodos que executam leitura no arquivo de configuração app.xml
 
         /// <summary>
         /// Salva a alteração no arquivo de configuração do serviço
@@ -21,7 +41,7 @@ namespace BL.Business
         /// <param name="objService">ObjServiceTrocaXMLConfig</param>
         public void SaveConfigService(ObjServiceTrocaXMLConfig objService)
         {
-            ObjServiceTrocaXMLConfig objServiceBkp = GetConfigService();
+            ObjServiceTrocaXMLConfig objServiceBkp = GetConfigService;
             objServiceBkp.connectionStrings.add.connectionString = objService.connectionStrings.add.connectionString;
             objServiceBkp.systemServiceModel.client.endpoint.address = objService.systemServiceModel.client.endpoint.address;
             objServiceBkp.appSettings.add = objService.appSettings.add;
@@ -40,7 +60,7 @@ namespace BL.Business
         /// Obtem os valores da configuração do serviço e retorna em um objeto
         /// </summary>
         /// <returns>ObjServiceTrocaXMLConfig</returns>
-        public ObjServiceTrocaXMLConfig GetConfigService()
+        private ObjServiceTrocaXMLConfig GetConfigServiceConfigured()
         {
             string xmlConfig = File.ReadAllText("ServiceTrocaXML.exe.config");
             ObjectForDB<ObjServiceTrocaXMLConfig> objConfig = new ObjectForDB<ObjServiceTrocaXMLConfig>();
@@ -52,7 +72,7 @@ namespace BL.Business
         /// do serviço
         /// </summary>
         /// <returns>int</returns>
-        public int GetDelay()
+        private int GetDelayConfigured()
         {
             try
             {
@@ -63,10 +83,10 @@ namespace BL.Business
         }
 
         /// <summary>
-        /// Obtém o caminho que será salvo os arquivos de log
+        /// Obtém diretório raiz configurado pelo usuário aonde será salvo os arquivos de log e os arquivos XML
         /// </summary>
         /// <returns>string</returns>
-        public string GetPathLog()
+        private string RootForSaveLog()
         {
             try
             {
@@ -80,10 +100,10 @@ namespace BL.Business
         }
 
         /// <summary>
-        /// Obtém a flag Salva XML
+        /// Verifica no App.config se o usuário habilitou a gravação dos arquivos XML Original
         /// </summary>
         /// <returns>bool</returns>
-        public bool GetSaveXML()
+        private bool GetSaveXML()
         {
             try
             {
@@ -103,5 +123,7 @@ namespace BL.Business
                 return false;
             }
         }
+
+        #endregion
     }
 }

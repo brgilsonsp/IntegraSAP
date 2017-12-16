@@ -36,7 +36,7 @@ namespace BL.Business
                     {
                         returnGTE = ws.funcsync(xml);
                     }
-                    //Aguarda esse período a fim de que o WebService não retorne esse devido a varias solicitações
+                    //Aguarda esse período a fim de definir um delay entre as mensagens
                     TimeClosing.ThreadForCloseConnectionWebService();
 
                     return returnGTE;

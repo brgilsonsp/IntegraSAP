@@ -48,8 +48,13 @@
   <ItemGroup>
     <Compile Include="Business\ComunicaGTE.cs" />
     <Compile Include="Business\ConfigureService.cs" />
+    <Compile Include="Business\ExportationMessageRequest.cs" />
+    <Compile Include="Business\ExportationMessageResponse.cs" />
+    <Compile Include="Business\ImportationMessageRequest.cs" />
+    <Compile Include="Business\ImportationMessageResponse.cs" />
     <Compile Include="Business\MakeLog.cs" />
     <Compile Include="Business\ObjectForDB.cs" />
+    <Compile Include="Business\OriginalText.cs" />
     <Compile Include="Business\SaveXMLOriginal.cs" />
     <Compile Include="Business\XmlForGTE.cs" />
     <Compile Include="Command\Mensagem.cs" />

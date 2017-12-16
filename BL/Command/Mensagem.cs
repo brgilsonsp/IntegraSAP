@@ -1,4 +1,5 @@
-﻿using DAL.ObjectMessages;
+﻿using BL.Business;
+using DAL.ObjectMessages;
 
 namespace BL.Command
 {
@@ -13,8 +14,10 @@ namespace BL.Command
         /// O método retornará uma string com as informações do processo da troca
         /// da Mensagem que poderá ser utilizado como log de auditoria.
         /// </summary>
+        /// <param name="configureService">Objeto com as configurações do serviço</param>
         /// <returns>string com o status da troca da Mensagem</returns>
         /// <exception cref="Util.InnerException.BaseInnerException">Repassa todas as exceções do tipo InnerException</exception>
-        string SwapXmlWithGTE();
+        string SwapXmlWithGTE(ConfigureService configureService);
+        
     }
 }

@@ -105,5 +105,10 @@
         public const string INFORMATION = "Informação";
         public const string CODE_INTERN = "INTERNO";
         public const string DESC_INTER_PC = "Prestação de Conta divergente";
+
+        public const string IMPORTATION_RESPONSE = "Resposta Importação";
+        public const string IMPORTATION_REQUEST = "Requisição Importação";
+        public const string EXPORTATION_RESPONSE = "Resposta Exportação";
+        public const string EXPORTATION_REQUEST = "Requisição Exportação";
     }
 }

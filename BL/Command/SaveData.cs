@@ -1,4 +1,5 @@
-﻿using DAL.ObjectMessages;
+﻿using BL.Business;
+using DAL.ObjectMessages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +10,6 @@ namespace BL.Command
 {
     interface SaveData<R, E>
     {
-        /// <summary>
-        /// Sava o conteúdo dos parâmetros xmlRespon e xmlRequest em um arquivo xml.
-        /// O parâmetro embarque é utilizado para definir o nome do arquivo xml.
-        /// </summary>
-        /// <param name="xmlResponse">string</param>
-        /// <param name="xmlRequest">string</param>
-        /// <param name="embarque">string</param>
-        void SaveXMLOriginal(string xmlResponse, string xmlRequest, string embarque);
-
         /// <summary>
         /// Sava o response do Web Service no banco de dados.
         /// O Response é passado no parâmetro retornoWebService.

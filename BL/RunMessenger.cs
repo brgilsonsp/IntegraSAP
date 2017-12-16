@@ -19,6 +19,7 @@ namespace BL
         /// <returns></returns>
         public void StartChangeXML()
         {
+            ConfigureService configureService = new ConfigureService();
             for (int i = 0; i < 5; i++)
             {
                 string retorno = "";
@@ -31,15 +32,15 @@ namespace BL
                     var classe = Activator.CreateInstance(null, objeto);
                     Mensagem mensagem = (Mensagem)classe.Unwrap();
                     //Efetua a troca da Mensagem com o Web Service do GTE
-                    retorno += mensagem.SwapXmlWithGTE();
-                    MakeLog.MakeFileLogUser(retorno, message, Option.FILE_LOG_USER);
+                    retorno += mensagem.SwapXmlWithGTE(configureService);
+                    MakeLog.MakeFileLogUser(retorno, message.ToString(), Option.FILE_LOG_USER);
                 }
                 catch (BaseInnerException iE)
                 {
                     try
                     {
                         //Escreve o arquivo de log se lançar um BaseInnerException
-                        MakeFileBaseException(message, iE);
+                        MakeFileBaseException(message, iE, configureService);
                     }
                     catch (Exception ex)
                     {
@@ -53,7 +54,7 @@ namespace BL
                     try
                     {
                         //Escreve o arquivo de log se lançar um Exception
-                        MakeFileException(message, ex);
+                        MakeFileException(message, ex, configureService);
                     }
                     catch (Exception ex1)
                     {
@@ -70,13 +71,13 @@ namespace BL
         /// </summary>
         /// <param name="message">int</param>
         /// <param name="iE">BaseInnerException</param>
-        private void MakeFileBaseException(int message, BaseInnerException iE)
+        private void MakeFileBaseException(int message, BaseInnerException iE, ConfigureService configureService)
         {
             string innerCodeError = CodeRandom();
-            string msgLogUser = MakeMsgLogUser(iE, innerCodeError);
+            string msgLogUser = MakeMsgLogUser(iE, innerCodeError, configureService);
             string msgLogSuport = MakeMsgLogSuportInnerException(iE, innerCodeError);
-            MakeLog.MakeFileLogUser(msgLogUser, message, Option.FILE_LOG_USER);
-            MakeLog.MakeFileLogSuport(msgLogSuport, message, Option.FILE_LOG_SUPORT);
+            MakeLog.MakeFileLogUser(msgLogUser, message.ToString(), Option.FILE_LOG_USER);
+            MakeLog.MakeFileLogSuport(msgLogSuport, message.ToString(), Option.FILE_LOG_SUPORT);
         }
 
         /// <summary>
@@ -84,14 +85,14 @@ namespace BL
         /// </summary>
         /// <param name="message">int</param>
         /// <param name="ex">Exception</param>
-        private void MakeFileException(int message, Exception ex)
+        private void MakeFileException(int message, Exception ex, ConfigureService configureService)
         {
             string innerCodeError = CodeRandom();
-            string msgLogUser = MakeMsgLogUser(ex, innerCodeError);
+            string msgLogUser = MakeMsgLogUser(ex, innerCodeError, configureService);
             string msgLogSuport = MakeMsgLogSuportException(ex, innerCodeError);
 
-            MakeLog.MakeFileLogUser(msgLogUser, message, Option.FILE_LOG_USER);
-            MakeLog.MakeFileLogSuport(msgLogSuport, message, Option.FILE_LOG_SUPORT);
+            MakeLog.MakeFileLogUser(msgLogUser, message.ToString(), Option.FILE_LOG_USER);
+            MakeLog.MakeFileLogSuport(msgLogSuport, message.ToString(), Option.FILE_LOG_SUPORT);
         }
 
         /// <summary>
@@ -130,9 +131,9 @@ namespace BL
         /// <param name="exception">InnerException</param>
         /// <param name="code">string com o código do erro</param>
         /// <returns>string com a mensagem de erro definida</returns>
-        private string MakeMsgLogUser(Exception exception, string code)
+        private string MakeMsgLogUser(Exception exception, string code, ConfigureService configureService)
         {
-            string pathLog = new ConfigureService().GetPathLog();
+            string pathLog = configureService.RootLog;
             string msgLogUser = string.Format("{0} {1}", MessagesOfReturn.START_ERROR, Environment.NewLine);
             msgLogUser += string.Format("{0} {2} {1} {2}", MessagesOfReturn.COD_INFO, code, Environment.NewLine);
             msgLogUser += string.Format("{0} {2} {1} {2}", MessagesOfReturn.MESSAGE_INFO, exception.Message, Environment.NewLine);

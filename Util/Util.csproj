@@ -52,6 +52,7 @@
     <Compile Include="InnerUtil\EncodingUTF8.cs" />
     <Compile Include="InnerUtil\MessagesOfReturn.cs" />
     <Compile Include="InnerUtil\Option.cs" />
+    <Compile Include="InnerUtil\PathSaveFile.cs" />
     <Compile Include="InnerUtil\TimeClosing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

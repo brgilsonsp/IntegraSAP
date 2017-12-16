@@ -14,10 +14,10 @@ namespace BL.Business
         /// Constró o arquivo de log, se já existir apenas alimenta
         /// </summary>
         /// <param name="messageLog">string com a mensagem que será gravada no log</param>
-        /// <param name="message">Um int informando qual a Mensagem que se refere o log</param>
-        public static void MakeFileLogUser(string messageLog, int message, string nameFile)
+        /// <param name="message">Uma string informando qual a Mensagem que se refere o log</param>
+        public static void MakeFileLogUser(string messageLog, string message, string nameFile)
         {
-            string pathLog = new ConfigureService().GetPathLog();
+            string pathLog = new ConfigureService().RootLog;
             string textoLog = string.Format("{0} {1}", MessagesOfReturn.LINE_DASHED, Environment.NewLine);
             textoLog += string.Format("{0} {1} - {2} {3} {4}", MessagesOfReturn.TITLE_MESSAGE, message, MessagesOfReturn.DATE_INFO,
                 DateTime.Now.ToLocalTime(), Environment.NewLine);
@@ -35,10 +35,10 @@ namespace BL.Business
         /// Se o arquivo existir, apenas incrementa a mensagem.
         /// </summary>
         /// <param name="messageLog">string com a mensagem que será salva no arquivo</param>
-        /// <param name="message">um inteiro informando qual a Mensagem que se refere a mensagem</param>
-        public static void MakeFileLogSuport(string messageLog, int message, string nameFile)
+        /// <param name="message">uma string informando qual a Mensagem que se refere a mensagem</param>
+        public static void MakeFileLogSuport(string messageLog, string message, string nameFile)
         {
-            string pathLog = new ConfigureService().GetPathLog();
+            string pathLog = new ConfigureService().RootLog;
             string textoLog = string.Format("{0} {1}", MessagesOfReturn.LINE_DASHED, Environment.NewLine);
             textoLog += string.Format("{0} {1} - {2} {3} {4}", MessagesOfReturn.TITLE_MESSAGE, message, MessagesOfReturn.DATE_INFO,
                 DateTime.Now.ToLocalTime(), Environment.NewLine);

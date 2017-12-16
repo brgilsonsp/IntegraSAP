@@ -48,7 +48,7 @@ namespace ServiceTrocaXML
                 while (true)
                 {                    
                     runMessenger.StartChangeXML();
-                    int minute = new ConfigureService().GetDelay();
+                    int minute = new ConfigureService().GetDelay;
                     Thread.Sleep(TimeSpan.FromMinutes(minute));
                 }
             }
