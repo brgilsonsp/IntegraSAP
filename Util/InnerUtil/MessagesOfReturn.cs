@@ -1,4 +1,6 @@
-﻿namespace Util.InnerUtil
+﻿using System;
+
+namespace Util.InnerUtil
 {
     public static class MessagesOfReturn
     {
@@ -29,7 +31,18 @@
         public const string ERROR_OBTER_ID_PRESTACAO_CONTA = "Erro ao obter o ID da Prestação de Conta.";
         public const string ERROR_OBTER_ID_PC_EMPTY = "Não foi possível obter o ID da Prestação de Conta, Embarque informado é nulo";
         public const string ERROR_SAVE_PC_TXPNS = "Erro ao salvar a Consulta Prestação de Contas, tabela TXPNS.";
-        public const string ERROR_PC_NO_INFO = "O retorno da Consulta da Prestação de Conta do Embarque ? foi recebido com sucesso, porém o valor do campo PCTYP esta diferente do padrão (AD ou PC)";
+        /// <summary>
+        /// Retorna mensagem que será utilizada no Log quando o campo PC recebido estiver fora do padrão, (AD/PC)
+        /// </summary>
+        /// <param name="embarque">Embarque</param>
+        /// <param name="cnpjBroker">CNPJ do requerente</param>
+        /// <returns></returns>
+        public static string ErroFieldPC(string embarque, string cnpjBroker)
+        {
+            return String.Format(
+                "O retorno da Consulta da Prestação de Conta do Embarque {0} requerida pelo CNPJ {1} foi recebido com sucesso, porém o valor do campo PCTYP esta diferente do padrão (AD ou PC).{2}",
+                embarque, cnpjBroker, Environment.NewLine);
+        }
         public const string ERROR_CONFIG_SERVICE = "Ocorreu erro ao serializar o arquivo de configuração do serviço.";
         public const string ERROR_CREATE_LOG_USER = "Não foi possível criar o arquivo de log do usuário.";
         public const string ERRORCREATELOGSUPORT = "Não foi possível criar o arquivo de log do suporte.";
@@ -47,8 +60,26 @@
         //Fim Mensages de erro
 
         //Mensagens de sucesso
-        public const string EMBARQUE_ATUALIZADO = "Lista de Embarque atualizado.";
-        public const string SUCCESS_CONSULTA_PRESTACAO_CONTA = "A tabela TPCK da Prestação de Conta do Embarque ? foi atualizado com sucesso.";
+        /// <summary>
+        /// Retorna mensagem que será utilizada no Log para Embarques que foram Consultados no WebService do cliente com sucesso
+        /// </summary>
+        /// <param name="cnpjBroker">String com o CNPJ do Broker que requereu o(s) Embarque(s)</param>
+        /// <returns>Mensagem em string que será utilizado no arquivo de Log</returns>
+        public static string EmbarqueAtualiza(string cnpjBroker)
+        {
+            return string.Format("Lista de Embarque requirida pelo CNPJ {0} atualizado.{1}", cnpjBroker, Environment.NewLine);
+        }
+        /// <summary>
+        /// Retorna mensagem que será utilizada no Log para Consulta de Prestação de Contas realizada com sucesso.
+        /// </summary>
+        /// <param name="embarque">Embarque</param>
+        /// <param name="cnpjRequerente">Cnpj Requerente</param>
+        /// <returns></returns>
+        public static string SucessConsultaPrestacaoConta(string embarque, string cnpjRequerente)
+        {
+            return String.Format("A tabela TPCK da Prestação de Conta do Embarque {0} requerida pelo CNPJ {1} foi atualizado com sucesso.{2}",
+                embarque, cnpjRequerente, Environment.NewLine);
+        }
         public const string SUCCESS_ATUALIZA_PRESTACAO_CONTA = "A Prestação de Contas do Embarque ? foi enviada com sucesso ao GTE.";
         public const string SUCCESS_ATUALIZA_DETALHE_EMBARQUE = "O Detalhe do Embarque ? enviado com sucesso ao GTE.";
         public const string SUCCESS_SALVA_PRESTACAO_CONTA_TXPNS = "A Prestação de Conta, tabela TXPNS, do Embarque ? foi salva com sucesso.";
@@ -72,7 +103,17 @@
         public const string ALERT_ATUALIZA_PC_EMPTY = "O GTE não retornou os dados da Consulta da Prestação de Contas do Embarque ?.";
         public const string ALERT_CONSULTA_PC_EMPTY = "A Consulta da Prestação de Conta do Embarque ? foi efetuado ao GTE com sucesso, porém o GTE não retornou nenhuma dado.";
         public const string ALERT_RESPONSE_CONSULTA_DETALHE_EMBARQUE_EMPTY = "A Consulta do Detalhe do Embarque ? foi efetuado ao GTE com sucesso, porém o GTE não retornou nenhuma dado.";
-        public const string ALERT_RESPONSE_CONSULTA_EMBARQUE_EMPTY = "A Consulta de Lista de Embarque foi efetuado ao GTE com sucesso, porém o GTE não retornou nenhuma dado.";
+
+        /// <summary>
+        /// Retorna mensagem que será utilizada no Log, quando o WebService não retornou os dados esperados de uma requisição de Consulta de Embarque
+        /// </summary>
+        /// <param name="cnpjRequerente">Cnpj Requerente</param>
+        /// <returns></returns>
+        public static string AlertResponseConsultaEmbarqueEmpty(string cnpjRequerente)
+        {
+            return String.Format("A Consulta de Lista de Embarque requerida pelo CNPJ {0} foi efetuado ao Webservice com sucesso, porém o houve retorno ou retornou algum erro, consulte a tabela StatusRetorno .{1}",
+                cnpjRequerente, Environment.NewLine);
+        }
         public const string ALERT_CONFIG_SERVICE_EMPTY = "Não foi informado o conteúdo do arquivo de configuração do serviço.";
         public const string ALERT_DATA_REQUEST_NOT_FOUND = "Não foi localizado os dados necessários para efetuar a Consulta da Lista de Embarques";
         public const string ALERT_STRING_FOR_GTE_NULL = "Não foi informado nenhum valor para ser enviado ao Web Service";

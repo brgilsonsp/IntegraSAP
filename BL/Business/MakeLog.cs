@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Util.InnerUtil;
+using BL.InnerUtil;
 
 namespace BL.Business
 {

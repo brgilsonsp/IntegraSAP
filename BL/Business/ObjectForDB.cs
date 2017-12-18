@@ -1,9 +1,8 @@
-﻿using DAL.ObjectMessages;
-using System;
+﻿using System;
 using System.IO;
 using System.Xml.Serialization;
-using Util.InnerException;
-using Util.InnerUtil;
+using BL.InnerException;
+using BL.InnerUtil;
 
 namespace BL.Business
 {

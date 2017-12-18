@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BL.Business
+﻿namespace BL.Business
 {
     /// <summary>
     /// Define as propriedades necessárias para salvar ou validar o processo de salvar um conteúdo XML em arquivo texto no disco

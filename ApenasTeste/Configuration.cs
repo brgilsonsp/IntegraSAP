@@ -1,5 +1,5 @@
 ﻿using BL.Business;
-using DAL.ObjectMessages;
+using BL.ObjectMessages;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Util.InnerUtil;
+using BL.InnerUtil;
 
 namespace ApenasTeste
 {

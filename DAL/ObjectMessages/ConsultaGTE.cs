@@ -10,6 +10,12 @@ namespace DAL.ObjectMessages
 
         public RequestConsultaGTE REQUEST;
 
+        public ConsultaGTE GetInstance()
+        {
+            ConsultaGTE consultaGTE = new ConsultaGTE();
+
+            return consultaGTE;
+        }
     }
 
     public class RequestConsultaGTE

@@ -1,5 +1,5 @@
 ﻿using System;
-using Util.InnerUtil;
+using BL.InnerUtil;
 
 namespace BL.Business
 {

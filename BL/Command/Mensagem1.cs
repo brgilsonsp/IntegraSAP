@@ -1,9 +1,10 @@
-﻿using DAL.ProcessDB;
-using DAL.ObjectMessages;
+﻿using BL.ObjectMessages;
 using BL.Business;
-using Util.InnerUtil;
+using BL.InnerUtil;
 using System;
 using System.Collections.Generic;
+using BL.DAO;
+using BL.Entities;
 
 namespace BL.Command
 {
@@ -11,21 +12,25 @@ namespace BL.Command
     {
         public string SwapXmlWithGTE(ConfigureService configureService)
         {
+            IList<string> consultaListaEmbarque = new DatasSerializedForConsultingXml<ConsultaGTE>().GetDatasSerialized()
+
+
+
             string retorno = "";
             //Obtém o objeto com os dados necessário para efetuar uma requisição ao Web Service
-            SelectDB<List<ConsultaGTE>> objetoConsulta = new SelectListaEmbarqueBD();
-            List<ConsultaGTE> listaConsultaListaEmbarque = objetoConsulta.consultaRegistro(null);
-            foreach (ConsultaGTE consultaListaEmbarque in listaConsultaListaEmbarque)
-            {
-                if (consultaListaEmbarque != null)
-                {
-                    retorno += ExecuteSwapXml(consultaListaEmbarque, configureService);
-                }
-                else // Não localizou os dados necessários para efetuar o Request
-                {
-                    retorno += string.Format("{0} {1}", MessagesOfReturn.ALERT_DATA_REQUEST_NOT_FOUND, Environment.NewLine);
-                }
-            }
+            //SelectDB<List<ConsultaGTE>> objetoConsulta = new SelectListaEmbarqueBD();
+            //List<ConsultaGTE> listaConsultaListaEmbarque = null;// objetoConsulta.consultaRegistro(null);
+            //foreach (ConsultaGTE consultaListaEmbarque in listaConsultaListaEmbarque)
+            //{
+            //    if (consultaListaEmbarque != null)
+            //    {
+            //        retorno += ExecuteSwapXml(consultaListaEmbarque, configureService);
+            //    }
+            //    else // Não localizou os dados necessários para efetuar o Request
+            //    {
+            //        retorno += string.Format("{0} {1}", MessagesOfReturn.ALERT_DATA_REQUEST_NOT_FOUND, Environment.NewLine);
+            //    }
+            //}
             return retorno;
         }
 
@@ -47,7 +52,7 @@ namespace BL.Command
             if (objectRetornoListaEmbarque != null)
             {
                 AlimentaIdDadosBroker(objectRetornoListaEmbarque, consultaListaEmbarque.REQUEST.IDDadosBroker);
-                Status status = GetStatus(objectRetornoListaEmbarque);
+                Status status = GetStatus(objectRetornoListaEmbarque, consultaListaEmbarque.REQUEST.IDBR);
                 if (objectRetornoListaEmbarque.RESPONSE.ListaEmbarque != null &&
                     objectRetornoListaEmbarque.RESPONSE.ListaEmbarque.Embarques.Count > 0)
                 {//Recebeu os Embarques do GTE
@@ -56,9 +61,8 @@ namespace BL.Command
                 else if (objectRetornoListaEmbarque.RESPONSE.ListaEmbarque != null &&
                     objectRetornoListaEmbarque.RESPONSE.ListaEmbarque.Embarques.Count == 0)
                 { // Não recebeu os Embarques do GTE, GTE retornou mensagem de erro
-                    new UpdateResponseAtualizacaoGTE().atualizaRegistro(status, null);
-                    msgReturn = string.Format("{0} {1}", MessagesOfReturn.ALERT_RESPONSE_CONSULTA_EMBARQUE_EMPTY,
-                        Environment.NewLine);
+                    //new UpdateResponseAtualizacaoGTE().atualizaRegistro(status, null);
+                    msgReturn = MessagesOfReturn.AlertResponseConsultaEmbarqueEmpty(consultaListaEmbarque.REQUEST.IDBR);
                 }
                 else if (objectRetornoListaEmbarque.RESPONSE.ListaEmbarque == null)
                 {// GTE retornou mensagem de Erro de estrutura do XML
@@ -66,7 +70,7 @@ namespace BL.Command
                     RetornoFatalErrorGTE retornoFatalError = objectFatalError.deserializeXmlForDB(xmlResponse);
                     retornoFatalError.DataRetorno = ConfigureDate.ActualDate;
                     retornoFatalError.Mensagem = Option.MENSAGEM1;
-                    new UpdateResponseAtualizacaoGTE().atualizaRegistro(retornoFatalError.Status, null);
+                    //new UpdateResponseAtualizacaoGTE().atualizaRegistro(retornoFatalError.Status, null);
                     msgReturn = string.Format("{0} {1}", MessagesOfReturn.ERROR_CONSULT_LISTA_EMBARQUE_ESTRUTURA,
                         Environment.NewLine);
                 }
@@ -108,7 +112,7 @@ namespace BL.Command
         /// <summary>
         /// Alimentado o ID do CNPJ ao Embarque
         /// </summary>
-        /// <param name="msg1">DAL.ObjectMessages.Msg1RetornoListaEmbarque</param>
+        /// <param name="msg1">BL.ObjectMessages.Msg1RetornoListaEmbarque</param>
         /// <param name="idCabecalho">int</param>
         private void AlimentaIdDadosBroker(Msg1RetornoListaEmbarque msg1, int idCabecalho)
         {
@@ -123,7 +127,7 @@ namespace BL.Command
         /// </summary>
         /// <param name="objectRetorno">Msg1RetornoListaEmbarque</param>
         /// <returns>Status</returns>
-        private Status GetStatus(Msg1RetornoListaEmbarque objectRetorno)
+        private Status GetStatus(Msg1RetornoListaEmbarque objectRetorno, string cnpjBroker)
         {
             Status status;
             if (objectRetorno.RESPONSE.STATUS != null)
@@ -140,20 +144,16 @@ namespace BL.Command
                 status.DataRetorno = ConfigureDate.ActualDate;
                 status.Mensagem = Option.MENSAGEM1;
             }
+            status.CnpjBroker = cnpjBroker;
             return status;
         }
+        
 
-        /// <summary>
-        /// Trata os Embarques recebidos do GTE
-        /// </summary>
-        /// <param name="objectRetornoListaEmbarque">Msg1RetornoListaEmbarque</param>
-        /// <param name="status">Status</param>
-        /// <returns>strin com o log</returns>
         public string SaveResponseSuccess(Msg1RetornoListaEmbarque objectRetornoListaEmbarque, Status status)
         {
-            UpdateDB<ListaEmbarque> salvaEmbarqueBD = new UpdateListaEmbarque();
-            salvaEmbarqueBD.atualizaRegistro(objectRetornoListaEmbarque.RESPONSE.ListaEmbarque, null);
-            return string.Format("{0} {1}", MessagesOfReturn.EMBARQUE_ATUALIZADO, Environment.NewLine);
+            //UpdateDB<ListaEmbarque> salvaEmbarqueBD = new UpdateListaEmbarque();
+            //salvaEmbarqueBD.atualizaRegistro(objectRetornoListaEmbarque.RESPONSE.ListaEmbarque, null);
+            return MessagesOfReturn.EmbarqueAtualiza(status.CnpjBroker);
         }
 
         public string SaveResponseAlerta(Status status, string embarque)

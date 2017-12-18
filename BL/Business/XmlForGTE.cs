@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
-using Util.InnerException;
-using Util.InnerUtil;
+using BL.InnerException;
+using BL.InnerUtil;
 
 namespace BL.Business
 {
@@ -15,7 +12,7 @@ namespace BL.Business
         /// <summary>
         /// Serializa uma string XML com os dados do objeto enviado pelo parâmetro
         /// </summary>
-        /// <param name="t">Objeto do tipo T</param>
+        /// <param name="t">Objeto genérico</param>
         /// <returns>string com os dados no formato XML</returns>
         /// <exception cref="ConfigureXmlException">Lança a exception se ocorrer algum erro na serialização
         /// ou se o objeto enviado no parâmetro for nullo.</exception>

@@ -19,6 +19,9 @@ namespace DAL.ObjectMessages
         [XmlElement(IsNullable = false)]
         public byte Mensagem { get; set; }
 
+        [XmlElement(IsNullable = false)]
+        public string CnpjBroker { get; set; }
+
         [XmlElement("ERRORS")]
         public List<DescErrors> ERRORS;
     }

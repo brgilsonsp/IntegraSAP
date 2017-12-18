@@ -2,8 +2,8 @@
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-using Util.InnerException;
-using Util.InnerUtil;
+using BL.InnerException;
+using BL.InnerUtil;
 using System.Threading;
 using System.ServiceModel;
 

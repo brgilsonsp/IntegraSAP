@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Util.InnerUtil;
+using BL.InnerUtil;
 
 namespace BL.Business
 {

@@ -1,7 +1,7 @@
-﻿using DAL.ObjectMessages;
+﻿using BL.ObjectMessages;
 using System;
 using System.Configuration;
-using Util.InnerUtil;
+using BL.InnerUtil;
 using System.IO;
 
 namespace BL.Business

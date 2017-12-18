@@ -31,12 +31,34 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Remotion.Linq">
+      <HintPath>..\packages\Remotion.Linq.2.0.1\lib\net45\Remotion.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Collections.Immutable.1.1.36\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity.Design" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Selectors" />
+    <Reference Include="System.identitymodel.services" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Entity.Design" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -46,8 +68,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BrokerMessageDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BrokerMessageDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Business\ComunicaGTE.cs" />
     <Compile Include="Business\ConfigureService.cs" />
+    <Compile Include="Business\DatasSerializedForConsulting.cs" />
+    <Compile Include="Business\DatasSerializedForConsultingXml.cs" />
     <Compile Include="Business\ExportationMessageRequest.cs" />
     <Compile Include="Business\ExportationMessageResponse.cs" />
     <Compile Include="Business\ImportationMessageRequest.cs" />
@@ -64,6 +93,58 @@
     <Compile Include="Command\Mensagem4.cs" />
     <Compile Include="Command\Mensagem5.cs" />
     <Compile Include="Command\SaveData.cs" />
+    <Compile Include="DAO\CabecalhoDAO.cs" />
+    <Compile Include="DAO\ChangeXMLContext.cs" />
+    <Compile Include="Entities\CabecalhoDadosBrokerEntity.cs" />
+    <Compile Include="Entities\CabecalhoEntity.cs" />
+    <Compile Include="Entities\DadosBroker.cs" />
+    <Compile Include="Entities\DetalheError.cs" />
+    <Compile Include="Entities\EmbarqueEntity.cs" />
+    <Compile Include="Entities\MAKTX_TEXT.cs" />
+    <Compile Include="Entities\SHPTEXT.cs" />
+    <Compile Include="Entities\StatusRetorno.cs" />
+    <Compile Include="Entities\TGTEPRD.cs" />
+    <Compile Include="Entities\TGTERES.cs" />
+    <Compile Include="Entities\TGTESHKN.cs" />
+    <Compile Include="Entities\TGTESHPN.cs" />
+    <Compile Include="Entities\TPCK.cs" />
+    <Compile Include="Entities\TXPNS.cs" />
+    <Compile Include="InnerException\BaseInnerException.cs" />
+    <Compile Include="InnerException\ComunicateException.cs" />
+    <Compile Include="InnerException\ConfigureObjectException.cs" />
+    <Compile Include="InnerException\ConfigureXmlException.cs" />
+    <Compile Include="InnerException\SelectDBException.cs" />
+    <Compile Include="InnerException\UpdateDBException.cs" />
+    <Compile Include="InnerUtil\ConfigureDate.cs" />
+    <Compile Include="InnerUtil\EncodingUTF8.cs" />
+    <Compile Include="InnerUtil\MessagesOfReturn.cs" />
+    <Compile Include="InnerUtil\Option.cs" />
+    <Compile Include="InnerUtil\PathSaveFile.cs" />
+    <Compile Include="InnerUtil\TimeClosing.cs" />
+    <Compile Include="ObjectMessages\ConsultaGTE.cs" />
+    <Compile Include="ObjectMessages\DatasOfRequest.cs" />
+    <Compile Include="ObjectMessages\Embarque.cs" />
+    <Compile Include="ObjectMessages\Msg1RetornoListaEmbarque.cs" />
+    <Compile Include="ObjectMessages\Msg2RetornoDetalheEmbarque.cs" />
+    <Compile Include="ObjectMessages\Msg3AtualizaDetalheEmbarque.cs" />
+    <Compile Include="ObjectMessages\Msg4AtualizaPrestacaConta.cs" />
+    <Compile Include="ObjectMessages\Msg5RetornoConsultaPrestacaConta.cs" />
+    <Compile Include="ObjectMessages\ObjServiceTrocaXMLConfig.cs" />
+    <Compile Include="ObjectMessages\PrestacaoContas.cs" />
+    <Compile Include="ObjectMessages\RetornoAtualizaGTE.cs" />
+    <Compile Include="ObjectMessages\RetornoFatalErrorGTE.cs" />
+    <Compile Include="ObjectMessages\SHPTEXT.cs" />
+    <Compile Include="ObjectMessages\Status.cs" />
+    <Compile Include="ObjectMessages\STR.cs" />
+    <Compile Include="ObjectMessages\TGTEPRD.cs" />
+    <Compile Include="ObjectMessages\TGTERES.cs" />
+    <Compile Include="ObjectMessages\TGTESHKN.cs" />
+    <Compile Include="ObjectMessages\TGTESHPN.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="RunMessenger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\WebServiceGTE\Reference.cs">
@@ -77,8 +158,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="BrokerMessageDataSet.xsc">
+      <DependentUpon>BrokerMessageDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="BrokerMessageDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>BrokerMessageDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="BrokerMessageDataSet.xss">
+      <DependentUpon>BrokerMessageDataSet.xsd</DependentUpon>
+    </None>
     <None Include="ClassDiagram1.cd" />
     <None Include="ClassDiagram2.cd" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Service References\WebServiceGTE\BL.WebServiceGTE.funcsyncResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -98,16 +195,6 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DAL\DAL.csproj">
-      <Project>{c70b2d74-0326-4d28-80f3-eba49b3b64d2}</Project>
-      <Name>DAL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Util\Util.csproj">
-      <Project>{a0bd9c8e-a264-48f8-908b-8630c0a5f39d}</Project>
-      <Name>Util</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

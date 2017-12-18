@@ -1,5 +1,5 @@
 ﻿using BL.Business;
-using DAL.ObjectMessages;
+using BL.ObjectMessages;
 
 namespace BL.Command
 {
