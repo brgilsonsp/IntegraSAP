@@ -16,10 +16,10 @@ namespace BL.Business
 
         public string PathSaveFileText { get { return PathCompleteOfFile(); } }
 
-        public ImportationMessageResponse(String xml, string embarque, int numberOfmessage, ConfigureService configureService)
+        public ImportationMessageResponse(String xml, string embarque, int numberOfmessage)
         {
             this._xml = xml;
-            this._configureService = configureService;
+            this._configureService = new ConfigureService();
             this._message = numberOfmessage;
             this._embarque = embarque;
         }

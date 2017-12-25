@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using BL.ObjectMessages;
+using System.Xml.Serialization;
 
 namespace BL.ObjectMessages
 {
@@ -12,5 +13,15 @@ namespace BL.ObjectMessages
         public string ENVRM;
 
         public string INTNR;
+
+        public STR() {   }
+
+        public STR(DadosBroker dadosBroker)
+        {
+            Type = dadosBroker.STRType;
+            XMLVR = dadosBroker.XMLVR;
+            ENVRM = dadosBroker.ENVRM;
+            INTNR = dadosBroker.INTNR;
+        }
     }
 }

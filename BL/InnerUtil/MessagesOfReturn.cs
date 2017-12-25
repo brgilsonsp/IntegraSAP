@@ -1,9 +1,12 @@
-﻿using System;
+﻿using BL.ObjectMessages;
+using System;
+using System.Collections.Generic;
 
 namespace BL.InnerUtil
 {
     public static class MessagesOfReturn
     {
+
         //Mensagens de Erro
         public const string ERROR_CONSULTA_LISTA_EMBARQUE_DB = "Ocorreu erro ao efetuar a Consulta da Lista de Embarque.";
         public const string ERROR_CONSULTA_EMBARQUE_DB = "Ocorreu um erro ao obter os dados para efetuar a consulta de um Embarque.";
@@ -21,13 +24,37 @@ namespace BL.InnerUtil
         public const string ERROR_CONSULT_DETALHE_EMBARQUE = "Não foi possível obter o Detalhe do Embarque ?.";
         public const string ERROR_CONSULTA_LISTA_PRESTACAO_CONTA_CONSULTA = "Erro ao obter os dados necessário para efetuar a Consulta da Prestação de Conta.";
         public const string ERROR_CONSULTA_PRESTACA_CONTA = "Ocorreu erro ao obter a Prestação de Conta do Embarque ?.";
-        public const string ERROR_CONSULT_LISTA_EMBARQUE_ESTRUTURA = "Foi solicitado a Lista de Embarque ao GTE com sucesso, porém o GTE retornou erro. Verifique os dados da request";
-        public const string ERROR_CONSULTA_EMBARQUE_NULL = "Não foi possível desserializar a Lista de Embarque. Verifique se os dados da requisição estão corretos.";
+
+        /// <summary>
+        /// Mensagem de erro com os detalhes enviado do WebService
+        /// </summary>
+        /// <param name="message">Mensagem que esta sendo processada</param>
+        /// <param name="idBroker">Id do Broker que esta sendo processado</param>
+        /// <param name="listDetailError">Uma lista de DetailError com as informações do WebService</param>
+        /// <returns></returns>
+        public static string ErrorStructureRequest(string message, string idBroker, IList<Status> listDetailError)
+        {
+            string desc = "";
+            foreach (Status error in listDetailError)
+                desc += String.Format("* {0}{1}", error.DESC, Environment.NewLine);
+
+            return String.Format("Os dados para a requisição {0} do IDBroker {1} estão incorretos. Segue o detalhe do retorno:{2}{3}{2}",
+                message, idBroker, Environment.NewLine, desc);
+        }
+        
         public const string ERROR_CONSULTA_PC_ESTRUTURA = "A Consulta da Prestação de Conta do Embarque ? foi efetuado ao GTE com sucesso, porém retornou erro. Verifique os dados do Request.";
         public const string ERROR_ATUALIZA_PC_GTE = "Ocorreu erro ao atualizar a Prestação de Contas para o Embarque ? no GTE. Possivelmente a Prestação de Contas do Embarque esta em branco.";
         public const string ERROR_ATUALIZA_EMBARQUE_GTE = "Ocorreu erro ao atualizar o Embarque ? no GTE. Possivelmente o Detalhe do Embarque esta em branco.";
-        public const string ERROR_CONSULT_DETALHE_EMBARQUE_ESTRUTURA = "Foi solicitado o Detalhe do Embarque ? ao GTE com sucesso, porém o GTE retornou erro. Verifique os dados da request";
-        public const string ERROR_ALTERA_FLAG_CONSULTA_PREST_CONTA = "Erro ao alterar a flag Consulta Prestaçã de Conta do Embarque ?.";
+
+
+
+
+        
+
+
+
+
+        public const string ERROR_ALTERA_FLAG_CONSULTA_PREST_CONTA = "Erro ao alterar a flag Consulta Prestaçã de Conta do Embarque ?.";        
         public const string ERROR_OBTER_ID_PRESTACAO_CONTA = "Erro ao obter o ID da Prestação de Conta.";
         public const string ERROR_OBTER_ID_PC_EMPTY = "Não foi possível obter o ID da Prestação de Conta, Embarque informado é nulo";
         public const string ERROR_SAVE_PC_TXPNS = "Erro ao salvar a Consulta Prestação de Contas, tabela TXPNS.";
@@ -40,8 +67,8 @@ namespace BL.InnerUtil
         public static string ErroFieldPC(string embarque, string cnpjBroker)
         {
             return String.Format(
-                "O retorno da Consulta da Prestação de Conta do Embarque {0} requerida pelo CNPJ {1} foi recebido com sucesso, porém o valor do campo PCTYP esta diferente do padrão (AD ou PC).{2}",
-                embarque, cnpjBroker, Environment.NewLine);
+                "O retorno da Consulta da Prestação de Conta do Embarque {0} requerida pelo CNPJ {1} foi recebido com sucesso, porém o valor do campo PCTYP esta diferente do padrão (AD ou PC).",
+                embarque, cnpjBroker);
         }
         public const string ERROR_CONFIG_SERVICE = "Ocorreu erro ao serializar o arquivo de configuração do serviço.";
         public const string ERROR_CREATE_LOG_USER = "Não foi possível criar o arquivo de log do usuário.";
@@ -50,24 +77,50 @@ namespace BL.InnerUtil
         public const string ERROR_OPEN_FILE_CONFIG = "Não foi possível abrir o Configurador.";
         public const string ERROR_SAVE_CONFIG = "As configurações não foram alteradas.";
         public const string ERROR_SAVE_CONFIG_COMPL = "Verifique se você possui acesso ao diretório de configuração do serviço TrocaXML.";
-        public const string ERROR_SERIALIZA_CONSULTA = "Ocorreu erro ao serilizar os dados do objeto ? para efetuar a consulta no Web Service.";
-        public const string ERROR_DESERIALIZE_RETORNO = "Ocorreu erro ao desserializar o(a) ? recebida do Web Service.";
-        public const string ERROR_COMUNICATE_GTE = "Ocorreu erro ao trocar a Mensagem com o Web Service GTE.";
+
+
+        public static string ErrorSerializeConsulting(string nameClass)
+        {
+            return String.Format("Ocorreu erro ao serilizar os dados do objeto {0} para efetuar a consulta no Web Service.", 
+                nameClass);
+        }
+
+        public static string ErrorSaveDetalheEmbarqueDB(string sbeln)
+        {
+            return String.Format("Não foi possível salvar no bando de dados o Detalhe do Embarque {0}, a solicitação de Consulta não foi alterado, o sistema tenterá salvar o Detalhe na próxima requisião.{1}",
+                sbeln, Environment.NewLine);
+        }
+
+
+        public static string ErrorDeserializeResponse(string nameClass)
+        {
+            return String.Format("Ocorreu erro ao desserializar o(a) {0} recebida do Web Service.", nameClass);
+        }
+        
+
         public const string ERROR_FIELD = "Os campos não podem ser em branco. Verique o(s) campo(s) abaixo: ";
         public const string ERROR_PC_INCORRECT = "A atualização da Prestação de Contado Embarque ? foi recebido com sucesso, porém não foi salvo no banco dados, possivelmente os dados estão incorretos.";
-        public const string ERROR_SAVE_XML = "Ocorreu erro ao salvar o XML ?. Verifique se o diretório existe ou se possui permissão de escrita";
-        public const string ERROR_OBJECT_FOR_SERIALIZER_NULL = "O objeto enviado para serializar e string no formato XML esta nulo";
+
+
+        public static string ErrorSaveXml(string nameXml, Exception ex)
+        {
+            return String.Format(
+                "Ocorreu erro ao salvar o XML {0}. Verifique se o diretório existe ou se possui permissão de escrita.{1}{2}{1}",
+                    nameXml, Environment.NewLine, ex.Message);
+        }
+
+        public static string ERROR_OBJECT_FOR_SERIALIZER = "O objeto enviado para serializar e string no formato XML esta nulo";
         //Fim Mensages de erro
 
         //Mensagens de sucesso
         /// <summary>
         /// Retorna mensagem que será utilizada no Log para Embarques que foram Consultados no WebService do cliente com sucesso
         /// </summary>
-        /// <param name="cnpjBroker">String com o CNPJ do Broker que requereu o(s) Embarque(s)</param>
+        /// <param name="idBroker">ID do Broker que requereu o(s) Embarque(s)</param>
         /// <returns>Mensagem em string que será utilizado no arquivo de Log</returns>
-        public static string EmbarqueAtualiza(string cnpjBroker)
+        public static string EmbarqueAtualiza(int idBroker)
         {
-            return string.Format("Lista de Embarque requirida pelo CNPJ {0} atualizado.{1}", cnpjBroker, Environment.NewLine);
+            return string.Format("Lista de Embarque requirida pelo Broker ID {0} atualizado.{1}", idBroker, Environment.NewLine);
         }
         /// <summary>
         /// Retorna mensagem que será utilizada no Log para Consulta de Prestação de Contas realizada com sucesso.
@@ -77,9 +130,16 @@ namespace BL.InnerUtil
         /// <returns></returns>
         public static string SucessConsultaPrestacaoConta(string embarque, string cnpjRequerente)
         {
-            return String.Format("A tabela TPCK da Prestação de Conta do Embarque {0} requerida pelo CNPJ {1} foi atualizado com sucesso.{2}",
-                embarque, cnpjRequerente, Environment.NewLine);
+            return String.Format("A tabela TPCK da Prestação de Conta do Embarque {0} requerida pelo CNPJ {1} foi atualizado com sucesso.",
+                embarque, cnpjRequerente);
         }
+
+        public static string SucessoRetornoDetalheEmbarque(string embarque)
+        {
+            return String.Format("O Detalhe do Embarque {0} salvo com sucesso.{1}", embarque, Environment.NewLine);
+        }
+
+
         public const string SUCCESS_ATUALIZA_PRESTACAO_CONTA = "A Prestação de Contas do Embarque ? foi enviada com sucesso ao GTE.";
         public const string SUCCESS_ATUALIZA_DETALHE_EMBARQUE = "O Detalhe do Embarque ? enviado com sucesso ao GTE.";
         public const string SUCCESS_SALVA_PRESTACAO_CONTA_TXPNS = "A Prestação de Conta, tabela TXPNS, do Embarque ? foi salva com sucesso.";
@@ -88,9 +148,12 @@ namespace BL.InnerUtil
 
         //Mensagens de Alerta
         public const string ALERT_RETORNO_ATUALIZA_DETALHE_EMBARQUE_EMPTY = "Não possui nenhum Detalhe de Embarque para atualizar no GTE.";
-        public const string ALERT_RETORNO_DETALHE_EMBARQUE_EMPTY = "Não há Detalhe disponível para o Embarque ?.";
-        public const string ALERT_CONSULTA_DETALHE_EMBARQUE_EMPTY = "Não existe embarque disponível para consulta de Detalhes.";
-        public const string ALERT_RETORNO_DETALHE_EMBARQUE = "O Detalhe do Embarque ? salvo com sucesso.";
+        //public const string ALERT_RETORNO_DETALHE_EMBARQUE_EMPTY = "Não há Detalhe disponível para o Embarque ?.";
+
+        //checado
+        public static string AlertRequestMessage2ExportationEmpty = String.Format("Não existe embarque disponível para consulta de Detalhes.{0}", Environment.NewLine);
+
+
         public const string ALERT_ATUALIZA_PRESTACAO_CONTA_EMPTY = "Não há Embarque disponível para efetuar a Prestação de Contas.";
         public const string ALERT_CONSULTA_PRESTACAO_CONTA_EMPTY = "Não há Embarque disponível para efetuar a Consulta da Prestação de Conta.";
         public const string ALERT_EMBARQUE_PRESTACAO_CONTA_EMPTY = "O Embarque selecionado para Consulta da Prestação de Contas esta em branco.";
@@ -102,23 +165,61 @@ namespace BL.InnerUtil
         public const string ALERT_EMBARQUE_EMPTY_OR_NULL = "O Embarque selecionado esta nulo ou em branco. Consulta Detalhe Embarque abortado.";
         public const string ALERT_ATUALIZA_PC_EMPTY = "O GTE não retornou os dados da Consulta da Prestação de Contas do Embarque ?.";
         public const string ALERT_CONSULTA_PC_EMPTY = "A Consulta da Prestação de Conta do Embarque ? foi efetuado ao GTE com sucesso, porém o GTE não retornou nenhuma dado.";
-        public const string ALERT_RESPONSE_CONSULTA_DETALHE_EMBARQUE_EMPTY = "A Consulta do Detalhe do Embarque ? foi efetuado ao GTE com sucesso, porém o GTE não retornou nenhuma dado.";
 
         /// <summary>
-        /// Retorna mensagem que será utilizada no Log, quando o WebService não retornou os dados esperados de uma requisição de Consulta de Embarque
+        /// Retorna a mensagem abaixo concatenando o SBELN do parâmetro
+        /// A Consulta do Detalhe do Embarque {0} foi efetuado ao GTE com sucesso, porém o GTE não retornou nenhuma dado
         /// </summary>
-        /// <param name="cnpjRequerente">Cnpj Requerente</param>
-        /// <returns></returns>
-        public static string AlertResponseConsultaEmbarqueEmpty(string cnpjRequerente)
+        /// <param name="sbeln">SBELN</param>
+        /// <returns>Uma string A Consulta do Detalhe do Embarque {0} foi efetuado ao GTE com sucesso, porém o GTE não retornou nenhuma dado</returns>
+        public static string AlertResponseConsultaDetalheEmbarqueEmpty(string sbeln)
         {
-            return String.Format("A Consulta de Lista de Embarque requerida pelo CNPJ {0} foi efetuado ao Webservice com sucesso, porém o houve retorno ou retornou algum erro, consulte a tabela StatusRetorno .{1}",
-                cnpjRequerente, Environment.NewLine);
+            return String.Format("A Consulta do Detalhe do Embarque {0} foi efetuado ao GTE com sucesso, porém o GTE não retornou nenhuma dado.{1}",
+                sbeln, Environment.NewLine);
+        }
+
+        /// <summary>
+        /// Retorna mensagem que será utilizada no Log, quando o WebService não retornou os dados esperados de uma requisição
+        /// </summary>
+        /// <param name="message">Tipo da mensagem que esta sendo processada</param>
+        /// <param name="embarque">Embarque que esta sendo efetuado o processo</param>
+        /// <returns></returns>
+        public static string AlertResponseEmptyOrError(string message, string embarque)
+        {
+            return String.Format("A {0}, para o embarque {1} foi efetuado ao Webservice com sucesso, porém a resposta esta em branco ou com erro, consulte a tabela StatusRetorno, se não localizou o erro na tabela StatusRetorno verifique se os dados do Broker e do Cabeçalho estão corretos.{2}",
+                message, embarque, Environment.NewLine);
+        }
+
+        /// <summary>
+        /// Retorna mensagem que será utilizada no Log, quando o WebService não retornou os dados esperados de uma requisição
+        /// </summary>
+        /// <param name="message">Tipo da mensagem que esta sendo processada</param>
+        /// <param name="idBroker">Id do broker Requerente</param>
+        /// <returns></returns>
+        public static string AlertResponseEmptyByIdBroker(string message, string idBroker)
+        {
+            return String.Format("A {0}, requerida IDBroker {1} foi efetuado ao Webservice com sucesso, porém a resposta esta em branco ou com erro, consulte a tabela StatusRetorno, se não localizou o erro na tabela StatusRetorno verifique se os dados do Broker e do Cabeçalho estão corretos.{2}",
+                message, idBroker, Environment.NewLine);
         }
         public const string ALERT_CONFIG_SERVICE_EMPTY = "Não foi informado o conteúdo do arquivo de configuração do serviço.";
         public const string ALERT_DATA_REQUEST_NOT_FOUND = "Não foi localizado os dados necessários para efetuar a Consulta da Lista de Embarques";
-        public const string ALERT_STRING_FOR_GTE_NULL = "Não foi informado nenhum valor para ser enviado ao Web Service";
+        //public const string ALERT_STRING_FOR_GTE_NULL = "Não foi informado nenhum valor para ser enviado ao Web Service";
+
+        //checada
         public const string ALERT_XML_FOR_DB_NULL = "Não foi informado nenhum valor para desserializar";
-        public const string ALERT_RETORNO_CONSULTA_LISTA_EMBARQUE = "Nenhum Embarque recebido do GTE.";        
+
+
+        /// <summary>
+        /// Retorna mensagem O WebService não respondeu a {0} requisitada pelo IdBroker {1}.{2}
+        /// </summary>
+        /// <param name="message">Mensagem que esta sendo processada</param>
+        /// <param name="idBroker">Id do broker que efetuou a requisição</param>
+        /// <returns></returns>
+        public static string AlertReturnNull(string message, string idBroker)
+        {
+            return String.Format("O WebService não respondeu a {0} requisitada pelo IdBroker {1}.{2}",
+                message, idBroker, Environment.NewLine);
+        }
         //Fim Mensagens de Alerta
 
         public const string COD = "Código: ";
@@ -151,5 +252,10 @@ namespace BL.InnerUtil
         public const string IMPORTATION_REQUEST = "Requisição Importação";
         public const string EXPORTATION_RESPONSE = "Resposta Exportação";
         public const string EXPORTATION_REQUEST = "Requisição Exportação";
+        
+        public static string ProcessExportation(byte message)
+        {
+            return String.Format("Mensagem {0} - Exportação", message);
+        }
     }
 }

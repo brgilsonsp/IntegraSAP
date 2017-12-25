@@ -1,47 +1,35 @@
 ﻿using System;
 using System.Xml.Serialization;
 using BL.InnerUtil;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BL.ObjectMessages
 {
     public class TGTERES
     {
-        [XmlAttribute]
-        public string Type;
 
-        public string SBELN;
+        #region XmlIgnore
 
-        public string DSENUM;
+        [XmlIgnore]
+        public int ID { get; set; }
 
-        public string RENUM;
+        [XmlIgnore]
+        [Column("IDEmbarque")]
+        public int EmbarqueID { get; set; }
 
-        public string ANDAT;
+        [XmlIgnore]
+        public virtual Embarque Embarque { get; set; }
 
-        public string REDAT;
-
-        public string AVBDT;
-
-        public string CANAL;
-
-        public string DDENUM;
-
-        public string DDEDT;
-
-        public string DDESQ;
-
-        public string REANX;
-
-        public int DSESQ;
-
-        public string DOCFAT;
-
-        public string XBLNR;
-
-        public string INCO1;
-
-        public string WAERS;
-
-        public string DDEADT;
+        [XmlIgnore]
+        private DateTime? _dDEADT_DateTime;
+        [XmlIgnore]
+        private DateTime? _dDEDT_DateTime;
+        [XmlIgnore]
+        private DateTime? _aVBDT_DateTime;
+        [XmlIgnore]
+        private DateTime? _rEDAT_DateTime;
+        [XmlIgnore]
+        private DateTime? _aNDAT_DateTime;
 
         /// <summary>
         /// get. Retorna um objeto DateTime com o valor da data informada
@@ -49,15 +37,18 @@ namespace BL.ObjectMessages
         /// for vazio ou nulo, retorna null
         /// </summary>
         [XmlElement(IsNullable = false)]
+        [XmlIgnore]
+        [Column("DDEADT")]
         public DateTime? DDEADT_DateTime
         {
             get
             {
-                if (string.IsNullOrEmpty(this.DDEADT) || string.IsNullOrWhiteSpace(this.DDEADT))
-                {
-                    return null;
-                }
-                else { return ConfigureDate.convertDateStringForDateTime(this.DDEADT); }
+                if (_dDEADT_DateTime == null) return ConfigureDate.convertDateStringForDateTime(this.DDEADT);
+                else return _dDEADT_DateTime;
+            }
+            set
+            {
+                _dDEADT_DateTime = value;
             }
         }
 
@@ -67,15 +58,18 @@ namespace BL.ObjectMessages
         /// for vazio ou nulo, retorna null
         /// </summary>
         [XmlElement(IsNullable = false)]
+        [XmlIgnore]
+        [Column("DDEDT")]
         public DateTime? DDEDT_DateTime
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(this.DDEDT) || string.IsNullOrEmpty(this.DDEDT))
-                {
-                    return null;
-                }
-                else { return ConfigureDate.convertDateStringForDateTime(this.DDEDT); }
+                if (_dDEDT_DateTime == null) return ConfigureDate.convertDateStringForDateTime(this.DDEDT);
+                else return _dDEDT_DateTime;
+            }
+            set
+            {
+                _dDEDT_DateTime = value;
             }
         }
 
@@ -85,15 +79,18 @@ namespace BL.ObjectMessages
         /// for vazio ou nulo, retorna null
         /// </summary>
         [XmlElement(IsNullable = false)]
+        [XmlIgnore]
+        [Column("AVBDT")]
         public DateTime? AVBDT_DateTime
         {
             get
             {
-                if (string.IsNullOrEmpty(this.AVBDT) || string.IsNullOrWhiteSpace(this.AVBDT))
-                {
-                    return null;
-                }
-                else { return ConfigureDate.convertDateStringForDateTime(this.AVBDT); }
+                if (_aVBDT_DateTime == null) return ConfigureDate.convertDateStringForDateTime(this.AVBDT);
+                else return _aVBDT_DateTime;
+            }
+            set
+            {
+                _aVBDT_DateTime = value;
             }
         }
 
@@ -103,15 +100,18 @@ namespace BL.ObjectMessages
         /// for vazio ou nulo, retorna null
         /// </summary>
         [XmlElement(IsNullable = false)]
+        [XmlIgnore]
+        [Column("REDAT")]
         public DateTime? REDAT_DateTime
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(this.REDAT) || string.IsNullOrEmpty(this.REDAT))
-                {
-                    return null;
-                }
-                else { return ConfigureDate.convertDateStringForDateTime(this.REDAT); }
+                if (_rEDAT_DateTime == null) return ConfigureDate.convertDateStringForDateTime(this.REDAT);
+                else return _rEDAT_DateTime;
+            }
+            set
+            {
+                _rEDAT_DateTime = value;
             }
         }
 
@@ -121,19 +121,66 @@ namespace BL.ObjectMessages
         /// for vazio ou nulo, retorna null
         /// </summary>
         [XmlElement(IsNullable = false)]
+        [XmlIgnore]
+        [Column("ANDAT")]
         public DateTime? ANDAT_DateTime
         {
             get
             {
-                if (string.IsNullOrEmpty(this.ANDAT) || string.IsNullOrWhiteSpace(this.ANDAT))
-                {
-                    return null;
-                }
-                else
-                {
-                    return ConfigureDate.convertDateStringForDateTime(this.ANDAT);
-                }
+                if (_aNDAT_DateTime == null) return ConfigureDate.convertDateStringForDateTime(this.ANDAT);
+                else return _aNDAT_DateTime;
+            }
+            set
+            {
+                _aNDAT_DateTime = value;
             }
         }
+
+        #endregion
+
+
+        [XmlAttribute]
+        [Column("TypeTGTERES")]
+        public string Type { get; set; }
+
+        [NotMapped]
+        public string SBELN { get; set; }
+
+        public string DSENUM { get; set; }
+
+        public string RENUM { get; set; }
+
+        [NotMapped]
+        public string ANDAT { get; set; }
+
+        [NotMapped]
+        public string REDAT { get; set; }
+
+        [NotMapped]
+        public string AVBDT { get; set; }
+
+        public string CANAL { get; set; }
+
+        public string DDENUM { get; set; }
+
+        [NotMapped]
+        public string DDEDT { get; set; }
+
+        public string DDESQ { get; set; }
+
+        public string REANX { get; set; }
+
+        public int DSESQ { get; set; }
+
+        public string DOCFAT { get; set; }
+
+        public string XBLNR { get; set; }
+
+        public string INCO1 { get; set; }
+
+        public string WAERS { get; set; }
+
+        [NotMapped]
+        public string DDEADT { get; set; }
     }
 }

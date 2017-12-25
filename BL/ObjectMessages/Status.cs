@@ -1,38 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
 
 namespace BL.ObjectMessages
 {
     public class Status
     {
-        [XmlAttribute]
-        public string Type;
+        #region XmlIgnore
 
-        public string CODE;
+        [XmlIgnore]
+        public int ID { get; set; }
 
-        public string DESC;
+        [XmlIgnore]
+        [NotMapped]
+        public int idBroker { get; set; }
 
-        [XmlElement(IsNullable = false)]
-        public DateTime DataRetorno { get; set; }
-
-        [XmlElement(IsNullable = false)]
+        [XmlIgnore]
         public byte Mensagem { get; set; }
 
+        [XmlIgnore]
+        public string SBELN { get; set; }
+
         [XmlElement(IsNullable = false)]
-        public string CnpjBroker { get; set; }
+        [XmlIgnore]
+        public DateTime DataRetorno { get; set; }
+
+        #endregion
+
+
+        [XmlAttribute]
+        [NotMapped]
+        public string Type { get; set; }
+
+        public string CODE { get; set; }
+
+        [Column("DESCR")]
+        public string DESC { get; set; }
 
         [XmlElement("ERRORS")]
-        public List<DescErrors> ERRORS;
-    }
-
-    public class DescErrors
-    {
-        [XmlAttribute]
-        public string Type;
-
-        public string CODE;
-
-        public string DESC;
+        [NotMapped]
+        public List<Status> ERRORS { get; set; }
     }
 }

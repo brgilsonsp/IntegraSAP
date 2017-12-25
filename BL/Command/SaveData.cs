@@ -1,4 +1,5 @@
 ﻿using BL.Business;
+using BL.DAO;
 using BL.ObjectMessages;
 using System;
 using System.Collections.Generic;
@@ -13,23 +14,18 @@ namespace BL.Command
         /// <summary>
         /// Sava o response do Web Service no banco de dados.
         /// O Response é passado no parâmetro retornoWebService.
-        /// O parâmetro embarque será utilizado para validar o embarque que será salvo e/ou
-        /// criar a mensagem para o arquivo de log
         /// </summary>
         /// <param name="retornoConsultaGTE">R</param>
-        /// <param name="embarque">E</param>
         /// <returns>A mensagem que será salva no arquivo de log</returns>
-        string SaveResponseSuccess(R retornoWebService, E embarque);
+        string SaveResponseSuccess(R retornoWebService);
 
         /// <summary>
         /// Salva o Status que o conteúdo da subtag Status da resposta do Web Service.
         /// Parâmetro status, contém o conteúdo do status que o Web Service respondeu.
-        /// Parâmetro embarque, para gravar no banco de dados o status do seu respectivo Embarque.
         /// </summary>
         /// <param name="status">Objeto com o conteúdo do status da response do Web Service</param>
-        /// <param name="embarque">O parâmetro status pertence a esse embarque</param>
         /// <returns>A mensagem que será salva no arquivo de log</returns>
-        string SaveResponseAlerta(Status status, string embarque);
+        string SaveResponseAlerta(Status status);
 
         /// <summary>
         /// Salva o response com mensagem de erro que o Web Service respondeu.

@@ -1,4 +1,6 @@
-﻿using System.Xml.Serialization;
+﻿using BL.ObjectMessages;
+using System.Xml.Serialization;
+using System.Linq;
 
 namespace BL.ObjectMessages
 {
@@ -10,6 +12,20 @@ namespace BL.ObjectMessages
 
         public RequestConsultaGTE REQUEST;
 
+        public ConsultaGTE() {  }
+
+        public ConsultaGTE(DataHeaderRequest dadosMessage1)
+        {
+            this.EDX = dadosMessage1.Cabecalho.MensagemEDX;
+            REQUEST = new RequestConsultaGTE(dadosMessage1);
+        }
+
+        //public ConsultaGTE(DataHeaderRequest dadosMessage1, EmbarqueEntity embarque)
+        public ConsultaGTE(DataHeaderRequest dadosMessage1, Embarque embarque)
+        {
+            this.EDX = dadosMessage1.Cabecalho.MensagemEDX;
+            REQUEST = new RequestConsultaGTE(dadosMessage1, embarque);
+        }
     }
 
     public class RequestConsultaGTE
@@ -31,5 +47,24 @@ namespace BL.ObjectMessages
         
         [XmlIgnore]
         public int IDDadosBroker;
+
+        public RequestConsultaGTE() {   }
+
+        public RequestConsultaGTE(DataHeaderRequest dadosMessage1)
+        {
+            Type = dadosMessage1.Cabecalho.RequestType;
+            ACAO = dadosMessage1.Cabecalho.ACAO;
+            IDBR = dadosMessage1.DadosBroker.IDBR;
+            IDCL = dadosMessage1.DadosBroker.IDCL;
+            SHKEY = dadosMessage1.DadosBroker.SHKEY;
+            STR = new STR(dadosMessage1.DadosBroker);
+        }
+
+        //public RequestConsultaGTE(DataHeaderRequest dadosMessage1, EmbarqueEntity embarque)
+        public RequestConsultaGTE(DataHeaderRequest dadosMessage1, Embarque embarque)
+            : this(dadosMessage1)
+        {
+            this.SBELN = embarque.SBELN;
+        }
     }
 }

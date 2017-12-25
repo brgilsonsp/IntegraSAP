@@ -1,4 +1,5 @@
 ﻿using BL.Business;
+using BL.DAO;
 using BL.ObjectMessages;
 using System;
 
@@ -6,7 +7,15 @@ namespace BL.Command
 {
     class Mensagem4 : Mensagem, SaveData<Status, Embarque>
     {
-        public string SaveResponseAlerta(Status status, string embarque)
+        public string Message
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public string SaveResponseAlerta(Status status)
         {
             throw new NotImplementedException();
         }
@@ -16,10 +25,11 @@ namespace BL.Command
             throw new NotImplementedException();
         }
 
-        public string SaveResponseSuccess(Status retornoWebService, Embarque embarque)
+        public string SaveResponseSuccess(Status retornoWebService)
         {
             throw new NotImplementedException();
         }
+
 
         //public string SwapXmlWithGTE(ConfigureService configureService)
         //{
@@ -178,7 +188,7 @@ namespace BL.Command
         //    UpdateDB<Status> salvaResponseBD = new UpdateResponseAtualizacaoGTE();
         //    salvaResponseBD.atualizaRegistro(status, embarque);            
         //}
-        public string SwapXmlWithGTE(ConfigureService configureService)
+        public string SwapXmlWithGTE()
         {
             throw new NotImplementedException();
         }

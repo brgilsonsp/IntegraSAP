@@ -10,10 +10,10 @@ namespace BL.Business
         private int _numberOfMessage;
         private string _embarque;
 
-        public ImportationMessageRequest(String xml, string embarque, int numberOfMessage, ConfigureService configureService)
+        public ImportationMessageRequest(String xml, string embarque, int numberOfMessage)
         {
             this._xml = xml;
-            _configureService = configureService;
+            _configureService = new ConfigureService();
             this._numberOfMessage = numberOfMessage;
             this._embarque = embarque;
         }

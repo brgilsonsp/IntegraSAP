@@ -31,19 +31,13 @@ namespace BL.Business
                     return objectRetun;
                 }
                 else
-                {
-                    string msg = string.Format("{0} {1}", MessagesOfReturn.ALERT_XML_FOR_DB_NULL, 
-                        Environment.NewLine);
-                    throw new ConfigureXmlException(msg);
-                }
+                    MakeLog.FactoryLogForError(MessagesOfReturn.ALERT_XML_FOR_DB_NULL);
             }
             catch (Exception ex)
             {
-                string msg = string.Format("{0} {1}", 
-                    MessagesOfReturn.ERROR_DESERIALIZE_RETORNO.Replace("?", typeof(T).Name), 
-                    Environment.NewLine);
-                throw new ConfigureXmlException(msg, ex);
+                throw new ConfigureXmlException(MessagesOfReturn.ErrorDeserializeResponse(typeof(T).Name), ex);
             }
+            return default(T);
         }
     }
 }

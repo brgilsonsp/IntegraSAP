@@ -1,12 +1,19 @@
-﻿using BL.Business;
-using BL.ObjectMessages;
+﻿using BL.ObjectMessages;
 using System;
 
 namespace BL.Command
 {
     class Mensagem3 : Mensagem, SaveData<RetornoAtualizaGTE, Embarque>
     {
-        public string SaveResponseAlerta(Status status, string embarque)
+        public string Message
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public string SaveResponseAlerta(Status status)
         {
             throw new NotImplementedException();
         }
@@ -16,10 +23,11 @@ namespace BL.Command
             throw new NotImplementedException();
         }
 
-        public string SaveResponseSuccess(RetornoAtualizaGTE retornoWebService, Embarque embarque)
+        public string SaveResponseSuccess(RetornoAtualizaGTE retornoWebService)
         {
             throw new NotImplementedException();
         }
+
 
         //public string SwapXmlWithGTE(ConfigureService configureService)
         //{
@@ -177,7 +185,7 @@ namespace BL.Command
         //    status.Mensagem = Option.MENSAGEM3;
         //    return new UpdateResponseAtualizacaoGTE().atualizaRegistro(status, embarque);
         //}
-        public string SwapXmlWithGTE(ConfigureService configureService)
+        public string SwapXmlWithGTE()
         {
             throw new NotImplementedException();
         }

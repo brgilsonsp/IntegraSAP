@@ -3,110 +3,96 @@ using BL.Business;
 using BL.InnerUtil;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using BL.DAO;
-using BL.Entities;
+using BL.ObjectMessages;
 
 namespace BL.Command
 {
-    class Mensagem1 : Mensagem, SaveData<Msg1RetornoListaEmbarque, Status>
+    class Mensagem1 : ConfigStatus, Mensagem, SaveData<Msg1ResponseExportation, Status>
     {
-        public string SwapXmlWithGTE(ConfigureService configureService)
+        public string Message { get { return MessagesOfReturn.ProcessExportation(Option.MENSAGEM1); } }
+
+        public string SwapXmlWithGTE()
         {
-            IList<string> consultaListaEmbarque = new DatasSerializedForConsultingXml<ConsultaGTE>().GetDatasSerialized()
+            string messageReturn = "";
+            //Obtem do servidor os dados para requisição
+            IDictionary<string, string> objectsToRequest = new DatasToRequestExportation1().GetDatasToRequest();
+            foreach (string id in objectsToRequest.Keys)
+            {
+                string xmlRequest = objectsToRequest[id];
+                ////salva o xml da request
+                SaveXMLOriginal.SaveXML(new ExportationMessageRequest(xmlRequest, "ListaEmbarque", Option.MENSAGEM1));
 
+                //Efetua o request ao WebService enviando o XML serializado
+                string xmlResponse = ComunicaGTE.doRequestWebService(xmlRequest, Message);
+                //salva o xml response
+                SaveXMLOriginal.SaveXML(new ExportationMessageResponse(xmlResponse, "ListaEmbarque", Option.MENSAGEM1));
 
+                //salva o response no banco de dados
+                messageReturn += SaveResponseDataBase(xmlResponse, id);
+            }
 
-            string retorno = "";
-            //Obtém o objeto com os dados necessário para efetuar uma requisição ao Web Service
-            //SelectDB<List<ConsultaGTE>> objetoConsulta = new SelectListaEmbarqueBD();
-            //List<ConsultaGTE> listaConsultaListaEmbarque = null;// objetoConsulta.consultaRegistro(null);
-            //foreach (ConsultaGTE consultaListaEmbarque in listaConsultaListaEmbarque)
-            //{
-            //    if (consultaListaEmbarque != null)
-            //    {
-            //        retorno += ExecuteSwapXml(consultaListaEmbarque, configureService);
-            //    }
-            //    else // Não localizou os dados necessários para efetuar o Request
-            //    {
-            //        retorno += string.Format("{0} {1}", MessagesOfReturn.ALERT_DATA_REQUEST_NOT_FOUND, Environment.NewLine);
-            //    }
-            //}
-            return retorno;
+            return messageReturn;
         }
 
-        /// <summary>
-        /// Executa a troca de mensagem com o Web Service e trata o Response
-        /// </summary>
-        /// <param name="consultaListaEmbarque">Msg1ConsultaListaEmbarque</param>
-        /// <returns>string</returns>
-        private string ExecuteSwapXml(ConsultaGTE consultaListaEmbarque, ConfigureService configureService)
+        private string SaveResponseDataBase(string xmlResponse, string idBroker)
         {
-            string msgReturn = "";
-
-            string xmlResponse = SwapWithGTE(consultaListaEmbarque, configureService);
-
-            //Desserializa o XML da resposta do Web Service em um objeto
-            ObjectForDB<Msg1RetornoListaEmbarque> retornoListaEmbarque = new ObjectForDB<Msg1RetornoListaEmbarque>();
-            Msg1RetornoListaEmbarque objectRetornoListaEmbarque = retornoListaEmbarque.deserializeXmlForDB(xmlResponse);
-
-            if (objectRetornoListaEmbarque != null)
+            Msg1ResponseExportation responseExportation1 = new ObjectForDB<Msg1ResponseExportation>().deserializeXmlForDB(xmlResponse);
+            if (responseExportation1 != null)
             {
-                AlimentaIdDadosBroker(objectRetornoListaEmbarque, consultaListaEmbarque.REQUEST.IDDadosBroker);
-                Status status = GetStatus(objectRetornoListaEmbarque, consultaListaEmbarque.REQUEST.IDBR);
-                if (objectRetornoListaEmbarque.RESPONSE.ListaEmbarque != null &&
-                    objectRetornoListaEmbarque.RESPONSE.ListaEmbarque.Embarques.Count > 0)
-                {//Recebeu os Embarques do GTE
-                    msgReturn = SaveResponseSuccess(objectRetornoListaEmbarque, status);
+                if (responseExportation1.RESPONSE != null && responseExportation1.RESPONSE.ListaEmbarque == null)
+                {// WebService retornou mensagem de Erro de estrutura do XML
+                    return SaveResponseError(xmlResponse, idBroker.ToString());
                 }
-                else if (objectRetornoListaEmbarque.RESPONSE.ListaEmbarque != null &&
-                    objectRetornoListaEmbarque.RESPONSE.ListaEmbarque.Embarques.Count == 0)
-                { // Não recebeu os Embarques do GTE, GTE retornou mensagem de erro
-                    //new UpdateResponseAtualizacaoGTE().atualizaRegistro(status, null);
-                    msgReturn = MessagesOfReturn.AlertResponseConsultaEmbarqueEmpty(consultaListaEmbarque.REQUEST.IDBR);
+
+                ConfigureStatus(responseExportation1.RESPONSE.STATUS, Option.MENSAGEM1);
+                AlimentaIdDadosBroker(responseExportation1, int.Parse(idBroker));
+                             
+                if (responseExportation1.RESPONSE.ListaEmbarque != null &&
+                    responseExportation1.RESPONSE.ListaEmbarque.Embarques.Count > 0)
+                {//Recebeu os Embarques do WebService
+                    return SaveResponseSuccess(responseExportation1);
                 }
-                else if (objectRetornoListaEmbarque.RESPONSE.ListaEmbarque == null)
-                {// GTE retornou mensagem de Erro de estrutura do XML
-                    ObjectForDB<RetornoFatalErrorGTE> objectFatalError = new ObjectForDB<RetornoFatalErrorGTE>();
-                    RetornoFatalErrorGTE retornoFatalError = objectFatalError.deserializeXmlForDB(xmlResponse);
-                    retornoFatalError.DataRetorno = ConfigureDate.ActualDate;
-                    retornoFatalError.Mensagem = Option.MENSAGEM1;
-                    //new UpdateResponseAtualizacaoGTE().atualizaRegistro(retornoFatalError.Status, null);
-                    msgReturn = string.Format("{0} {1}", MessagesOfReturn.ERROR_CONSULT_LISTA_EMBARQUE_ESTRUTURA,
-                        Environment.NewLine);
+                else if (responseExportation1.RESPONSE.ListaEmbarque != null &&
+                    responseExportation1.RESPONSE.ListaEmbarque.Embarques.Count == 0)
+                { // Não recebeu os Embarques do WebService, WebService retornou mensagem de erro
+                    return SaveResponseAlerta(responseExportation1.RESPONSE.STATUS);
                 }
                 else // Se não recebeu nenhum Embarque do GTE
-                {
-                    msgReturn = string.Format("{0} {1}", MessagesOfReturn.ALERT_RETORNO_CONSULTA_LISTA_EMBARQUE,
-                        Environment.NewLine);
-                }
+                    return MessagesOfReturn.AlertResponseEmptyByIdBroker(Message, idBroker.ToString());
             }
             else// Não recebeu nenhum Embarque ou não foi possível desserializar o Xml e não lançou nenhum exception
-            {
-                msgReturn = string.Format("{0} {1}", MessagesOfReturn.ERROR_CONSULTA_EMBARQUE_NULL,
-                    Environment.NewLine);
-            }
-
-            return msgReturn;
+                return MessagesOfReturn.AlertResponseEmptyByIdBroker(Message, idBroker.ToString());
         }
 
-        /// <summary>
-        /// Executa a troca de Mensagem como GTE e retorno o Response
-        /// </summary>
-        /// <param name="dadosConsulta">ConsultaGTE</param>
-        /// <returns>string com o response do GTE</returns>
-        private string SwapWithGTE(ConsultaGTE dadosConsulta, ConfigureService configureService)
+        public string SaveResponseSuccess(Msg1ResponseExportation retornoWebService)
         {
-            //Obtém a string xml serializada para efetuar uma requisição ao Web Service
-            XmlForGTE<ConsultaGTE> configureXml = new XmlForGTE<ConsultaGTE>();
-            string xmlRequest = configureXml.serializeXmlForGTE(dadosConsulta);
-            new SaveXMLOriginal().SaveXML(new ExportationMessageRequest(xmlRequest, "ListaEmbarque", 1,configureService));
+            foreach (Embarque embarque in retornoWebService.RESPONSE.ListaEmbarque.Embarques)
+                new EmbarqueDao().Save(embarque);
 
-            //Efetua a requisição e recebe a resposta do Web Service
-            ComunicaGTE comunicaGTE = new ComunicaGTE();
-            string xmlResponse = comunicaGTE.doRequestGTE(xmlRequest);
-            new SaveXMLOriginal().SaveXML(new ExportationMessageResponse(xmlResponse, "ListaEmbarque", 1, configureService));
+            return MessagesOfReturn.EmbarqueAtualiza(retornoWebService.RESPONSE.ListaEmbarque.Embarques.FirstOrDefault().DadosBrokerID);
+        }
 
-            return xmlResponse;
+        public string SaveResponseError(string xmlResponse, string idBroker)
+        {
+            //Desserializa o erro
+            ObjectForDB<RetornoFatalErrorGTE> objectFatalError = new ObjectForDB<RetornoFatalErrorGTE>();
+            RetornoFatalErrorGTE retornoFatalError = objectFatalError.deserializeXmlForDB(xmlResponse);
+            //Complementa com as informações de data atual e qual a Mensagem que esta sendo processada
+            ConfigureStatus(retornoFatalError.RESPONSE.STATUS, Option.MENSAGEM1);
+
+            //Salva o Status Retorno
+            SaveStatus(retornoFatalError.RESPONSE.STATUS);
+            
+            return MessagesOfReturn.ErrorStructureRequest(Message, idBroker, retornoFatalError.RESPONSE.STATUS.ERRORS);
+        }
+
+        public string SaveResponseAlerta(Status status)
+        {
+            SaveStatus(status);
+            
+            return MessagesOfReturn.AlertResponseEmptyByIdBroker(Message, status.idBroker.ToString());
         }
 
         /// <summary>
@@ -114,56 +100,15 @@ namespace BL.Command
         /// </summary>
         /// <param name="msg1">BL.ObjectMessages.Msg1RetornoListaEmbarque</param>
         /// <param name="idCabecalho">int</param>
-        private void AlimentaIdDadosBroker(Msg1RetornoListaEmbarque msg1, int idCabecalho)
+        private void AlimentaIdDadosBroker(Msg1ResponseExportation msg1, int idBroker)
         {
             foreach(Embarque cadaEmbarque in msg1.RESPONSE.ListaEmbarque.Embarques)
-            {
-                cadaEmbarque.IDDadosBroker = idCabecalho;
-            }
+                cadaEmbarque.DadosBrokerID = idBroker;
+
+            if (msg1.RESPONSE.STATUS != null)
+                msg1.RESPONSE.STATUS.idBroker = idBroker;
+
         }
 
-        /// <summary>
-        /// Obtém o Status do GTE, caso contrário cria um Status interno
-        /// </summary>
-        /// <param name="objectRetorno">Msg1RetornoListaEmbarque</param>
-        /// <returns>Status</returns>
-        private Status GetStatus(Msg1RetornoListaEmbarque objectRetorno, string cnpjBroker)
-        {
-            Status status;
-            if (objectRetorno.RESPONSE.STATUS != null)
-            {
-                status = objectRetorno.RESPONSE.STATUS;
-                status.Mensagem = Option.MENSAGEM1;
-                status.DataRetorno = ConfigureDate.ActualDate;
-            }
-            else
-            {
-                status = new Status();
-                status.CODE = MessagesOfReturn.INTERN_CODE;
-                status.DESC = MessagesOfReturn.DESC_CODE;
-                status.DataRetorno = ConfigureDate.ActualDate;
-                status.Mensagem = Option.MENSAGEM1;
-            }
-            status.CnpjBroker = cnpjBroker;
-            return status;
-        }
-        
-
-        public string SaveResponseSuccess(Msg1RetornoListaEmbarque objectRetornoListaEmbarque, Status status)
-        {
-            //UpdateDB<ListaEmbarque> salvaEmbarqueBD = new UpdateListaEmbarque();
-            //salvaEmbarqueBD.atualizaRegistro(objectRetornoListaEmbarque.RESPONSE.ListaEmbarque, null);
-            return MessagesOfReturn.EmbarqueAtualiza(status.CnpjBroker);
-        }
-
-        public string SaveResponseAlerta(Status status, string embarque)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string SaveResponseError(string xmlResponse, string embarque)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

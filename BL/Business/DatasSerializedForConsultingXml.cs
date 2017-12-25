@@ -1,20 +1,17 @@
-﻿using BL.ObjectMessages;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace BL.Business
 {
-    public class DatasSerializedForConsultingXml<T> : DatasSerializedForConsulting<T, string> where T : class
+    public class DatasSerializedForConsultingXml<T> : DatasSerializedForConsulting<T> where T : class
     {
-        public IList<string> GetDatasSerialized(DatasOfRequest<T> t)
+        public IList<string> GetDatasSerialized(IList<T> listObjectsToSerialization)
         {
-            IList<T> objectsToSerialize = t.GetListObjectForRequest();
-            IList<string> objctsSerielized = new List<string>();
+            IList<string> datasSerialized = new List<string>();
 
-            foreach (T eachObjectToSerialize in objectsToSerialize)
-            {
-                objctsSerielized.Add(new XmlForGTE<T>().serializeXmlForGTE(eachObjectToSerialize));
-            }
-            return objctsSerielized;
+            foreach (T t in listObjectsToSerialization)
+                datasSerialized.Add(new XmlForGTE<T>().serializeXmlForGTE(t));
+
+            return datasSerialized;
         }
     }
 }

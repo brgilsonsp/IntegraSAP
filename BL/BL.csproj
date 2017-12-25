@@ -73,7 +73,25 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BrokerMessageDataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Business\ComunicaGTE.cs" />
+    <Compile Include="Command\ConfigStatus.cs" />
+    <Compile Include="DAO\ADDINFO_TAB_TGTEDUEKDao.cs" />
+    <Compile Include="DAO\ADDINFO_TAB_TGTEDUEPDao.cs" />
+    <Compile Include="DAO\ADDRESS_TAB_TGTEDUEKDao.cs" />
+    <Compile Include="DAO\ATOCON_TAB_TGTEDUEPDao.cs" />
+    <Compile Include="DAO\DetalheErrorDao.cs" />
+    <Compile Include="DAO\DUEATRIB_TAB_TGTEDUEPDao.cs" />
+    <Compile Include="DAO\EmbarqueDao.cs" />
+    <Compile Include="DAO\MAKTX_TEXTDao.cs" />
+    <Compile Include="DAO\NFEREF_TAB_TGTEDUEPDao.cs" />
+    <Compile Include="DAO\SHP_TEXTDao.cs" />
+    <Compile Include="DAO\StatusDao.cs" />
+    <Compile Include="DAO\TGTEDUEKDao.cs" />
+    <Compile Include="DAO\TGTEDUEPDao.cs" />
+    <Compile Include="DAO\TGTEPRDDao.cs" />
+    <Compile Include="DAO\TGTERESDao.cs" />
+    <Compile Include="DAO\TGTESHK_NDao.cs" />
+    <Compile Include="DAO\TGTESHP_NDao.cs" />
+    <Compile Include="Infra\ComunicaGTE.cs" />
     <Compile Include="Business\ConfigureService.cs" />
     <Compile Include="Business\DatasSerializedForConsulting.cs" />
     <Compile Include="Business\DatasSerializedForConsultingXml.cs" />
@@ -84,7 +102,7 @@
     <Compile Include="Business\MakeLog.cs" />
     <Compile Include="Business\ObjectForDB.cs" />
     <Compile Include="Business\OriginalText.cs" />
-    <Compile Include="Business\SaveXMLOriginal.cs" />
+    <Compile Include="Infra\SaveXMLOriginal.cs" />
     <Compile Include="Business\XmlForGTE.cs" />
     <Compile Include="Command\Mensagem.cs" />
     <Compile Include="Command\Mensagem1.cs" />
@@ -93,24 +111,16 @@
     <Compile Include="Command\Mensagem4.cs" />
     <Compile Include="Command\Mensagem5.cs" />
     <Compile Include="Command\SaveData.cs" />
-    <Compile Include="DAO\CabecalhoDAO.cs" />
     <Compile Include="DAO\ChangeXMLContext.cs" />
-    <Compile Include="Entities\CabecalhoDadosBrokerEntity.cs" />
-    <Compile Include="Entities\CabecalhoEntity.cs" />
-    <Compile Include="Entities\DadosBroker.cs" />
-    <Compile Include="Entities\DetalheError.cs" />
-    <Compile Include="Entities\EmbarqueEntity.cs" />
-    <Compile Include="Entities\MAKTX_TEXT.cs" />
-    <Compile Include="Entities\SHPTEXT.cs" />
-    <Compile Include="Entities\StatusRetorno.cs" />
-    <Compile Include="Entities\TGTEPRD.cs" />
-    <Compile Include="Entities\TGTERES.cs" />
-    <Compile Include="Entities\TGTESHKN.cs" />
-    <Compile Include="Entities\TGTESHPN.cs" />
-    <Compile Include="Entities\TPCK.cs" />
-    <Compile Include="Entities\TXPNS.cs" />
+    <Compile Include="DAO\DadosBrokerDao.cs" />
+    <Compile Include="ObjectMessages\CabecalhoDadosBroker.cs" />
+    <Compile Include="ObjectMessages\Cabecalho.cs" />
+    <Compile Include="ObjectMessages\DadosBroker.cs" />
+    <Compile Include="ObjectMessages\DataHeaderRequest.cs" />
+    <Compile Include="ObjectMessages\DatasToRequestExportation3.cs" />
+    <Compile Include="ObjectMessages\DetalheError.cs" />
+    <Compile Include="ObjectMessages\TypeBusines.cs" />
     <Compile Include="InnerException\BaseInnerException.cs" />
-    <Compile Include="InnerException\ComunicateException.cs" />
     <Compile Include="InnerException\ConfigureObjectException.cs" />
     <Compile Include="InnerException\ConfigureXmlException.cs" />
     <Compile Include="InnerException\SelectDBException.cs" />
@@ -121,25 +131,37 @@
     <Compile Include="InnerUtil\Option.cs" />
     <Compile Include="InnerUtil\PathSaveFile.cs" />
     <Compile Include="InnerUtil\TimeClosing.cs" />
+    <Compile Include="ObjectMessages\ADDRESS_TAB_TGTEDUEK.cs" />
+    <Compile Include="ObjectMessages\ADDINFO_TAB_TGTEDUEK.cs" />
+    <Compile Include="ObjectMessages\ADDINFO_TAB_TGTEDUEP.cs" />
+    <Compile Include="ObjectMessages\ATOCON_TAB_TGTEDUEP.cs" />
     <Compile Include="ObjectMessages\ConsultaGTE.cs" />
     <Compile Include="ObjectMessages\DatasOfRequest.cs" />
+    <Compile Include="ObjectMessages\DatasToRequestExportation1.cs" />
+    <Compile Include="ObjectMessages\DatasToRequestExportation2.cs" />
+    <Compile Include="ObjectMessages\DUEATRIB_TAB_TGTEDUEP.cs" />
     <Compile Include="ObjectMessages\Embarque.cs" />
-    <Compile Include="ObjectMessages\Msg1RetornoListaEmbarque.cs" />
-    <Compile Include="ObjectMessages\Msg2RetornoDetalheEmbarque.cs" />
-    <Compile Include="ObjectMessages\Msg3AtualizaDetalheEmbarque.cs" />
-    <Compile Include="ObjectMessages\Msg4AtualizaPrestacaConta.cs" />
-    <Compile Include="ObjectMessages\Msg5RetornoConsultaPrestacaConta.cs" />
+    <Compile Include="ObjectMessages\MAKTX_TEXT.cs" />
+    <Compile Include="ObjectMessages\Msg1ResponseExportation.cs" />
+    <Compile Include="ObjectMessages\Msg2ResponseExportation.cs" />
+    <Compile Include="ObjectMessages\Msg3RequestExportation.cs" />
+    <Compile Include="ObjectMessages\Msg4RequestExportation.cs" />
+    <Compile Include="ObjectMessages\Msg5ResponseExportation.cs" />
+    <Compile Include="ObjectMessages\NFEREF_TAB_TGTEDUEP.cs" />
     <Compile Include="ObjectMessages\ObjServiceTrocaXMLConfig.cs" />
-    <Compile Include="ObjectMessages\PrestacaoContas.cs" />
+    <Compile Include="ObjectMessages\TPCK.cs" />
     <Compile Include="ObjectMessages\RetornoAtualizaGTE.cs" />
     <Compile Include="ObjectMessages\RetornoFatalErrorGTE.cs" />
-    <Compile Include="ObjectMessages\SHPTEXT.cs" />
+    <Compile Include="ObjectMessages\SHP_TEXT.cs" />
     <Compile Include="ObjectMessages\Status.cs" />
     <Compile Include="ObjectMessages\STR.cs" />
+    <Compile Include="ObjectMessages\TGTEDUEK.cs" />
+    <Compile Include="ObjectMessages\TGTEDUEP.cs" />
     <Compile Include="ObjectMessages\TGTEPRD.cs" />
     <Compile Include="ObjectMessages\TGTERES.cs" />
-    <Compile Include="ObjectMessages\TGTESHKN.cs" />
-    <Compile Include="ObjectMessages\TGTESHPN.cs" />
+    <Compile Include="ObjectMessages\TGTESHK_N.cs" />
+    <Compile Include="ObjectMessages\TGTESHP_N.cs" />
+    <Compile Include="ObjectMessages\TXPNS.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -196,6 +218,7 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

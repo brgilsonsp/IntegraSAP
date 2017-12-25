@@ -10,14 +10,14 @@ namespace BL.Business
     public class XmlForGTE<T>
     {
         /// <summary>
-        /// Serializa uma string XML com os dados do objeto enviado pelo parâmetro
+        /// Serializa uma string XML com os dados do objeto enviado pelo parâmetro. Se ocorrer algum erro ao desserializar
+        /// o objeto retorna uma string vazia
         /// </summary>
         /// <param name="t">Objeto genérico</param>
         /// <returns>string com os dados no formato XML</returns>
-        /// <exception cref="ConfigureXmlException">Lança a exception se ocorrer algum erro na serialização
-        /// ou se o objeto enviado no parâmetro for nullo.</exception>
         public string serializeXmlForGTE(T t)
         {
+            string xml = "";
             try
             {
                 if (t != null)
@@ -26,25 +26,19 @@ namespace BL.Business
                     XmlSerializerNamespaces xmlns = new XmlSerializerNamespaces();
                     xmlns.Add("", "");
                     StringBuilder stringXml = new StringBuilder();
-                    //using (TextWriter textWriter = new StringWriter(stringXml))
                     using (StringWriter textWriter = new EncodingUTF8(stringXml))
                     {
                         xmlSerialize.Serialize(textWriter, t, xmlns);
                     }
-                    return stringXml.ToString();
+                    xml = stringXml.ToString();
                 }else
-                {
-                    string message = string.Format("{0} {1}", MessagesOfReturn.ERROR_OBJECT_FOR_SERIALIZER_NULL,
-                        Environment.NewLine);
-                    throw new ConfigureXmlException(message);
-                }
+                    MakeLog.FactoryLogForError(MessagesOfReturn.ERROR_OBJECT_FOR_SERIALIZER);
             }
             catch (Exception ex)
             {
-                string msg = string.Format("{0} {1}", MessagesOfReturn.ERROR_SERIALIZA_CONSULTA.Replace("?", typeof(T).Name),
-                    Environment.NewLine);
-                throw new ConfigureXmlException(msg, ex);
+                MakeLog.FactoryLogForError(ex, MessagesOfReturn.ErrorSerializeConsulting(typeof(T).Name));
             }
+            return xml;
         }
     }
 }

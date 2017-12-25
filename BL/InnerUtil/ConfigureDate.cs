@@ -39,7 +39,7 @@ namespace BL.InnerUtil
             {
                 string formatDate = "yyyyMMdd";
                 CultureInfo cultureInfo = CultureInfo.InvariantCulture;
-                dataOk = DateTime.ParseExact(dateString, formatDate, cultureInfo);
+                dataOk = DateTime.ParseExact(dateString.Trim(), formatDate, cultureInfo);
             }
             catch (Exception)
             {

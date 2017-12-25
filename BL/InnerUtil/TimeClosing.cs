@@ -14,7 +14,7 @@ namespace BL.InnerUtil
         /// </summary>
         public static void ThreadForCloseConnectionDB()
         {
-            Thread.Sleep(TimeSpan.FromMilliseconds(10));
+            Thread.Sleep(TimeSpan.FromMilliseconds(50));
         }
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace BL.InnerUtil
         /// </summary>
         public static void ThreadForCloseConnectionWebService()
         {
-            Thread.Sleep(TimeSpan.FromMilliseconds(50));
+            Thread.Sleep(TimeSpan.FromMilliseconds(250));
         }
     }
 }
