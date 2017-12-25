@@ -50,20 +50,16 @@ namespace BL.ObjectMessages
         public int? CPNJCPFEXP { get; set; }
 
         [XmlElement("ADDINFO_TAB")]
-        [NotMapped]
-        public List<ADDINFO_TAB_TGTEDUEP> ADDINFO_TAB { get; set; }
+        public virtual List<ADDINFO_TAB_TGTEDUEP> ADDINFO_TAB { get; set; }
 
         [XmlElement("NFEREF_TAB")]
-        [NotMapped]
-        public List<NFEREF_TAB_TGTEDUEP> NFEREF_TAB { get; set; }
+        public virtual List<NFEREF_TAB_TGTEDUEP> NFEREF_TAB { get; set; }
 
         [XmlElement("ATOCON_TAB")]
-        [NotMapped]
-        public List<ATOCON_TAB_TGTEDUEP> ATOCON_TAB { get; set; }
+        public virtual List<ATOCON_TAB_TGTEDUEP> ATOCON_TAB { get; set; }
 
         [XmlElement("DUEATRIB_TAB")]
-        [NotMapped]
-        public List<DUEATRIB_TAB_TGTEDUEP> DUEATRIB_TAB { get; set; }
+        public virtual List<DUEATRIB_TAB_TGTEDUEP> DUEATRIB_TAB { get; set; }
     }
     
 }

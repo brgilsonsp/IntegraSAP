@@ -37,22 +37,22 @@ namespace BL.DAO
 
         public IList<TGTESHP_N> FindByIDEmbarque(int idEmbarque)
         {
-            return _context.TGTESHP_Ns.Where(t => t.EmbarqueID == idEmbarque).ToList();
+            return _context.TGTESHP_Ns.Include("MAKTX_TEXT").Where(t => t.EmbarqueID == idEmbarque).ToList();
         }
 
         public TGTESHP_N FindById(int id)
         {
-            return _context.TGTESHP_Ns.FirstOrDefault(t => t.ID == id);
+            return _context.TGTESHP_Ns.Include("MAKTX_TEXT").FirstOrDefault(t => t.ID == id);
         }
 
         public IList<TGTESHP_N> FindByIDEmbarqueAsNoTracking(int idEmbarque)
         {
-            return _context.TGTESHP_Ns.AsNoTracking().Where(t => t.EmbarqueID == idEmbarque).ToList();
+            return _context.TGTESHP_Ns.Include("MAKTX_TEXT").AsNoTracking().Where(t => t.EmbarqueID == idEmbarque).ToList();
         }
 
         public TGTESHP_N FindByIdAsNoTracking(int id)
         {
-            return _context.TGTESHP_Ns.AsNoTracking().FirstOrDefault(t => t.ID == id);
+            return _context.TGTESHP_Ns.Include("MAKTX_TEXT").AsNoTracking().FirstOrDefault(t => t.ID == id);
         }
 
         public void Update()

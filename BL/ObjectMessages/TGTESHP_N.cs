@@ -66,9 +66,10 @@ namespace BL.ObjectMessages
 
         public string MAKTX { get; set; }
 
+
+        //[NotMapped]
         [XmlElement("MAKTX_TEXT")]
-        [NotMapped]
-        public List<MAKTX_TEXT> MAKTX_TEXT { get; set; }
+        public virtual List<MAKTX_TEXT> MAKTX_TEXT { get; set; }
 
         public decimal QTDITM { get; set; }
 

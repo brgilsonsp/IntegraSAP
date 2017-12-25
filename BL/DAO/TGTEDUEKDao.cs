@@ -42,22 +42,22 @@ namespace BL.DAO
 
         public IList<TGTEDUEK> FindByIdEmbarque(int idEmbarque)
         {
-            return _context.TGTEDUEKs.Where(t => t.EmbarqueID == idEmbarque).ToList();
+            return _context.TGTEDUEKs.Include("ADDRESS_TAB").Include("ADDINFO_TAB").Where(t => t.EmbarqueID == idEmbarque).ToList();
         }
 
         public IList<TGTEDUEK> FindById(int id)
         {
-            return _context.TGTEDUEKs.Where(t => t.ID == id).ToList();
+            return _context.TGTEDUEKs.Include("ADDRESS_TAB").Include("ADDINFO_TAB").Where(t => t.ID == id).ToList();
         }
 
         public IList<TGTEDUEK> FindByIdEmbarqueAsNoTracking(int idEmbarque)
         {
-            return _context.TGTEDUEKs.AsNoTracking().Where(t => t.EmbarqueID == idEmbarque).ToList();
+            return _context.TGTEDUEKs.Include("ADDRESS_TAB").Include("ADDINFO_TAB").AsNoTracking().Where(t => t.EmbarqueID == idEmbarque).ToList();
         }
 
         public IList<TGTEDUEK> FindByIdAsNoTracking(int id)
         {
-            return _context.TGTEDUEKs.AsNoTracking().Where(t => t.ID == id).ToList();
+            return _context.TGTEDUEKs.Include("ADDRESS_TAB").Include("ADDINFO_TAB").AsNoTracking().Where(t => t.ID == id).ToList();
         }
     }
 }

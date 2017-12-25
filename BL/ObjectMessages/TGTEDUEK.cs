@@ -40,11 +40,9 @@ namespace BL.ObjectMessages
         public string INCO1 { get; set; }
 
         [XmlElement("ADDRESS_TAB")]
-        [NotMapped]
-        public List<ADDRESS_TAB_TGTEDUEK> ADDRESS_TAB { get; set; }
+        public virtual List<ADDRESS_TAB_TGTEDUEK> ADDRESS_TAB { get; set; }
 
         [XmlElement("ADDINFO_TAB")]
-        [NotMapped]
-        public List<ADDINFO_TAB_TGTEDUEK> ADDINFO_TAB { get; set; }
+        public virtual List<ADDINFO_TAB_TGTEDUEK> ADDINFO_TAB { get; set; }
     }   
 }

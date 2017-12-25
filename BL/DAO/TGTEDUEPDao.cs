@@ -42,7 +42,8 @@ namespace BL.DAO
 
         public IList<TGTEDUEP> FindByIdEmbarque(int idEmbarque)
         {
-            return _context.TGTEDUEPs.Where(t => t.EmbarqueID == idEmbarque).ToList();
+            return _context.TGTEDUEPs.Include("ADDINFO_TAB").Include("NFEREF_TAB").Include("ATOCON_TAB").Include("DUEATRIB_TAB")
+                .Where(t => t.EmbarqueID == idEmbarque).ToList();
         }
 
         public IList<TGTEDUEP> FindById(int id)

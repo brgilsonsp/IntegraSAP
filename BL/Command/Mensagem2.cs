@@ -136,27 +136,13 @@ namespace BL.Command
         private void SaveTGTESHP_N(Msg2ResponseExportation retornoWebService, Embarque embarque)
         {
             TGTESHP_NDao tGTESHP_NDao = new TGTESHP_NDao();
-            MAKTX_TEXTDao maktDao = new MAKTX_TEXTDao();
 
             retornoWebService.RESPONSE.TGTESHP_N.ForEach(t => t.Embarque = embarque);
             IList<TGTESHP_N> listTGTESHP_N = tGTESHP_NDao.FindByIDEmbarque(embarque.ID);
-            foreach (TGTESHP_N tgteshp_n in listTGTESHP_N)
-            {
-                IList<MAKTX_TEXT> listMaktx_text = maktDao.FindByIdTGTESHPN(tgteshp_n.ID);
-                if(listMaktx_text.Count > 0)
-                    maktDao.RemoveAll(listMaktx_text);
-                  
-                tGTESHP_NDao.Remove(tgteshp_n);
-            }
+            if(listTGTESHP_N.Count > 0)
+                tGTESHP_NDao.RemoveAll(listTGTESHP_N);
 
             tGTESHP_NDao.SaveAll(retornoWebService.RESPONSE.TGTESHP_N);
-            
-            foreach (TGTESHP_N tgteshpn in retornoWebService.RESPONSE.TGTESHP_N)
-            {
-                //Em cada MAKTX_TEXT insiro o TGTESHP_N correspondente
-                tgteshpn.MAKTX_TEXT.ForEach(m => m.TGTESHPN = tgteshpn);
-                maktDao.SaveAll(tgteshpn.MAKTX_TEXT);
-            }
         }
 
         private void SaveTGTERES(Msg2ResponseExportation retornoWebService, Embarque embarque)
@@ -195,85 +181,23 @@ namespace BL.Command
         private void SaveTGTEDUEK(Msg2ResponseExportation retornoWebService, Embarque embarque)
         {
             retornoWebService.RESPONSE.TGTEDUEK.ForEach(t => t.Embarque = embarque);
-            TGTEDUEKDao daoTgteduek = new TGTEDUEKDao();
-            ADDINFO_TAB_TGTEDUEKDao daoAddInfo = new ADDINFO_TAB_TGTEDUEKDao();
-            ADDRESS_TAB_TGTEDUEKDao daoAddress = new ADDRESS_TAB_TGTEDUEKDao();            
+            TGTEDUEKDao daoTgteduek = new TGTEDUEKDao();           
             IList<TGTEDUEK> listTgteduek = daoTgteduek.FindByIdEmbarque(embarque.ID);
-            foreach(TGTEDUEK tgteduek in listTgteduek)
-            {
-                IList<ADDINFO_TAB_TGTEDUEK> listAddInfo =  daoAddInfo.FindByIdTGTEDUEK(tgteduek.ID);
-                if (listAddInfo.Count > 0)
-                    daoAddInfo.RemoveAll(listAddInfo);
-
-                IList<ADDRESS_TAB_TGTEDUEK> listAddress =  daoAddress.FindByIdTGTEDUEK(tgteduek.ID);
-                if (listAddress.Count > 0)
-                    daoAddress.RemoveAll(listAddress);
-
-                daoTgteduek.Remove(tgteduek);
-            }
+            if (listTgteduek.Count > 0)
+                daoTgteduek.RemoveAll(listTgteduek);
 
             daoTgteduek.SaveAll(retornoWebService.RESPONSE.TGTEDUEK);
-            foreach (TGTEDUEK tgteduek in retornoWebService.RESPONSE.TGTEDUEK)
-            {
-                //Inserir na RESPONSE/TGTEDUEK/ADDINFO_TAB o RESPONSE/TGTEDUEK
-                tgteduek.ADDINFO_TAB.ForEach(a => a.TGTEDUEK = tgteduek);
-                daoAddInfo.SaveAll(tgteduek.ADDINFO_TAB);
-
-                //Inserir na RESPONSE/TGTEDUEK/ADDRESS_TAB o RESPONSE/TGTEDUEK
-                tgteduek.ADDRESS_TAB.ForEach(a => a.TGTEDUEK = tgteduek);
-                daoAddress.SaveAll(tgteduek.ADDRESS_TAB);
-            }
         }
 
         private void SaveTGTEDUEP(Msg2ResponseExportation retornoWebService, Embarque embarque)
         {
             retornoWebService.RESPONSE.TGTEDUEP.ForEach(t => t.Embarque = embarque);
             TGTEDUEPDao daoTgteduep = new TGTEDUEPDao();
-            ADDINFO_TAB_TGTEDUEPDao daoAddInfo = new ADDINFO_TAB_TGTEDUEPDao();
-            NFEREF_TAB_TGTEDUEPDao daoNfeRef = new NFEREF_TAB_TGTEDUEPDao();
-            ATOCON_TAB_TGTEDUEPDao daoAtocon = new ATOCON_TAB_TGTEDUEPDao();
-            DUEATRIB_TAB_TGTEDUEPDao daoDueatrib = new DUEATRIB_TAB_TGTEDUEPDao();
             IList<TGTEDUEP> listTgtedupe = daoTgteduep.FindByIdEmbarque(embarque.ID);
-            foreach (TGTEDUEP tgteduep in listTgtedupe)
-            {
-                IList<ADDINFO_TAB_TGTEDUEP> listAddInfo = daoAddInfo.FindByIdTGTEDUEP(tgteduep.ID);
-                if (listAddInfo.Count > 0)
-                    daoAddInfo.RemoveAll(listAddInfo);
-
-                IList<NFEREF_TAB_TGTEDUEP> listNfeRef = daoNfeRef.FindByIdTGTEDUEP(tgteduep.ID);
-                if (listNfeRef.Count > 0)
-                    daoNfeRef.RemoveAll(listNfeRef);
-
-                IList<ATOCON_TAB_TGTEDUEP> listAtocon = daoAtocon.FindByIdTGTEDUEP(tgteduep.ID);
-                if (listAtocon.Count > 0)
-                    daoAtocon.RemoveAll(listAtocon);
-
-                IList<DUEATRIB_TAB_TGTEDUEP> listDueatrib =  daoDueatrib.FindByIdTGTEDUEP(tgteduep.ID);
-                if (listDueatrib.Count > 0)
-                    daoDueatrib.RemoveAll(listDueatrib);
-
-                daoTgteduep.Remove(tgteduep);
-            }
+            if (listTgtedupe.Count > 0)
+                daoTgteduep.RemoveAll(listTgtedupe);
 
             daoTgteduep.SaveAll(retornoWebService.RESPONSE.TGTEDUEP);
-            foreach (TGTEDUEP tgteduep in retornoWebService.RESPONSE.TGTEDUEP)
-            {
-                //Inserir na RESPONSE/TGTEDUEP/ADDINFO_TAB o RESPONSE/TGTEDUEP
-                tgteduep.ADDINFO_TAB.ForEach(a => a.TGTEDUEP = tgteduep);
-                daoAddInfo.SaveAll(tgteduep.ADDINFO_TAB);
-
-                //Inserir na RESPONSE/TGTEDUEP/NFEREF_TAB o RESPONSE/TGTEDUEP
-                tgteduep.NFEREF_TAB.ForEach(n => n.TGTEDUEP = tgteduep);
-                daoNfeRef.SaveAll(tgteduep.NFEREF_TAB);
-
-                //Inserir na RESPONSE/TGTEDUEP/ATOCON_TAB o RESPONSE/TGTEDUEP
-                tgteduep.ATOCON_TAB.ForEach(a => a.TGTEDUEP = tgteduep);
-                daoAtocon.SaveAll(tgteduep.ATOCON_TAB);
-
-                //Inserir na RESPONSE/TGTEDUEP/DUEATRIB_TAB o RESPONSE/TGTEDUEP
-                tgteduep.DUEATRIB_TAB.ForEach(d => d.TGTEDUEP = tgteduep);
-                daoDueatrib.SaveAll(tgteduep.DUEATRIB_TAB);
-            }
         }
     }
 }

@@ -17,22 +17,32 @@ namespace BL.ObjectMessages
             IDictionary<string, string> dictonaryForConsulting = new Dictionary<string, string>();
             IList<Embarque> listEmbarque = new EmbarqueDao().FindAtualizaDetalheEnbaleAsNoTracking();
 
-            foreach (Embarque embarqueEntity in listEmbarque)
+            foreach (Embarque embarque in listEmbarque)
             {
-                if (embarqueEntity != null && embarqueEntity.ConsultaDetalhe == true)
+                if (embarque != null && embarque.ConsultaDetalhe == true)
                 {
-                    DadosBroker dadosBroker = new DadosBrokerDao().FindByIdAsNoTracking(embarqueEntity.DadosBrokerID);
-                    Cabecalho cabecalho = dadosBroker.DadosBrokerCabecalho.FirstOrDefault(cab => cab.Cabecalho.Mensagem == Option.MENSAGEM2).Cabecalho;
-                    if (cabecalho.Mensagem == Option.MENSAGEM2)
+                    DadosBroker dadosBroker = new DadosBrokerDao().FindByIdAsNoTracking(embarque.DadosBrokerID);
+                    Cabecalho cabecalho = dadosBroker.DadosBrokerCabecalho.FirstOrDefault(cab => cab.Cabecalho.Mensagem == Option.MENSAGEM3).Cabecalho;
+                    if (cabecalho.Mensagem == Option.MENSAGEM3)
                     {
-                        ConsultaGTE consulta = new ConsultaGTE(new DataHeaderRequest(cabecalho, dadosBroker), embarqueEntity);
-                        string xml = new XmlForGTE<ConsultaGTE>().serializeXmlForGTE(consulta);
-                        dictonaryForConsulting.Add(embarqueEntity.SBELN, xml);
+                        //ConsultaGTE consulta = new ConsultaGTE(new DataHeaderRequest(cabecalho, dadosBroker), embarque);
+                        Msg3RequestExportation consulta = GetObject(embarque, cabecalho, dadosBroker);
+                        string xml = new XmlForGTE<Msg3RequestExportation>().serializeXmlForGTE(consulta);
+                        dictonaryForConsulting.Add(embarque.SBELN, xml);
                     }
                 }
             }
 
             return dictonaryForConsulting;
+        }
+
+        private Msg3RequestExportation GetObject(Embarque embarque, Cabecalho cabecalho, DadosBroker broker)
+        {
+            Msg3RequestExportation request3 = new Msg3RequestExportation();
+            request3.EDX = cabecalho.MensagemEDX;
+            request3.REQUEST = new RequesExportationtMsg3();
+
+            return request3;
         }
     }
 }
