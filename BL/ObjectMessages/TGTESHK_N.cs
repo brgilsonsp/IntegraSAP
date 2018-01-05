@@ -5,8 +5,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BL.ObjectMessages
 {
+    
     public class TGTESHK_N
     {
+
+        public TGTESHK_N() {   }
+
+        public TGTESHK_N(TGTESHK_N obj)
+        {
+            this.Type = obj.Type;
+        }
 
         #region XmlIgnore
 

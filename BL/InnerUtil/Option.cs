@@ -14,6 +14,9 @@ namespace BL.InnerUtil
         public const Byte MENSAGEM4 = 4;
         public const Byte MENSAGEM5 = 5;
 
+        public const string EXPORTACAO = "EXPORTACAO";
+        public const string IMPORTACAO = "IMPORTACAO";
+
         public const int ID_EMPTY = -1;
 
         public const string PCTYP_AD = "AD";

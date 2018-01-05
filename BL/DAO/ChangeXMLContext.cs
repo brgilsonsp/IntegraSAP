@@ -1,5 +1,4 @@
 ﻿using BL.ObjectMessages;
-using BL.ObjectMessages;
 using System.Configuration;
 using System.Data.Entity;
 
@@ -7,6 +6,7 @@ namespace BL.DAO
 {
     public class ChangeXMLContext : DbContext
     {
+
         #region Entidades Mapeadas
         public DbSet<Cabecalho> Cabecalhos { get; set; }
 
@@ -67,7 +67,9 @@ namespace BL.DAO
 
             if(_context == null)
                 _context = new ChangeXMLContext(stringConnection);
-                
+
+            _context.Configuration.LazyLoadingEnabled = false;
+            _context.Configuration.ProxyCreationEnabled = false;
             return _context;
         }
 

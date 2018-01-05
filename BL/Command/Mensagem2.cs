@@ -4,6 +4,7 @@ using BL.InnerUtil;
 using BL.ObjectMessages;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace BL.Command
@@ -22,17 +23,31 @@ namespace BL.Command
             {
                 foreach (string sbeln in objectsToRequest.Keys)
                 {
+                    
+                    Debug.WriteLine("");
                     string xmlRequest = objectsToRequest[sbeln];
+
+                    var salvaXml = new Stopwatch();
+                    salvaXml.Start();
                     ////salva o xml da request
                     SaveXMLOriginal.SaveXML(new ExportationMessageRequest(xmlRequest, "", Option.MENSAGEM2));
 
                     //Efetua o request ao WebService enviando o XML serializado
                     string xmlResponse = ComunicaGTE.doRequestWebService(xmlRequest, Message);
+                    salvaXml.Stop();
+                    Debug.WriteLine($"XML: {salvaXml.Elapsed} s");
+
+
+                    var salvaDB = new Stopwatch();
+                    salvaDB.Start();
                     //salva o xml response
                     SaveXMLOriginal.SaveXML(new ExportationMessageResponse(xmlResponse, "", Option.MENSAGEM2));
+                    salvaDB.Stop();
+                    Debug.WriteLine($"BD: {salvaDB.Elapsed} s");
 
                     //salva o response no banco de dados
                     messageReturn += SaveResponseDataBase(xmlResponse, sbeln);
+
                 }
             }
             else
@@ -65,7 +80,8 @@ namespace BL.Command
                         msgReturn = SaveResponseError(xmlResponse, sbeln);
                     }
                     AlterEmbarqueConsulted(sbeln);
-                }catch(Exception e)
+                }
+                catch (Exception e)
                 {
                     msgReturn = MessagesOfReturn.ErrorSaveDetalheEmbarqueDB(sbeln);
                     MakeLog.FactoryLogForError(e, msgReturn);

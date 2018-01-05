@@ -19,8 +19,7 @@ namespace BL.ObjectMessages
             this.EDX = dadosMessage1.Cabecalho.MensagemEDX;
             REQUEST = new RequestConsultaGTE(dadosMessage1);
         }
-
-        //public ConsultaGTE(DataHeaderRequest dadosMessage1, EmbarqueEntity embarque)
+        
         public ConsultaGTE(DataHeaderRequest dadosMessage1, Embarque embarque)
         {
             this.EDX = dadosMessage1.Cabecalho.MensagemEDX;

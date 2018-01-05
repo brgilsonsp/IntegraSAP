@@ -1,16 +1,48 @@
-﻿using BL.ObjectMessages;
+﻿using BL.Business;
+using BL.InnerUtil;
+using BL.ObjectMessages;
 using System;
+using System.Collections.Generic;
 
 namespace BL.Command
 {
-    class Mensagem3 : Mensagem, SaveData<RetornoAtualizaGTE, Embarque>
+    class Mensagem3 : ConfigStatus, Mensagem, SaveData<RetornoAtualizaGTE, Embarque>
     {
-        public string Message
+        public string Message { get { return MessagesOfReturn.ProcessExportation(Option.MENSAGEM3); } }
+
+        public string SwapXmlWithGTE()
         {
-            get
+            string messageReturn = "";
+            //Obtem do servidor os dados para requisição
+            IDictionary<string, string> objectsToRequest = new DatasToRequestExportation3().GetDatasToRequest();
+            if (objectsToRequest.Count > 0)
             {
-                throw new NotImplementedException();
+                //foreach (string sbeln in objectsToRequest.Keys)
+                //{
+                //    string xmlRequest = objectsToRequest[sbeln];
+                //    ////salva o xml da request
+                //    SaveXMLOriginal.SaveXML(new ExportationMessageRequest(xmlRequest, "", Option.MENSAGEM3));
+
+                //    //Efetua o request ao WebService enviando o XML serializado
+                //    string xmlResponse = ComunicaGTE.doRequestWebService(xmlRequest, Message);
+                //    //salva o xml response
+                //    //SaveXMLOriginal.SaveXML(new ExportationMessageResponse(xmlResponse, "", Option.MENSAGEM3));
+
+                //    //salva o response no banco de dados
+                //    messageReturn += SaveResponseDataBase(xmlResponse, sbeln);
+                //}
             }
+            else
+                messageReturn = MessagesOfReturn.AlertRequestMessage2ExportationEmpty;
+
+            return messageReturn;
+        }
+
+        private string SaveResponseDataBase(string xmlResponse, string sbeln)
+        {
+            string msgReturn = "";
+            
+            return msgReturn;
         }
 
         public string SaveResponseAlerta(Status status)
@@ -185,9 +217,6 @@ namespace BL.Command
         //    status.Mensagem = Option.MENSAGEM3;
         //    return new UpdateResponseAtualizacaoGTE().atualizaRegistro(status, embarque);
         //}
-        public string SwapXmlWithGTE()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

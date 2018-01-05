@@ -79,7 +79,8 @@ namespace BL.ObjectMessages
         #endregion
 
 
-        [XmlAttribute][Column("TypePCK")]
+        [XmlAttribute]
+        [Column("TypePCK")]
         public string Type;
 
         [XmlElement(Order = 1)]

@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BL.DAO;
-using BL.ObjectMessages;
 
 namespace BL.Command
 {

@@ -35,7 +35,7 @@ namespace BL.DAO
             _context.SaveChanges();
         }
 
-        public IList<TGTESHP_N> FindByIDEmbarque(int idEmbarque)
+        public List<TGTESHP_N> FindByIDEmbarque(int idEmbarque)
         {
             return _context.TGTESHP_Ns.Include("MAKTX_TEXT").Where(t => t.EmbarqueID == idEmbarque).ToList();
         }
@@ -45,7 +45,7 @@ namespace BL.DAO
             return _context.TGTESHP_Ns.Include("MAKTX_TEXT").FirstOrDefault(t => t.ID == id);
         }
 
-        public IList<TGTESHP_N> FindByIDEmbarqueAsNoTracking(int idEmbarque)
+        public List<TGTESHP_N> FindByIDEmbarqueAsNoTracking(int idEmbarque)
         {
             return _context.TGTESHP_Ns.Include("MAKTX_TEXT").AsNoTracking().Where(t => t.EmbarqueID == idEmbarque).ToList();
         }

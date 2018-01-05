@@ -40,5 +40,12 @@ namespace BL.Business
             }
             return xml;
         }
+
+        private void Serializer_UnreferencedObject (object sender, UnreferencedObjectEventArgs e)
+        {
+            Console.WriteLine("UnreferencedObject:");
+            Console.WriteLine("ID: " + e.UnreferencedId);
+            Console.WriteLine("UnreferencedObject: " + e.UnreferencedObject);
+        }
     }
 }

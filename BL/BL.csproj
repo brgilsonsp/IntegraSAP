@@ -113,6 +113,7 @@
     <Compile Include="Command\SaveData.cs" />
     <Compile Include="DAO\ChangeXMLContext.cs" />
     <Compile Include="DAO\DadosBrokerDao.cs" />
+    <Compile Include="InnerUtil\ConverterValue.cs" />
     <Compile Include="ObjectMessages\CabecalhoDadosBroker.cs" />
     <Compile Include="ObjectMessages\Cabecalho.cs" />
     <Compile Include="ObjectMessages\DadosBroker.cs" />

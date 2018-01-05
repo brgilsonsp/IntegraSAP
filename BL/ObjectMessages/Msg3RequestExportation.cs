@@ -11,44 +11,46 @@ namespace BL.ObjectMessages
     public class Msg3RequestExportation
     {
         [XmlAttribute]
-        public string EDX;
+        public string EDX { get; set; }
 
-        public RequesExportationtMsg3 REQUEST;
+        public RequesExportationtMsg3 REQUEST { get; set; }
     }
 
+    //[XmlInclude(typeof(TGTESHK_N)), XmlInclude(typeof(TGTESHP_N))]
     public class RequesExportationtMsg3
     {
         [XmlAttribute]
-        public string Type;
+        public string Type { get; set; }
 
-        public string ACAO;
+        public string ACAO { get; set; }
 
-        public string IDBR;
+        public string IDBR { get; set; }
 
-        public string IDCL;
+        public string IDCL { get; set; }
 
-        public string SHKEY;
+        public string SHKEY { get; set; }
 
-        public STR STR;
+        public STR STR { get; set; }
 
-        public TGTESHK_N TGTESHK_N;
+        [XmlElement("TGTESHK_N ")]
+        public TGTESHK_N TGTESHK_N { get; set; }
 
         [XmlElement("TGTESHP_N")]
-        public List<TGTESHP_N> TGTESHP_N;
+        public List<TGTESHP_N> TGTESHP_N { get; set; }
 
         [XmlElement("TGTERES")]
-        public List<TGTERES> TGTERES;
+        public List<TGTERES> TGTERES { get; set; }
 
         [XmlElement("TGTEPRD")]
-        public List<TGTEPRD> TGTEPRD;
+        public List<TGTEPRD> TGTEPRD { get; set; }
 
         [XmlElement("SHP_TEXT")]
-        public List<SHP_TEXT> SHP_TEXT;
+        public List<SHP_TEXT> SHP_TEXT { get; set; }
 
         [XmlElement("TGTEDUEK")]
-        public List<TGTEDUEK> TGTEDUEK;
+        public List<TGTEDUEK> TGTEDUEK { get; set; }
 
         [XmlElement("TGTEDUEP")]
-        public List<TGTEDUEP> TGTEDUEP;
+        public List<TGTEDUEP> TGTEDUEP { get; set; }
     }
 }

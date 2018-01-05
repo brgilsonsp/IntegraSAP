@@ -37,6 +37,8 @@ namespace BL.ObjectMessages
 
         public string HOUSE_NUM2 { get; set; }
 
+        [XmlElement(IsNullable = true)]
+        [XmlText(typeof(string))]
         [Column("POST_CODE1")]
         public string POSTE_CODE1 { get; set; }
 

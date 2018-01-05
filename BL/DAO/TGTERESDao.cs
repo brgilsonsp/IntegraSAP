@@ -40,22 +40,22 @@ namespace BL.DAO
             _context.SaveChanges();
         }
 
-        public IList<TGTERES> FindByIdEmbarque(int idEmbarque)
+        public List<TGTERES> FindByIdEmbarque(int idEmbarque)
         {
             return _context.TGTERESs.Where(t => t.EmbarqueID == idEmbarque).ToList();
         }
 
-        public IList<TGTERES> FindById(int id)
+        public List<TGTERES> FindById(int id)
         {
             return _context.TGTERESs.Where(t => t.ID == id).ToList();
         }
 
-        public IList<TGTERES> FindByIdEmbarqueAsNoTracking(int idEmbarque)
+        public List<TGTERES> FindByIdEmbarqueAsNoTracking(int idEmbarque)
         {
             return _context.TGTERESs.AsNoTracking().Where(t => t.EmbarqueID == idEmbarque).ToList();
         }
 
-        public IList<TGTERES> FindByIdAsNoTracking(int id)
+        public List<TGTERES> FindByIdAsNoTracking(int id)
         {
             return _context.TGTERESs.AsNoTracking().Where(t => t.ID == id).ToList();
         }

@@ -40,7 +40,7 @@ namespace BL.DAO
             _context.SaveChanges();
         }
 
-        public IList<TGTESHK_N> FindByIdEmbarque(int indEmbarque)
+        public List<TGTESHK_N> FindByIdEmbarque(int indEmbarque)
         {
             return _context.TGTESHK_Ns.Where(t => t.EmbarqueID == indEmbarque).ToList();
         }
@@ -50,7 +50,7 @@ namespace BL.DAO
             return _context.TGTESHK_Ns.FirstOrDefault(t => t.ID == id);
         }
         
-        public IList<TGTESHK_N> FindByIdEmbarqueAsNoTracking(int indEmbarque)
+        public List<TGTESHK_N> FindByIdEmbarqueAsNoTracking(int indEmbarque)
         {
             return _context.TGTESHK_Ns.AsNoTracking().Where(t => t.EmbarqueID == indEmbarque).ToList();
         }

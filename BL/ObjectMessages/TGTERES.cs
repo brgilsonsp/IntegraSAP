@@ -36,7 +36,6 @@ namespace BL.ObjectMessages
         /// na propriedade string DDEADT. Se o valor da propriedade DDEADT
         /// for vazio ou nulo, retorna null
         /// </summary>
-        [XmlElement(IsNullable = false)]
         [XmlIgnore]
         [Column("DDEADT")]
         public DateTime? DDEADT_DateTime
@@ -57,7 +56,6 @@ namespace BL.ObjectMessages
         /// na propriedade string DDEDT. Se o valor da propriedade DDEDT
         /// for vazio ou nulo, retorna null
         /// </summary>
-        [XmlElement(IsNullable = false)]
         [XmlIgnore]
         [Column("DDEDT")]
         public DateTime? DDEDT_DateTime
@@ -78,7 +76,6 @@ namespace BL.ObjectMessages
         /// na propriedade string AVBDT. Se o valor da propriedade AVBDT
         /// for vazio ou nulo, retorna null
         /// </summary>
-        [XmlElement(IsNullable = false)]
         [XmlIgnore]
         [Column("AVBDT")]
         public DateTime? AVBDT_DateTime
@@ -99,7 +96,6 @@ namespace BL.ObjectMessages
         /// na propriedade string REDAT. Se o valor da propriedade REDAT
         /// for vazio ou nulo, retorna null
         /// </summary>
-        [XmlElement(IsNullable = false)]
         [XmlIgnore]
         [Column("REDAT")]
         public DateTime? REDAT_DateTime
@@ -120,7 +116,6 @@ namespace BL.ObjectMessages
         /// na propriedade string ANDAT. Se o valor da propriedade ANDAT
         /// for vazio ou nulo, retorna null
         /// </summary>
-        [XmlElement(IsNullable = false)]
         [XmlIgnore]
         [Column("ANDAT")]
         public DateTime? ANDAT_DateTime

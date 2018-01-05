@@ -21,7 +21,7 @@ namespace BL.ObjectMessages
             {
                 foreach (CabecalhoDadosBroker cabecalho in cadaDadosBroker.DadosBrokerCabecalho)
                 {
-                    if (cabecalho.Cabecalho.Mensagem == Option.MENSAGEM1)
+                    if (cabecalho.Cabecalho.Mensagem == Option.MENSAGEM1 && cabecalho.Cabecalho.Tipo == Option.EXPORTACAO)
                     {
                         ConsultaGTE consulta = new ConsultaGTE(new DataHeaderRequest(cabecalho.Cabecalho, cadaDadosBroker));
                         string xml = new XmlForGTE<ConsultaGTE>().serializeXmlForGTE(consulta);

@@ -14,6 +14,8 @@ namespace BL.ObjectMessages
 
         public byte Mensagem { get; set; }
 
+        public string Tipo { get; set; }
+
         public virtual IList<CabecalhoDadosBroker> CabecalhoDadosBroker { get; set; }
     }
 }

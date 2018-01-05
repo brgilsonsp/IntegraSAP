@@ -40,22 +40,22 @@ namespace BL.DAO
             _context.SaveChanges();
         }
 
-        public IList<SHP_TEXT> FindByIdEmbarque(int idEmbarque)
+        public List<SHP_TEXT> FindByIdEmbarque(int idEmbarque)
         {
             return _context.SHPTEXTs.Where(s => s.EmbarqueID == idEmbarque).ToList();
         }
 
-        public IList<SHP_TEXT> FindById(int id)
+        public List<SHP_TEXT> FindById(int id)
         {
             return _context.SHPTEXTs.Where(s => s.ID == id).ToList();
         }
 
-        public IList<SHP_TEXT> FindByIdEmbarqueAsNoTracking(int idEmbarque)
+        public List<SHP_TEXT> FindByIdEmbarqueAsNoTracking(int idEmbarque)
         {
             return _context.SHPTEXTs.AsNoTracking().Where(s => s.EmbarqueID == idEmbarque).ToList();
         }
 
-        public IList<SHP_TEXT> FindByIdAsNoTracking(int id)
+        public List<SHP_TEXT> FindByIdAsNoTracking(int id)
         {
             return _context.SHPTEXTs.AsNoTracking().Where(s => s.ID == id).ToList();
         }

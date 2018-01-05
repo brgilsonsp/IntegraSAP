@@ -29,6 +29,7 @@ namespace BL.ObjectMessages
         public string DUEID { get; set; }
         public string XLOCEMBARQ { get; set; }
         public string XLOCDESPACHO { get; set; }
+
         public int? CDRAD { get; set; }
         public int? EMRAD { get; set; }
         public decimal? LATITUDE { get; set; }
