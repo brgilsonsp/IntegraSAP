@@ -13,31 +13,22 @@ namespace BL.Business
         /// </summary>
         /// <param name="xml">string com os dados XML</param>
         /// <returns>Um ojeto tipo T desserializado</returns>
-        /// <exception cref="Exception">Lança a exceção se ocorrer algum erro ao desserializar a string Xml</exception>
         /// <exception cref="ConfigureXmlException">Lança a exceção se a string enviado no parâmetro for nula,
         /// vazia ou em branco.</exception>
         public T deserializeXmlForDB(string xml)
         {
-            try
+            if (!string.IsNullOrEmpty(xml) || !string.IsNullOrWhiteSpace(xml))
             {
-                if (!string.IsNullOrEmpty(xml) || !string.IsNullOrWhiteSpace(xml))
+                XmlSerializer xmlSer = new XmlSerializer(typeof(T));
+                T objectRetun;
+                using (TextReader fileXml = new StringReader(xml))
                 {
-                    XmlSerializer xmlSer = new XmlSerializer(typeof(T));
-                    T objectRetun;
-                    using (TextReader fileXml = new StringReader(xml))
-                    {
-                        objectRetun = (T)xmlSer.Deserialize(fileXml);
-                    }
-                    return objectRetun;
+                    objectRetun = (T)xmlSer.Deserialize(fileXml);
                 }
-                else
-                    MakeLog.FactoryLogForError(MessagesOfReturn.ALERT_XML_FOR_DB_NULL);
+                return objectRetun;
             }
-            catch (Exception ex)
-            {
-                throw new ConfigureXmlException(MessagesOfReturn.ErrorDeserializeResponse(typeof(T).Name), ex);
-            }
-            return default(T);
+            else
+                throw new ConfigureXmlException(MessagesOfReturn.ALERT_XML_FOR_DB_NULL);
         }
     }
 }

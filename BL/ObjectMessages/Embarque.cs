@@ -1,44 +1,27 @@
 ﻿using System;
 using System.Xml.Serialization;
 using BL.InnerUtil;
-using BL.ObjectMessages;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BL.ObjectMessages
 {
     public class Embarque
     {
-        #region XmlIgnore
-        [XmlIgnore]
-        private DateTime? _LASTUP_Date;
-        [XmlIgnore]
-        private bool _consultaDetalhe;
-        [XmlIgnore]
-        private bool _atualizaDetalhe;
-        [XmlIgnore]
-        private bool _enviaPrestConta;
-        [XmlIgnore]
-        private bool _consultaPrestConta;
-
+        #region only DB
+        
         [XmlIgnore]
         public int ID { get; set; }
 
-        [Column("IdDadosBroker")][XmlIgnore]
+        [Column("IdDadosBroker")]
+        [XmlIgnore]
         public int DadosBrokerID { get; set; }
 
         [XmlIgnore]
         public virtual DadosBroker DadosBroker { get; set; }
 
-        [XmlElement(IsNullable = false)][Column("LASTUP")][XmlIgnore]
-        public DateTime? LASTUP_Date
-        {
-            get
-            {
-                if (_LASTUP_Date == null) return ConfigureDate.convertDateStringForDateTime(LASTUP);
-                else return _LASTUP_Date;
-            }
-            set { _LASTUP_Date = value; }
-        }
+        [Column("LASTUP")]
+        [XmlIgnore]
+        public DateTime? LASTUPDB { get { return this._lastup; } set { this._lastup = value; } }
 
         [XmlIgnore]
         public bool ConsultaDetalhe { get { return _consultaDetalhe; } set { _consultaDetalhe = value; } }
@@ -54,6 +37,17 @@ namespace BL.ObjectMessages
 
         #endregion
 
+
+        #region private
+
+        private DateTime? _lastup;
+        private bool _consultaDetalhe;
+        private bool _atualizaDetalhe;
+        private bool _enviaPrestConta;
+        private bool _consultaPrestConta;
+
+        #endregion
+
         [XmlAttribute]
         [NotMapped]
         public string Type { get; set; }
@@ -65,16 +59,13 @@ namespace BL.ObjectMessages
         public string DESCR { get; set; }
 
         [NotMapped]
-        public string LASTUP { get; set; }
+        public string LASTUP { get { return ConverterValue.DateTimeNullableForString(this._lastup); } set { this._lastup = ConverterValue.StringForDateTimeNullable(value); } }
 
         [NotMapped]
         public string LASTHR { get; set; }
 
         [NotMapped]
         public string BFMAR { get; set; }
-
-        [NotMapped]
-        public int IDEmbarque { get; set; }
-
+        
     }
 }

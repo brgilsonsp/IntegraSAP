@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace BL.ObjectMessages
@@ -13,25 +9,25 @@ namespace BL.ObjectMessages
         [XmlAttribute]
         public string EDX { get; set; }
 
-        public RequestMsg4 REQUEST;
+        public RequestMsg4 REQUEST { get; set; }
     }
 
     public class RequestMsg4
     {
         [XmlAttribute]
-        public string Type;
+        public string Type { get; set; }
 
-        public string ACAO;
+        public string ACAO { get; set; }
 
-        public string IDBR;
+        public string IDBR { get; set; }
 
-        public string IDCL;
+        public string IDCL { get; set; }
 
-        public string SHKEY;
+        public string SHKEY { get; set; }
 
-        public STR STR;
+        public STR STR { get; set; }
 
         [XmlElement("PCK")]
-        public List<TPCK> PCK;
+        public List<TPCK> PCK { get; set; }
     }
 }

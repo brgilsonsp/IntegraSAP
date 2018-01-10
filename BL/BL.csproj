@@ -91,10 +91,9 @@
     <Compile Include="DAO\TGTERESDao.cs" />
     <Compile Include="DAO\TGTESHK_NDao.cs" />
     <Compile Include="DAO\TGTESHP_NDao.cs" />
+    <Compile Include="DAO\TPCKDao.cs" />
     <Compile Include="Infra\ComunicaGTE.cs" />
     <Compile Include="Business\ConfigureService.cs" />
-    <Compile Include="Business\DatasSerializedForConsulting.cs" />
-    <Compile Include="Business\DatasSerializedForConsultingXml.cs" />
     <Compile Include="Business\ExportationMessageRequest.cs" />
     <Compile Include="Business\ExportationMessageResponse.cs" />
     <Compile Include="Business\ImportationMessageRequest.cs" />
@@ -104,13 +103,13 @@
     <Compile Include="Business\OriginalText.cs" />
     <Compile Include="Infra\SaveXMLOriginal.cs" />
     <Compile Include="Business\XmlForGTE.cs" />
-    <Compile Include="Command\Mensagem.cs" />
+    <Compile Include="Command\IMessage.cs" />
     <Compile Include="Command\Mensagem1.cs" />
     <Compile Include="Command\Mensagem2.cs" />
     <Compile Include="Command\Mensagem3.cs" />
     <Compile Include="Command\Mensagem4.cs" />
     <Compile Include="Command\Mensagem5.cs" />
-    <Compile Include="Command\SaveData.cs" />
+    <Compile Include="Command\ISaveData.cs" />
     <Compile Include="DAO\ChangeXMLContext.cs" />
     <Compile Include="DAO\DadosBrokerDao.cs" />
     <Compile Include="InnerUtil\ConverterValue.cs" />
@@ -119,8 +118,8 @@
     <Compile Include="ObjectMessages\DadosBroker.cs" />
     <Compile Include="ObjectMessages\DataHeaderRequest.cs" />
     <Compile Include="ObjectMessages\DatasToRequestExportation3.cs" />
+    <Compile Include="ObjectMessages\DatasToRequestExportation4.cs" />
     <Compile Include="ObjectMessages\DetalheError.cs" />
-    <Compile Include="ObjectMessages\TypeBusines.cs" />
     <Compile Include="InnerException\BaseInnerException.cs" />
     <Compile Include="InnerException\ConfigureObjectException.cs" />
     <Compile Include="InnerException\ConfigureXmlException.cs" />

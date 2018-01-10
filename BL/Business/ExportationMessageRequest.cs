@@ -19,13 +19,7 @@ namespace BL.Business
         }
         public string ContentText { get { return this._xml; } }
 
-        public string Message
-        {
-            get
-            {
-                return MessagesOfReturn.ProcessExportation(this._numberOfMessage);
-            }
-        }
+        public string Message { get { return MessagesOfReturn.ProcessExportation(this._numberOfMessage); } }
 
         public string PathSaveFileText { get { return BasePath(); } }
 

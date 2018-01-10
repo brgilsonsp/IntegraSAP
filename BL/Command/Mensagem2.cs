@@ -9,13 +9,17 @@ using System.Linq;
 
 namespace BL.Command
 {
-    class Mensagem2 : ConfigStatus, Mensagem, SaveData<Msg2ResponseExportation, string>
+    class Mensagem2 : ConfigStatus, IMessage, ISaveData<Msg2ResponseExportation, string>
     {
 
         public string Message { get { return MessagesOfReturn.ProcessExportation(Option.MENSAGEM2); } }
 
         public string SwapXmlWithGTE()
         {
+            Debug.WriteLine("");
+            var salvaXml = new Stopwatch();
+            salvaXml.Start();
+
             string messageReturn = "";
             //Obtem do servidor os dados para requisição
             IDictionary<string, string> objectsToRequest = new DatasToRequestExportation2().GetDatasToRequest();
@@ -23,35 +27,34 @@ namespace BL.Command
             {
                 foreach (string sbeln in objectsToRequest.Keys)
                 {
-                    
-                    Debug.WriteLine("");
-                    string xmlRequest = objectsToRequest[sbeln];
+                    try
+                    {
+                        string xmlRequest = objectsToRequest[sbeln];
 
-                    var salvaXml = new Stopwatch();
-                    salvaXml.Start();
-                    ////salva o xml da request
-                    SaveXMLOriginal.SaveXML(new ExportationMessageRequest(xmlRequest, "", Option.MENSAGEM2));
+                        ////salva o xml da request
+                        SaveXMLOriginal.SaveXML(new ExportationMessageRequest(xmlRequest, "", Option.MENSAGEM2));
 
-                    //Efetua o request ao WebService enviando o XML serializado
-                    string xmlResponse = ComunicaGTE.doRequestWebService(xmlRequest, Message);
-                    salvaXml.Stop();
-                    Debug.WriteLine($"XML: {salvaXml.Elapsed} s");
+                        //Efetua o request ao WebService enviando o XML serializado
+                        string xmlResponse = ComunicaGTE.doRequestWebService(xmlRequest, Message);
 
+                        //salva o xml response
+                        SaveXMLOriginal.SaveXML(new ExportationMessageResponse(xmlResponse, "", Option.MENSAGEM2));
 
-                    var salvaDB = new Stopwatch();
-                    salvaDB.Start();
-                    //salva o xml response
-                    SaveXMLOriginal.SaveXML(new ExportationMessageResponse(xmlResponse, "", Option.MENSAGEM2));
-                    salvaDB.Stop();
-                    Debug.WriteLine($"BD: {salvaDB.Elapsed} s");
-
-                    //salva o response no banco de dados
-                    messageReturn += SaveResponseDataBase(xmlResponse, sbeln);
-
+                        //salva o response no banco de dados
+                        messageReturn += SaveResponseDataBase(xmlResponse, sbeln);
+                    }catch(Exception ex)
+                    {
+                        string messageError = MessagesOfReturn.FailedProcessMessageWithSbeln(Message, sbeln);
+                        int codeMessageError = MakeLog.FactoryLogForError(ex, messageError, $"{Message} - Embarque: {sbeln}");
+                    }
                 }
             }
             else
                 messageReturn = MessagesOfReturn.AlertRequestMessage2ExportationEmpty;
+
+
+            salvaXml.Stop();
+            Debug.WriteLine($"XML: {salvaXml.Elapsed} s");
 
             return messageReturn;
         }
@@ -59,42 +62,29 @@ namespace BL.Command
         private string SaveResponseDataBase(string xmlResponse, string sbeln)
         {
             string msgReturn = "";
-            Msg2ResponseExportation embarqueForDB = new ObjectForDB<Msg2ResponseExportation>().deserializeXmlForDB(xmlResponse);
+            Msg2ResponseExportation responseMsg2 = new ObjectForDB<Msg2ResponseExportation>().deserializeXmlForDB(xmlResponse);
             //Verifica se o Web Service enviou o Resposta
-            if (embarqueForDB != null && embarqueForDB.RESPONSE.STATUS != null)
+            if (responseMsg2 != null && responseMsg2.RESPONSE.STATUS != null)
             {
-                try
-                {
-                    ConfigureStatus(embarqueForDB.RESPONSE.STATUS, Option.MENSAGEM2, sbeln);
+                ConfigureStatus(responseMsg2.RESPONSE.STATUS, Option.MENSAGEM2, Option.EXPORTACAO, sbeln);
 
-                    if (embarqueForDB.RESPONSE.TGTESHK_N != null && !string.IsNullOrEmpty(embarqueForDB.RESPONSE.TGTESHK_N.SBELN))
-                    {
-                        msgReturn = SaveResponseSuccess(embarqueForDB);
-                    }
-                    else if (embarqueForDB.RESPONSE.STATUS != null)// GTE não retornou o Detalhe do Embarque, porém retornou o status
-                    {
-                        msgReturn = SaveResponseAlerta(embarqueForDB.RESPONSE.STATUS);
-                    }
-                    else //GTE retornou um erro
-                    {
-                        msgReturn = SaveResponseError(xmlResponse, sbeln);
-                    }
-                    AlterEmbarqueConsulted(sbeln);
-                }
-                catch (Exception e)
-                {
-                    msgReturn = MessagesOfReturn.ErrorSaveDetalheEmbarqueDB(sbeln);
-                    MakeLog.FactoryLogForError(e, msgReturn);
-                }
+                if (responseMsg2.RESPONSE.TGTESHK_N != null && !string.IsNullOrEmpty(responseMsg2.RESPONSE.TGTESHK_N.SBELN))
+                    msgReturn = SaveResponseSuccess(responseMsg2);
+                else if (responseMsg2.RESPONSE.STATUS != null)// GTE não retornou o Detalhe do Embarque, porém retornou o status
+                    msgReturn = SaveResponseAlerta(responseMsg2.RESPONSE.STATUS);
+                else //GTE retornou um erro
+                    msgReturn = SaveResponseError(xmlResponse, sbeln);
+                
             }
             else // Objeto embarqueForDB não recebeu nenhum dado do GTE
-            {
                 msgReturn = MessagesOfReturn.AlertResponseEmptyOrError(Message, sbeln);
-            }
+
+            AlterFlagChangeMessage(sbeln);
+
             return msgReturn;            
         }
 
-        private void AlterEmbarqueConsulted(string sbeln)
+        public void AlterFlagChangeMessage(string sbeln)
         {
             EmbarqueDao dao = new EmbarqueDao();
             Embarque embarque = dao.FindBySbeln(sbeln);
@@ -111,30 +101,23 @@ namespace BL.Command
         public string SaveResponseError(string xmlResponse, string embarque)
         {
             RetornoFatalErrorGTE retornoError = new ObjectForDB<RetornoFatalErrorGTE>().deserializeXmlForDB(xmlResponse);
-            ConfigureStatus(retornoError.RESPONSE.STATUS, Option.MENSAGEM2, embarque);
+            ConfigureStatus(retornoError.RESPONSE.STATUS, Option.MENSAGEM2, Option.EXPORTACAO, embarque);
             SaveStatus(retornoError.RESPONSE.STATUS);
             return MessagesOfReturn.AlertResponseEmptyOrError(Message, embarque);
         }
 
         public string SaveResponseSuccess(Msg2ResponseExportation retornoWebService)
         {
-            try
-            {
-                Embarque embarque = new EmbarqueDao().FindBySbeln(retornoWebService.RESPONSE.TGTESHK_N.SBELN);
-                SaveStatus(retornoWebService.RESPONSE.STATUS, embarque);
-                SaveTGTESHK_N(retornoWebService, embarque);
-                SaveTGTESHP_N(retornoWebService, embarque);
-                SaveTGTERES(retornoWebService, embarque);
-                SaveTGTEPRD(retornoWebService, embarque);
-                SaveSHP_TEXT(retornoWebService, embarque);
-                SaveTGTEDUEK(retornoWebService, embarque);
-                SaveTGTEDUEP(retornoWebService, embarque);
-                return MessagesOfReturn.SucessoRetornoDetalheEmbarque(embarque.SBELN);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            Embarque embarque = new EmbarqueDao().FindBySbeln(retornoWebService.RESPONSE.TGTESHK_N.SBELN);
+            SaveStatus(retornoWebService.RESPONSE.STATUS, embarque);
+            SaveTGTESHK_N(retornoWebService, embarque);
+            SaveTGTESHP_N(retornoWebService, embarque);
+            SaveTGTERES(retornoWebService, embarque);
+            SaveTGTEPRD(retornoWebService, embarque);
+            SaveSHP_TEXT(retornoWebService, embarque);
+            SaveTGTEDUEK(retornoWebService, embarque);
+            SaveTGTEDUEP(retornoWebService, embarque);
+            return MessagesOfReturn.ProcessMessageSuccess(Message, embarque.SBELN);
         }
 
         private void SaveTGTESHK_N(Msg2ResponseExportation retornoWebService, Embarque embarque)

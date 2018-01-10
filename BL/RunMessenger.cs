@@ -21,7 +21,7 @@ namespace BL
         public void StartChangeXML()
         {
             
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 4; i++)
             {
                 string retorno = "";
                 int message = i + 1;
@@ -35,7 +35,7 @@ namespace BL
 
                     //Instancia a Mensagem
                     var classe = Activator.CreateInstance(null, objeto);
-                    Mensagem mensagem = (Mensagem)classe.Unwrap();
+                    IMessage mensagem = (IMessage)classe.Unwrap();
 
                     //Efetua a troca da Mensagem com o Web Service do GTE
                     retorno += mensagem.SwapXmlWithGTE();

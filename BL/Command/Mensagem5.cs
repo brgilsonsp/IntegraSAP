@@ -3,7 +3,7 @@ using System;
 
 namespace BL.Command
 {
-    class Mensagem5 : Mensagem, SaveData<Msg5ResponseExportation, ConsultaGTE>
+    class Mensagem5 : IMessage, ISaveData<Msg5ResponseExportation, ConsultaGTE>
     {
         public string Message
         {
@@ -11,6 +11,11 @@ namespace BL.Command
             {
                 throw new NotImplementedException();
             }
+        }
+
+        public void AlterFlagChangeMessage(string sbeln)
+        {
+            throw new NotImplementedException();
         }
 
         public string SaveResponseAlerta(Status status)

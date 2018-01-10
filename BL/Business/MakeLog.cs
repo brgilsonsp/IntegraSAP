@@ -55,14 +55,18 @@ namespace BL.Business
 
 
 
-        public static void FactoryLogForError(Exception ex, string observation)
+        public static int FactoryLogForError(Exception ex, string messageError, string detailLocation)
         {
+            int codeRandon = 0;
             //Construir...
+            return codeRandon;
         }
 
-        public static void FactoryLogForError(string information)
+        public static int FactoryLogForError(string messageError, string detailLocation)
         {
+            int codeRandon = 0;
             //Construir...
+            return codeRandon;
         }
 
 

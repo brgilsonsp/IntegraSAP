@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BL.InnerUtil;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
@@ -7,7 +8,7 @@ namespace BL.ObjectMessages
 {
     public class Status
     {
-        #region XmlIgnore
+        #region only DB
 
         [XmlIgnore]
         public int ID { get; set; }
@@ -21,13 +22,27 @@ namespace BL.ObjectMessages
 
         [XmlIgnore]
         public string SBELN { get; set; }
-
-        [XmlElement(IsNullable = false)]
+        
         [XmlIgnore]
-        public DateTime DataRetorno { get; set; }
+        public DateTime DataRetorno
+        {
+            get
+            {
+                return this._dataretorno.CompareTo(ConfigureDate.DateMin) <= 0 ? ConfigureDate.ActualDate : this._dataretorno;
+            }
+            set { this._dataretorno = value; }
+        }
+
+        [XmlIgnore]
+        public string Tipo { get; set; }
 
         #endregion
 
+        #region private
+
+        private DateTime _dataretorno;
+
+        #endregion
 
         [XmlAttribute]
         [NotMapped]

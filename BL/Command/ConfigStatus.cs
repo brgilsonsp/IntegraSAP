@@ -1,14 +1,23 @@
 ﻿using BL.DAO;
 using BL.ObjectMessages;
 using BL.InnerUtil;
-using BL.ObjectMessages;
 using System.Collections.Generic;
+using System;
 
 namespace BL.Command
 {
     public abstract class ConfigStatus
     {
-        protected void ConfigureStatus(Status status, byte message, string sbeln = null)
+        /// <summary>
+        /// Configura o Status com as informações enviadas através dos parâmetros
+        /// message, typeMessage e sbeln. Se o Status enviado for null, então cria um Status
+        /// com as informações internas
+        /// </summary>
+        /// <param name="status">Objeto Status que será configurado</param>
+        /// <param name="message">Qual a Mensagem que o Status pertence</param>
+        /// <param name="typeMessage">Qual o tipo de Mensagem que o Status pertence</param>
+        /// <param name="sbeln">De qual SBELN que o Status pertence</param>
+        protected void ConfigureStatus(Status status, byte message, string typeMessage, string sbeln = null)
         {
             if (status == null)
             {
@@ -19,6 +28,7 @@ namespace BL.Command
             status.SBELN = sbeln;
             status.Mensagem = message;
             status.DataRetorno = ConfigureDate.ActualDate;
+            status.Tipo = typeMessage;
         }
 
         /// <summary>
@@ -30,6 +40,7 @@ namespace BL.Command
         /// <param name="embarque">Embarque</param>
         protected void SaveStatus(Status status, Embarque embarque = null)
         {
+             
             if (embarque != null && !string.IsNullOrEmpty(embarque.SBELN))
                 status.SBELN = embarque.SBELN;
 

@@ -22,9 +22,9 @@ namespace BL.ObjectMessages
                 if (embarque != null && embarque.AtualizaDetalhe == true)
                 {
                     DadosBroker dadosBroker = new DadosBrokerDao().FindByIdAsNoTracking(embarque.DadosBrokerID);
-                    Cabecalho cabecalho = dadosBroker.DadosBrokerCabecalho.FirstOrDefault(cab => cab.Cabecalho.Mensagem == Option.MENSAGEM3).Cabecalho;
+                    Cabecalho cabecalho = dadosBroker.DadosBrokerCabecalho.FirstOrDefault(cab => cab.Cabecalho.Mensagem == Option.MENSAGEM3 && cab.Cabecalho.Tipo == Option.EXPORTACAO).Cabecalho;
                     ChangeXMLContext.GetInstance().Configuration.ProxyCreationEnabled = false;
-                    if (cabecalho.Mensagem == Option.MENSAGEM3)
+                    if (cabecalho.Mensagem == Option.MENSAGEM3 && cabecalho.Tipo == Option.EXPORTACAO)
                     {
                         Msg3RequestExportation consulta = GetObject(embarque, cabecalho, dadosBroker);
                         string xml = new XmlForGTE<Msg3RequestExportation>().serializeXmlForGTE(consulta);
@@ -64,39 +64,11 @@ namespace BL.ObjectMessages
 
             request.TGTEDUEP = new TGTEDUEPDao().FindByIdEmbarqueAsNoTracking(embarque.ID);
 
-            Msg3RequestExportation request3 = new Msg3RequestExportation();
-            request3.EDX = cabecalho.MensagemEDX;
-            request3.REQUEST = request;
+            Msg3RequestExportation requestMessage3 = new Msg3RequestExportation();
+            requestMessage3.EDX = cabecalho.MensagemEDX;
+            requestMessage3.REQUEST = request;
 
-
-            //request3.REQUEST = new RequesExportationtMsg3();
-
-            //request3.REQUEST.Type = cabecalho.RequestType;
-            //request3.REQUEST.ACAO = cabecalho.ACAO;
-            //request3.REQUEST.IDBR = broker.IDBR;
-            //request3.REQUEST.IDCL = broker.IDCL;
-            //request3.REQUEST.SHKEY = broker.SHKEY;
-            //request3.REQUEST.STR = new STR(broker);            
-            //request3.REQUEST.TGTESHK_N = new TGTESHK_NDao().FindByIdEmbarqueAsNoTracking(embarque.ID).FirstOrDefault();
-            //request3.REQUEST.TGTESHK_N.SBELN = embarque.SBELN;
-
-            //request3.REQUEST.TGTESHP_N = new TGTESHP_NDao().FindByIDEmbarqueAsNoTracking(embarque.ID);
-            //foreach (var tgteshpn in request3.REQUEST.TGTESHP_N)
-            //    tgteshpn.SBELN = embarque.SBELN;
-
-            //request3.REQUEST.TGTERES = new TGTERESDao().FindByIdEmbarqueAsNoTracking(embarque.ID);
-            //foreach (var tgteres in request3.REQUEST.TGTERES)
-            //    tgteres.SBELN = embarque.SBELN;
-
-            //request3.REQUEST.TGTEPRD = new TGTEPRDDao().FindByIdEmbarqueAsNoTracking(embarque.ID);
-
-            //request3.REQUEST.SHP_TEXT = new SHP_TEXTDao().FindByIdEmbarqueAsNoTracking(embarque.ID);
-
-            //request3.REQUEST.TGTEDUEK = new TGTEDUEKDao().FindByIdEmbarqueAsNoTracking(embarque.ID);
-
-            //request3.REQUEST.TGTEDUEP = new TGTEDUEPDao().FindByIdEmbarqueAsNoTracking(embarque.ID);
-
-            return request3;
+            return requestMessage3;
         }
     }
 }

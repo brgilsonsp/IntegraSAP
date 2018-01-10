@@ -7,7 +7,7 @@ namespace BL.Command
     /// <summary>
     /// Define as classes para efetuar a troca de Mensagem com o GTE
     /// </summary>
-    public interface Mensagem
+    public interface IMessage
     {
 
         /// <summary>
@@ -24,6 +24,12 @@ namespace BL.Command
         /// <returns>string com o status da troca da Mensagem</returns>
         /// <exception cref="Util.InnerException.BaseInnerException">Repassa todas as exceções do tipo InnerException</exception>
         string SwapXmlWithGTE();
-        
+
+        /// <summary>
+        /// Altera a flag que solicita a troca da respectiva Mensagem com o webservice
+        /// </summary>
+        /// <param name="sbeln">String com o código do embarque que deseja alterar a flag</param>
+        void AlterFlagChangeMessage(string sbeln);
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,6 +60,73 @@ namespace BL.InnerUtil
         }
 
         #endregion
+        
+        #region datetime/string
 
+        /// <summary>
+        /// Converte uma data string formato YYYYMMDD para um DateTime
+        /// </summary>
+        /// <param name="dateString">String com uma data YYYYMMMDD sem os separadores</param>
+        /// <returns>DateTime</returns>
+        public static DateTime? StringForDateTimeNullable(string dateString)
+        {
+            DateTime? dataOk;
+            try
+            {
+                string formatDate = "yyyyMMdd";
+                CultureInfo cultureInfo = CultureInfo.InvariantCulture;
+                dataOk = DateTime.ParseExact(dateString.Trim(), formatDate, cultureInfo);
+            }
+            catch (Exception)
+            {
+                dataOk = null;
+            }
+            return dataOk;
+        }
+
+        /// <summary>
+        /// Recebe um DateTime e retorna uma string no padrão yyyyMMdd, sem os separadores.
+        /// </summary>
+        /// <param name="dateTime">DateTime?</param>
+        /// <returns>string no padrão yyyyMMdd, sem os separadores</returns>
+        public static string DateTimeNullableForString(DateTime? dateTime)
+        {
+            string dataOk = "";
+            try
+            {
+                if (dateTime != null)
+                {
+                    DateTime dataInterna = (DateTime)dateTime;
+                    string formato = "yyyyMMdd";
+                    dataOk = dataInterna.ToString(formato);
+                }
+                else
+                {
+                    dataOk = "";
+                }
+            }
+            catch (Exception)
+            {
+                dataOk = "";
+            }
+            return dataOk;
+        }
+
+        #endregion
+
+        #region string/null
+
+        /// <summary>
+        /// Se a string informada no parâmetro for null, returna uma string vazia, caso contrário retorna o valor 
+        /// do parâmetro
+        /// </summary>
+        /// <param name="value">String para verificação</param>
+        /// <returns>O valor do parâmetro caso seja diferente de null, caso seja null retorna uma string vazia</returns>
+        public static string StringNullToEmpty(string value)
+        {
+            return string.IsNullOrEmpty(value) ? "" : value;
+        }
+
+        #endregion
     }
 }

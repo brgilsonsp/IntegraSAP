@@ -1,16 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using BL.InnerUtil;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace BL.ObjectMessages
 {
+    /// <summary>
+    /// Essa classe possui propriedades redundantes. 
+    /// Quando a propriedade possui a anotação NotMapped, ela será utilizada apenas para o XML, sendo assim ela mantem
+    /// o nome que foi definida na documentação (fornecida pela E-IT), porém quando a propriedade
+    /// utiliza as anotações XmlIgnore e Column("NomeColuna") ela é utilizada apenas pelo banco de dados e foi inserido
+    /// um sufixo DB. Foi criado também uma variável privada afim de tratar o retorno para o XML,
+    /// pois a E-IT necessita de todos campos no arquivo XML, mesmo null, sendo assim, se o valor no banco de dados for null
+    /// ele retornará uma string vazia, afim de gerar a tag no XML
+    /// </summary>
     public class DUEATRIB_TAB_TGTEDUEP
     {
-        #region XMlIgnore
+        #region only DB
 
         [XmlIgnore]
         public int ID { get; set; }
@@ -22,14 +27,31 @@ namespace BL.ObjectMessages
         [XmlIgnore]
         public virtual TGTEDUEP TGTEDUEP { get; set; }
 
+        [XmlIgnore]
+        [Column("DUEPOSNR")]
+        public int? DUEPOSNRDB { get { return this._dueposnr; } set { this._dueposnr = value; } }
+
         #endregion
+                
+        #region private
 
+        private string _dueid;
+        private int? _dueposnr;
+        private string _dueatrib;
+        private string _description;
 
+        #endregion
+        
         [XmlElement]
         public string Type { get; set; }
-        public string DUEID { get; set; }
-        public int? DUEPOSNR { get; set; }
-        public string DUEATRIB { get; set; }
-        public string DESCRIPTION { get; set; }
+
+        public string DUEID { get { return ConverterValue.StringNullToEmpty(this._dueid); } set { this._dueid = value; } }
+
+        [NotMapped]
+        public string DUEPOSNR { get { return ConverterValue.IntNullableToString(this._dueposnr); } set { this._dueposnr = ConverterValue.StringToIntNullable(value); } }
+
+        public string DUEATRIB { get { return ConverterValue.StringNullToEmpty(this._dueatrib); } set { this._dueatrib = value; } }
+
+        public string DESCRIPTION { get { return ConverterValue.StringNullToEmpty(this._description); } set { this._description = value; } }
     }
 }

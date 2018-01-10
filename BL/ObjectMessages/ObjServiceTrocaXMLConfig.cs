@@ -96,12 +96,16 @@ namespace BL.ObjectMessages
     {
         [XmlAttribute(AttributeName = "address")]
         public string address { get; set; }
+
         [XmlAttribute(AttributeName = "binding")]
         public string binding { get; set; }
+
         [XmlAttribute(AttributeName = "bindingConfiguration")]
         public string bindingConfiguration { get; set; }
+
         [XmlAttribute(AttributeName = "contract")]
         public string contract { get; set; }
+
         [XmlAttribute(AttributeName = "name")]
         public string name { get; set; }
     }
