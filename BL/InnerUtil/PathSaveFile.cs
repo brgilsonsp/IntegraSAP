@@ -2,62 +2,69 @@
 
 namespace BL.InnerUtil
 {
-    /// <summary>
-    /// Classe estática que fornece o caminho completo e o nome que os arquivos de log serão salvos
-    /// </summary>
-    public static class PathSaveFile
+    public class PathSaveFile
     {
+        private string _rootFolder;
+        private string _embarque;
+        private int _message;
+
+        public PathSaveFile(string _rootFolder, string _embarque, int _message)
+        {
+            this._rootFolder = _rootFolder;
+            this._embarque = _embarque;
+            this._message = _message;
+        }
+
         /// <summary>
         /// Retorna o caminho completo do nome do arquivo para a Mensage de Requisição da Importação
         /// </summary>
-        /// <param name="rootFolder">diretório root que será salvo o arquivo</param>
-        /// <param name="embarque">Ultima parte do nome do arquivo</param>
-        /// <param name="message">Define qual subdiretorio que a Mensagem pertence</param>
-        /// <returns></returns>
-        public static string PathMessageRequestImportation(string rootFolder, string embarque, int message)
+        public string PathFileMessageRequestImportation
         {
-            return String.Format("{0}\\Mensagem\\Mensagem{1}\\Request\\Importacao{2}{3}{4}", 
-                                rootFolder, message, embarque, ConfigureDate.DateNameFile, ".xml");
-        }
+            get { return $"{DirectoryFileMessageRequest}\\Importacao{_embarque}{ConfigureDate.DateNameFile}.xml"; }
+        }                
 
         /// <summary>
         /// Retorna o caminho completo do nome do arquivo para a Mensage de Resposta da Importação
         /// </summary>
-        /// <param name="rootFolder">diretório root que será salvo o arquivo</param>
-        /// <param name="embarque">Ultima parte do nome do arquivo</param>
-        /// <param name="message">Define qual subdiretorio que a Mensagem pertence</param>
-        /// <returns></returns>
-        public static string PathMessageResponseImportation(string rootFolder, string embarque, int message)
+        public string PathFileMessageResponseImportation
         {
-            return String.Format("{0}\\Mensagem\\Mensagem{1}\\Response\\Importacao{2}{3}{4}", 
-                                rootFolder, message, embarque, ConfigureDate.DateNameFile, ".xml");
-        }
-        
+            get { return $"{DirectoryFileMessageResponse}\\Importacao{_embarque}{ConfigureDate.DateNameFile}.xml"; }
+        }        
 
         /// <summary>
-        /// Retorna o caminho completo do nome do arquivo para a Mensage de Requisição da Exportação
+        /// Retorna o caminho completo do nome do arquivo para a Menssagem de Requisição da Exportação
         /// </summary>
-        /// <param name="rootFolder">diretório root que será salvo o arquivo</param>
-        /// <param name="embarque">Ultima parte do nome do arquivo</param>
-        /// <param name="message">Define qual subdiretorio que a Mensagem pertence</param>
-        /// <returns></returns>
-        public static string PathMessageRequestExportation(string rootFolder, string embarque, int message)
+        public string PathFileMessageRequestExportation
         {
-            return String.Format("{0}\\Mensagem\\Mensagem{1}\\Request\\Exportacao{2}{3}{4}",
-                                rootFolder, message, embarque, ConfigureDate.DateNameFile, ".xml");
+            get { return $"{DirectoryFileMessageRequest}\\Exportacao{_embarque}{ConfigureDate.DateNameFile}.xml"; }
         }
 
         /// <summary>
-        /// Retorna o caminho completo do nome do arquivo para a Mensage de Resposta da Exportação
+        /// Retorna o caminho completo do nome do arquivo para a Menssagem de Resposta da Exportação
         /// </summary>
-        /// <param name="rootFolder">diretório root que será salvo o arquivo</param>
-        /// <param name="embarque">Ultima parte do nome do arquivo</param>
-        /// <param name="message">Define qual subdiretorio que a Mensagem pertence</param>
-        /// <returns></returns>
-        public static string PathMessageResponseExportation(string rootFolder, string embarque, int message)
+        public string PathFileMessageResponseExportation
         {
-            return String.Format("{0}\\Mensagem\\Mensagem{1}\\Response\\Exportacao{2}{3}{4}",
-                                rootFolder, message, embarque, ConfigureDate.DateNameFile, ".xml");
+            get { return $"{DirectoryFileMessageResponse}\\Exportacao{_embarque}{ConfigureDate.DateNameFile}.xml"; }
+        }
+
+
+
+
+        /// <summary>
+        /// Retorna o diretório do arquivo para a Menssagem de Requisição da Importação
+        /// </summary>
+        public string DirectoryFileMessageRequest
+        {
+            get { return $"{_rootFolder}\\Mensagem\\Mensagem{_message}\\Request"; }
+        }
+
+
+        /// <summary>
+        /// Retorna o diretório do arquivo para a Menssagem de Resposta
+        /// </summary>
+        public string DirectoryFileMessageResponse
+        {
+            get { return $"{_rootFolder}\\Mensagem\\Mensagem{_message}\\Response"; }
         }
     }
 }

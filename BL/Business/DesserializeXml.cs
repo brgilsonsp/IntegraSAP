@@ -6,18 +6,17 @@ using BL.InnerUtil;
 
 namespace BL.Business
 {
-    public class ObjectForDB<T>
+    public class DeserializeXml<T>
     {
         /// <summary>
         /// Desserializa a string enviado no parâmetro em um objeto T.
         /// </summary>
         /// <param name="xml">string com os dados XML</param>
         /// <returns>Um ojeto tipo T desserializado</returns>
-        /// <exception cref="ConfigureXmlException">Lança a exceção se a string enviado no parâmetro for nula,
-        /// vazia ou em branco.</exception>
+        /// <exception cref="ChangeXmlException">Lança a exceção do tipo ChangeXmlException com uma mensagem e internamente as exeções que ocorreram</exception>
         public T deserializeXmlForDB(string xml)
         {
-            if (!string.IsNullOrEmpty(xml) || !string.IsNullOrWhiteSpace(xml))
+            try
             {
                 XmlSerializer xmlSer = new XmlSerializer(typeof(T));
                 T objectRetun;
@@ -27,8 +26,10 @@ namespace BL.Business
                 }
                 return objectRetun;
             }
-            else
-                throw new ConfigureXmlException(MessagesOfReturn.ALERT_XML_FOR_DB_NULL);
+            catch (Exception ex)
+            {
+                throw new ChangeXmlException(MessagesOfReturn.ExceptionDeserializeXml, ex);
+            }
         }
     }
 }

@@ -1,8 +1,5 @@
 ﻿using BL.ObjectMessages;
-using BL.ObjectMessages;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
-using System.Data.SqlClient;
 using System.Linq;
 
 namespace BL.DAO
@@ -29,7 +26,7 @@ namespace BL.DAO
 
         public IList<Embarque> FindConsultaPrestacaoContaEnbaleAsNoTracking()
         {
-            return _context.Embarques.AsNoTracking().Where(e => e.EnviaPrestConta == true).ToList();
+            return _context.Embarques.AsNoTracking().Where(e => e.ConsultaPrestConta == true).ToList();
         }
 
         public Embarque FindBySbelnAsNoTracking(string sbeln)
@@ -55,25 +52,18 @@ namespace BL.DAO
 
         public void Save(Embarque item)
         {
-            try
-            {
-                _context.Embarques.Add(item);
-                _context.SaveChanges();
-            }
-            catch(DbUpdateException e)
-            {
-                SqlException inner = (e.InnerException != null ? e.InnerException.InnerException as SqlException : null);
-                if (inner != null && (inner.Number == 2601 || inner.Number == 2627)) { }
-                else
-                {
-                    throw e;
-                }
-            }
+            _context.Embarques.Add(item);
+            _context.SaveChanges();
         }
-
+        
         public void Update()
         {
             _context.SaveChanges();
+        }
+
+        public List<string> GetListSbeln()
+        {
+            return _context.Embarques.Select(e => e.SBELN).ToList();
         }
     }
 }

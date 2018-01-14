@@ -1,5 +1,6 @@
 ﻿using BL.Business;
 using BL.DAO;
+using BL.Infra;
 using BL.InnerUtil;
 using BL.ObjectMessages;
 using System;
@@ -7,9 +8,9 @@ using System.Collections.Generic;
 
 namespace BL.Command
 {
-    class Mensagem3 : ConfigStatus, IMessage, ISaveData<RetornoAtualizaGTE, Embarque>
+    class Mensagem3 : ConfigStatus, IMessage, ISaveData<ResponseMessage3Exportation>
     {
-        public string Message { get { return MessagesOfReturn.ProcessExportation(Option.MENSAGEM3); } }
+        public string Message { get { return MessagesOfReturn.Message(Option.MENSAGEM3, Option.EXPORTACAO); } }
 
         public string SwapXmlWithGTE()
         {
@@ -29,7 +30,7 @@ namespace BL.Command
                             SaveXMLOriginal.SaveXML(new ExportationMessageRequest(xmlRequest, "", Option.MENSAGEM3));
 
                             //Efetua o request ao WebService enviando o XML serializado
-                            string xmlResponse = ComunicaGTE.doRequestWebService(xmlRequest, Message);
+                            string xmlResponse = RequestWebService.doRequestWebService(xmlRequest, Message);
                             //salva o xml response
                             SaveXMLOriginal.SaveXML(new ExportationMessageResponse(xmlResponse, "", Option.MENSAGEM3));
 
@@ -37,16 +38,17 @@ namespace BL.Command
                             messageReturn += SaveResponseDataBase(xmlResponse, sbeln);
                         }catch(Exception ex)
                         {
-                            string messageError = MessagesOfReturn.FailedProcessMessageWithSbeln(Message, sbeln);
-                            int codeMessageError = MakeLog.FactoryLogForError(ex, messageError, $"{Message} - Embarque: {sbeln}");
+                            string messageError = MessagesOfReturn.ExceptionMessageLogSupport(Message, sbeln);
+                            int codeMessageError = MakeLog.BuildErrorLogSupport(ex, messageError, $"{Message} - Embarque: {sbeln}");
+                            messageReturn += MessagesOfReturn.ExceptionMessageLogUser(codeMessageError, messageError);
                         }
                     }
                     else //Não localizou os registros do Detalhe do embarque específico
-                        messageReturn += MessagesOfReturn.AlertAtualizaDetalheEmbarqueEmpty(sbeln);
+                        messageReturn += MessagesOfReturn.DatasToRequestEmpty(Message, sbeln);
                 }
             }
             else
-                messageReturn = MessagesOfReturn.AlertRequestMessage2ExportationEmpty;
+                messageReturn = MessagesOfReturn.NotRequest(Message);
 
             return messageReturn;
         }
@@ -55,8 +57,8 @@ namespace BL.Command
         {
             string messageReturn = "";
             //Desserializa o Response
-            RetornoAtualizaGTE responseMsg3 = new ObjectForDB<RetornoAtualizaGTE>().deserializeXmlForDB(xmlResponse);
-            if (responseMsg3.RESPONSE.STATUS != null)
+            ResponseMessage3Exportation responseMsg3 = new DeserializeXml<ResponseMessage3Exportation>().deserializeXmlForDB(xmlResponse);
+            if (responseMsg3 != null && responseMsg3.RESPONSE != null && responseMsg3.RESPONSE.STATUS != null)
             {
                 ConfigureStatus(responseMsg3.RESPONSE.STATUS, Option.MENSAGEM3, Option.EXPORTACAO, sbeln);
 
@@ -85,18 +87,16 @@ namespace BL.Command
         public string SaveResponseAlerta(Status status)
         {
             SaveStatus(status);
-            return MessagesOfReturn.AlertResponseWebServiceError(Message, status.SBELN);
+            return MessagesOfReturn.AlertResponseWebServiceErrorWithSbeln(Message, status.SBELN);
         }
 
         public string SaveResponseError(string xmlResponse, string embarque)
         {
-            RetornoFatalErrorGTE responseError = new ObjectForDB<RetornoFatalErrorGTE>().deserializeXmlForDB(xmlResponse);
-            ConfigureStatus(responseError.RESPONSE.STATUS, Option.MENSAGEM3, Option.EXPORTACAO, embarque);
-            SaveStatus(responseError.RESPONSE.STATUS);
-            return MessagesOfReturn.AlertResponseWebServiceError(Message, embarque);
+            SaveStatusError(xmlResponse, Option.MENSAGEM3, Option.EXPORTACAO);
+            return MessagesOfReturn.AlertResponseWebServiceErrorWithSbeln(Message, embarque);
         }
 
-        public string SaveResponseSuccess(RetornoAtualizaGTE retornoWebService)
+        public string SaveResponseSuccess(ResponseMessage3Exportation retornoWebService)
         {
             SaveStatus(retornoWebService.RESPONSE.STATUS);
 

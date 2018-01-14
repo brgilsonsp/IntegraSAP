@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 namespace BL.ObjectMessages
 {
     [XmlRoot(ElementName = "EDX")]
-    public class Msg2ResponseExportation
+    public class ResponseMessage2Exportation
     {
         [XmlAttribute]
         public string EDX;

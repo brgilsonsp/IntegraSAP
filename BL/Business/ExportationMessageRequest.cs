@@ -1,14 +1,16 @@
 ﻿using System;
 using BL.InnerUtil;
+using BL.Infra;
 
 namespace BL.Business
 {
-    public class ExportationMessageRequest : OriginalText
+    public class ExportationMessageRequest : IOriginalText
     {
         private ConfigureService _configureService;
         private string _xml;
         private byte _numberOfMessage;
         private string _embarque;
+        private PathSaveFile _pathSaveFile;
 
         public ExportationMessageRequest(string xml, string embarque, byte numberOfMessage)
         {
@@ -16,24 +18,16 @@ namespace BL.Business
             this._embarque = embarque;
             this._numberOfMessage = numberOfMessage;
             this._configureService = new ConfigureService();
+            this._pathSaveFile = new PathSaveFile(_configureService.RootLog, embarque, numberOfMessage);
         }
         public string ContentText { get { return this._xml; } }
 
-        public string Message { get { return MessagesOfReturn.ProcessExportation(this._numberOfMessage); } }
+        public string Message { get { return MessagesOfReturn.Message(this._numberOfMessage, Option.EXPORTACAO); } }
 
-        public string PathSaveFileText { get { return BasePath(); } }
+        public string PathFileSaveFileText { get { return _pathSaveFile.PathFileMessageRequestExportation; } }
 
-        public bool IsConditionsAcceptableForSaveText()
-        {
-            return (!String.IsNullOrEmpty(this._xml) && _configureService != null && _configureService.IsSaveXml);
-        }
+        public bool IsConditionsAcceptableForSaveText { get { return _configureService.IsSaveXml; } }
 
-        private string BasePath()
-        {
-            if (_configureService != null)
-                return PathSaveFile.PathMessageRequestExportation(_configureService.RootLog, this._embarque, this._numberOfMessage);
-            else
-                return null;
-        }
+        public string DirectoryFileSaveFileText { get { return _pathSaveFile.DirectoryFileMessageRequest; } }
     }
 }

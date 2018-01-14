@@ -66,6 +66,11 @@ namespace BL.ObjectMessages
 
         [NotMapped]
         public string BFMAR { get; set; }
-        
+
+        public override string ToString()
+        {
+            return $"Embarque: {SBELN}";
+        }
+
     }
 }

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace BL.ObjectMessages
 {
     [XmlRoot(ElementName = "EDX")]
-    public class Msg3RequestExportation
+    public class RequestMessage3Exportation
     {
         [XmlAttribute]
         public string EDX { get; set; }

@@ -2,15 +2,16 @@
 
 namespace BL.Command
 {
-    interface ISaveData<R, E>
+    //interface ISaveData<R, E>
+    interface ISaveData<T>
     {
         /// <summary>
         /// Sava o response do Web Service no banco de dados.
         /// O Response é passado no parâmetro retornoWebService.
         /// </summary>
-        /// <param name="returnWebService">R</param>
+        /// <param name="returnWebService">T</param>
         /// <returns>A mensagem que será salva no arquivo de log</returns>
-        string SaveResponseSuccess(R returnWebService);
+        string SaveResponseSuccess(T returnWebService);
 
         /// <summary>
         /// Salva o Status que o conteúdo da subtag Status da resposta do Web Service.

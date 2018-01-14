@@ -110,7 +110,6 @@ namespace BL.DAO
             modelBuilder.Entity<DUEATRIB_TAB_TGTEDUEP>().ToTable("DUEATRIB_TAB_TGTEDUEP");
             modelBuilder.Entity<ATOCON_TAB_TGTEDUEP>().ToTable("ATOCON_TAB_TGTEDUEP");
 
-
             base.OnModelCreating(modelBuilder);
         }
 

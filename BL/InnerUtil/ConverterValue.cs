@@ -46,7 +46,7 @@ namespace BL.InnerUtil
         public static decimal? StringToDecimalNullable(string decimalText)
         {
             decimal outDecimal;
-            return decimal.TryParse(decimalText, out outDecimal) ? outDecimal : (decimal?)null;
+            return decimal.TryParse(decimalText, NumberStyles.Any, CultureInfo.InvariantCulture, out outDecimal) ? outDecimal : (decimal?)null;
         }
 
         /// <summary>

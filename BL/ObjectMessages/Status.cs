@@ -8,6 +8,14 @@ namespace BL.ObjectMessages
 {
     public class Status
     {
+        public Status() { }
+
+        public Status(ResponseError responseError)
+        {
+            CODE = responseError.CODE;
+            DESC = responseError.DESC;
+        }
+
         #region only DB
 
         [XmlIgnore]

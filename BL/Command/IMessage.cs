@@ -21,8 +21,7 @@ namespace BL.Command
         /// O método retornará uma string com as informações do processo da troca
         /// da Mensagem que poderá ser utilizado como log de auditoria.
         /// </summary>
-        /// <returns>string com o status da troca da Mensagem</returns>
-        /// <exception cref="Util.InnerException.BaseInnerException">Repassa todas as exceções do tipo InnerException</exception>
+        /// <returns>string com a mensagem do status da troca da Mensagem</returns>
         string SwapXmlWithGTE();
 
         /// <summary>

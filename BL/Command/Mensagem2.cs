@@ -1,25 +1,19 @@
 ﻿using BL.Business;
 using BL.DAO;
+using BL.Infra;
 using BL.InnerUtil;
 using BL.ObjectMessages;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 
 namespace BL.Command
 {
-    class Mensagem2 : ConfigStatus, IMessage, ISaveData<Msg2ResponseExportation, string>
+    class Mensagem2 : ConfigStatus, IMessage, ISaveData<ResponseMessage2Exportation>
     {
-
-        public string Message { get { return MessagesOfReturn.ProcessExportation(Option.MENSAGEM2); } }
+        public string Message { get { return MessagesOfReturn.Message(Option.MENSAGEM2, Option.EXPORTACAO); } }
 
         public string SwapXmlWithGTE()
         {
-            Debug.WriteLine("");
-            var salvaXml = new Stopwatch();
-            salvaXml.Start();
-
             string messageReturn = "";
             //Obtem do servidor os dados para requisição
             IDictionary<string, string> objectsToRequest = new DatasToRequestExportation2().GetDatasToRequest();
@@ -27,34 +21,37 @@ namespace BL.Command
             {
                 foreach (string sbeln in objectsToRequest.Keys)
                 {
-                    try
+                    if (!string.IsNullOrEmpty(objectsToRequest[sbeln]))
                     {
-                        string xmlRequest = objectsToRequest[sbeln];
+                        try
+                        {
+                            string xmlRequest = objectsToRequest[sbeln];
 
-                        ////salva o xml da request
-                        SaveXMLOriginal.SaveXML(new ExportationMessageRequest(xmlRequest, "", Option.MENSAGEM2));
+                            ////salva o xml da request
+                            SaveXMLOriginal.SaveXML(new ExportationMessageRequest(xmlRequest, "", Option.MENSAGEM2));
 
-                        //Efetua o request ao WebService enviando o XML serializado
-                        string xmlResponse = ComunicaGTE.doRequestWebService(xmlRequest, Message);
+                            //Efetua o request ao WebService enviando o XML serializado
+                            string xmlResponse = RequestWebService.doRequestWebService(xmlRequest, Message);
 
-                        //salva o xml response
-                        SaveXMLOriginal.SaveXML(new ExportationMessageResponse(xmlResponse, "", Option.MENSAGEM2));
+                            //salva o xml response
+                            SaveXMLOriginal.SaveXML(new ExportationMessageResponse(xmlResponse, "", Option.MENSAGEM2));
 
-                        //salva o response no banco de dados
-                        messageReturn += SaveResponseDataBase(xmlResponse, sbeln);
-                    }catch(Exception ex)
-                    {
-                        string messageError = MessagesOfReturn.FailedProcessMessageWithSbeln(Message, sbeln);
-                        int codeMessageError = MakeLog.FactoryLogForError(ex, messageError, $"{Message} - Embarque: {sbeln}");
+                            //salva o response no banco de dados
+                            messageReturn += SaveResponseDataBase(xmlResponse, sbeln);
+                        }
+                        catch (Exception ex)
+                        {
+                            string messageError = MessagesOfReturn.ExceptionMessageLogSupport(Message, sbeln);
+                            int codeMessageError = MakeLog.BuildErrorLogSupport(ex, messageError, $"{Message} - Embarque: {sbeln}");
+                            messageReturn += MessagesOfReturn.ExceptionMessageLogUser(codeMessageError, messageError);
+                        }
                     }
+                    else
+                        messageReturn += MessagesOfReturn.DatasToRequestEmpty(Message, sbeln);
                 }
             }
             else
-                messageReturn = MessagesOfReturn.AlertRequestMessage2ExportationEmpty;
-
-
-            salvaXml.Stop();
-            Debug.WriteLine($"XML: {salvaXml.Elapsed} s");
+                messageReturn = MessagesOfReturn.NotRequest(Message);
 
             return messageReturn;
         }
@@ -62,9 +59,9 @@ namespace BL.Command
         private string SaveResponseDataBase(string xmlResponse, string sbeln)
         {
             string msgReturn = "";
-            Msg2ResponseExportation responseMsg2 = new ObjectForDB<Msg2ResponseExportation>().deserializeXmlForDB(xmlResponse);
+            ResponseMessage2Exportation responseMsg2 = new DeserializeXml<ResponseMessage2Exportation>().deserializeXmlForDB(xmlResponse);
             //Verifica se o Web Service enviou o Resposta
-            if (responseMsg2 != null && responseMsg2.RESPONSE.STATUS != null)
+            if (responseMsg2 != null && responseMsg2.RESPONSE != null && responseMsg2.RESPONSE.STATUS != null)
             {
                 ConfigureStatus(responseMsg2.RESPONSE.STATUS, Option.MENSAGEM2, Option.EXPORTACAO, sbeln);
 
@@ -73,11 +70,10 @@ namespace BL.Command
                 else if (responseMsg2.RESPONSE.STATUS != null)// GTE não retornou o Detalhe do Embarque, porém retornou o status
                     msgReturn = SaveResponseAlerta(responseMsg2.RESPONSE.STATUS);
                 else //GTE retornou um erro
-                    msgReturn = SaveResponseError(xmlResponse, sbeln);
-                
+                    msgReturn = SaveResponseError(xmlResponse, sbeln);                
             }
-            else // Objeto embarqueForDB não recebeu nenhum dado do GTE
-                msgReturn = MessagesOfReturn.AlertResponseEmptyOrError(Message, sbeln);
+            else // WebService retornou Erro
+                msgReturn = SaveResponseError(xmlResponse, sbeln);
 
             AlterFlagChangeMessage(sbeln);
 
@@ -95,18 +91,16 @@ namespace BL.Command
         public string SaveResponseAlerta(Status status)
         {
             SaveStatus(status);
-            return MessagesOfReturn.AlertResponseConsultaDetalheEmbarqueEmpty(status.SBELN);
+            return MessagesOfReturn.AlertResponseWebServiceErrorWithSbeln(Message, status.SBELN);
         }
 
         public string SaveResponseError(string xmlResponse, string embarque)
         {
-            RetornoFatalErrorGTE retornoError = new ObjectForDB<RetornoFatalErrorGTE>().deserializeXmlForDB(xmlResponse);
-            ConfigureStatus(retornoError.RESPONSE.STATUS, Option.MENSAGEM2, Option.EXPORTACAO, embarque);
-            SaveStatus(retornoError.RESPONSE.STATUS);
-            return MessagesOfReturn.AlertResponseEmptyOrError(Message, embarque);
+            SaveStatusError(xmlResponse, Option.MENSAGEM2, Option.EXPORTACAO);
+            return MessagesOfReturn.AlertResponseWebServiceErrorWithSbeln(Message, embarque);
         }
 
-        public string SaveResponseSuccess(Msg2ResponseExportation retornoWebService)
+        public string SaveResponseSuccess(ResponseMessage2Exportation retornoWebService)
         {
             Embarque embarque = new EmbarqueDao().FindBySbeln(retornoWebService.RESPONSE.TGTESHK_N.SBELN);
             SaveStatus(retornoWebService.RESPONSE.STATUS, embarque);
@@ -120,7 +114,7 @@ namespace BL.Command
             return MessagesOfReturn.ProcessMessageSuccess(Message, embarque.SBELN);
         }
 
-        private void SaveTGTESHK_N(Msg2ResponseExportation retornoWebService, Embarque embarque)
+        private void SaveTGTESHK_N(ResponseMessage2Exportation retornoWebService, Embarque embarque)
         {
             TGTESHK_NDao dao = new TGTESHK_NDao();
 
@@ -132,7 +126,7 @@ namespace BL.Command
             dao.Save(retornoWebService.RESPONSE.TGTESHK_N);
         }
 
-        private void SaveTGTESHP_N(Msg2ResponseExportation retornoWebService, Embarque embarque)
+        private void SaveTGTESHP_N(ResponseMessage2Exportation retornoWebService, Embarque embarque)
         {
             TGTESHP_NDao tGTESHP_NDao = new TGTESHP_NDao();
 
@@ -144,7 +138,7 @@ namespace BL.Command
             tGTESHP_NDao.SaveAll(retornoWebService.RESPONSE.TGTESHP_N);
         }
 
-        private void SaveTGTERES(Msg2ResponseExportation retornoWebService, Embarque embarque)
+        private void SaveTGTERES(ResponseMessage2Exportation retornoWebService, Embarque embarque)
         {
             TGTERESDao dao = new TGTERESDao();
             retornoWebService.RESPONSE.TGTERES.ForEach(t => t.Embarque = embarque);
@@ -155,7 +149,7 @@ namespace BL.Command
             dao.SaveAll(retornoWebService.RESPONSE.TGTERES);
         }
 
-        private void SaveTGTEPRD(Msg2ResponseExportation retornoWebService, Embarque embarque)
+        private void SaveTGTEPRD(ResponseMessage2Exportation retornoWebService, Embarque embarque)
         {
             TGTEPRDDao dao = new TGTEPRDDao();
             retornoWebService.RESPONSE.TGTEPRD.ForEach(t => t.Embarque = embarque);
@@ -166,7 +160,7 @@ namespace BL.Command
             dao.SaveAll(retornoWebService.RESPONSE.TGTEPRD);
         }
 
-        private void SaveSHP_TEXT(Msg2ResponseExportation retornoWebService, Embarque embarque)
+        private void SaveSHP_TEXT(ResponseMessage2Exportation retornoWebService, Embarque embarque)
         {
             SHP_TEXTDao dao = new SHP_TEXTDao();
             retornoWebService.RESPONSE.SHP_TEXT.ForEach(s => s.Embarque = embarque);
@@ -177,7 +171,7 @@ namespace BL.Command
             dao.SaveAll(retornoWebService.RESPONSE.SHP_TEXT);
         }
 
-        private void SaveTGTEDUEK(Msg2ResponseExportation retornoWebService, Embarque embarque)
+        private void SaveTGTEDUEK(ResponseMessage2Exportation retornoWebService, Embarque embarque)
         {
             retornoWebService.RESPONSE.TGTEDUEK.ForEach(t => t.Embarque = embarque);
             TGTEDUEKDao daoTgteduek = new TGTEDUEKDao();           
@@ -188,7 +182,7 @@ namespace BL.Command
             daoTgteduek.SaveAll(retornoWebService.RESPONSE.TGTEDUEK);
         }
 
-        private void SaveTGTEDUEP(Msg2ResponseExportation retornoWebService, Embarque embarque)
+        private void SaveTGTEDUEP(ResponseMessage2Exportation retornoWebService, Embarque embarque)
         {
             retornoWebService.RESPONSE.TGTEDUEP.ForEach(t => t.Embarque = embarque);
             TGTEDUEPDao daoTgteduep = new TGTEDUEPDao();

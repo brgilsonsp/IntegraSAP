@@ -1,9 +1,6 @@
 ﻿using BL.ObjectMessages;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BL.DAO
 {
@@ -38,22 +35,22 @@ namespace BL.DAO
 
         public List<TPCK> FindByIdEmbarque(int idEmbarque)
         {
-            return _context.TPCKs.Include("TXPNS").Where(t => t.EmbarqueID == idEmbarque).ToList();
+            return _context.TPCKs.Include("TXPNS").Include("Embarque").Where(t => t.EmbarqueID == idEmbarque).ToList();
         }
 
         public List<TPCK> FindById(int id)
         {
-            return _context.TPCKs.Include("TXPNS").Where(t => t.ID == id).ToList();
+            return _context.TPCKs.Include("TXPNS").Include("Embarque").Where(t => t.ID == id).ToList();
         }
 
         public List<TPCK> FindByIdEmbarqueAsNoTracking(int idEmbarque)
         {
-            return _context.TPCKs.Include("TXPNS").AsNoTracking().Where(t => t.EmbarqueID == idEmbarque).ToList();
+            return _context.TPCKs.Include("TXPNS").Include("Embarque").AsNoTracking().Where(t => t.EmbarqueID == idEmbarque).ToList();
         }
 
         public List<TPCK> FindByIdAsNoTracking(int id)
         {
-            return _context.TPCKs.Include("TXPNS").AsNoTracking().Where(t => t.ID == id).ToList();
+            return _context.TPCKs.Include("TXPNS").Include("Embarque").AsNoTracking().Where(t => t.ID == id).ToList();
         }
     }
 }

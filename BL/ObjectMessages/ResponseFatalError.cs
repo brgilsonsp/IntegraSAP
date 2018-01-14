@@ -3,7 +3,7 @@
 namespace BL.ObjectMessages
 {
     [XmlRoot(ElementName = "EDX")]
-    public class RetornoFatalErrorGTE
+    public class ResponseFatalError
     {
         [XmlAttribute]
         public string versao;
@@ -13,7 +13,9 @@ namespace BL.ObjectMessages
 
     public class ResponseError
     {
-        public Status STATUS;
+        public string CODE { get; set; }
+        
+        public string DESC { get; set; }
 
     }
 

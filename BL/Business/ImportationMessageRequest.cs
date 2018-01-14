@@ -1,45 +1,35 @@
 ﻿using System;
 using BL.InnerUtil;
+using BL.Infra;
 
 namespace BL.Business
 {
-    public class ImportationMessageRequest : OriginalText
+    public class ImportationMessageRequest : IOriginalText
     {
         private ConfigureService _configureService;
         private string _xml;
-        private int _numberOfMessage;
+        private byte _numberOfMessage;
         private string _embarque;
+        private PathSaveFile _pathSaveFile;
 
-        public ImportationMessageRequest(String xml, string embarque, int numberOfMessage)
+        public ImportationMessageRequest(String xml, string embarque, byte numberOfMessage)
         {
             this._xml = xml;
             _configureService = new ConfigureService();
             this._numberOfMessage = numberOfMessage;
             this._embarque = embarque;
+            this._pathSaveFile = new PathSaveFile(_configureService.RootLog, embarque, numberOfMessage);
         }
 
-        public string Message { get { return MessageDetailed(); } }
+        public string Message { get { return MessagesOfReturn.Message(this._numberOfMessage, Option.IMPORTACAO); } }
 
         public string ContentText { get { return _xml; } }
 
-        public string PathSaveFileText { get { return BasePath(); } }
+        public string PathFileSaveFileText { get { return _pathSaveFile.PathFileMessageRequestImportation; } }
 
-        public bool IsConditionsAcceptableForSaveText()
-        {
-            return (!String.IsNullOrEmpty(this._xml) && _configureService != null && _configureService.IsSaveXml);
-        }
+        public string DirectoryFileSaveFileText { get { return _pathSaveFile.DirectoryFileMessageRequest; } }
 
-        private string BasePath()
-        {
-            if (_configureService != null)
-                return PathSaveFile.PathMessageRequestImportation(_configureService.RootLog, _embarque, _numberOfMessage);
-            else
-                return null;
-        }
-
-        private string MessageDetailed()
-        {
-            return String.Format("{0} - {1}", _numberOfMessage, _embarque, MessagesOfReturn.IMPORTATION_REQUEST);
-        }
+        public bool IsConditionsAcceptableForSaveText { get { return _configureService.IsSaveXml; } }
+        
     }
 }

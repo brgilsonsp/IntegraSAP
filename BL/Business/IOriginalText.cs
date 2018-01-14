@@ -3,7 +3,7 @@
     /// <summary>
     /// Define as propriedades necessárias para salvar ou validar o processo de salvar um conteúdo XML em arquivo texto no disco
     /// </summary>
-    public interface OriginalText
+    public interface IOriginalText
     {
         /// <summary>
         /// Retorna de qual Mensagem que o conteúdo de texto se refere
@@ -16,13 +16,18 @@
         string ContentText { get; }
 
         /// <summary>
-        /// Retorna o caminho relativo a essa Mensagem mais o nome do arquivo que o conteúdo da propriedade ContentText será salva
+        /// Retorna o nome completo do arquivo
         /// </summary>
-        string PathSaveFileText { get; }
+        string PathFileSaveFileText { get; }
 
         /// <summary>
-        /// Retorna se as condições necessárias para salver o arquivo de texto em disco foram satisfeitas
+        /// Diretório aonde será salvo o XMl
         /// </summary>
-        bool IsConditionsAcceptableForSaveText();
+        string DirectoryFileSaveFileText { get; }
+
+        /// <summary>
+        /// Retorna se as condições necessárias para salver o arquivo de texto em disco forem satisfatórias
+        /// </summary>
+        bool IsConditionsAcceptableForSaveText { get; }
     }
 }

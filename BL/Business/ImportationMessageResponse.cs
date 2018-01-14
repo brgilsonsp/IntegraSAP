@@ -1,45 +1,35 @@
 ﻿using System;
 using BL.InnerUtil;
+using BL.Infra;
 
 namespace BL.Business
 {
-    public class ImportationMessageResponse : OriginalText
+    public class ImportationMessageResponse : IOriginalText
     {
         private string _xml;
         private ConfigureService _configureService;
-        private int _message;
+        private byte _numberOfMessage;
         private string _embarque;
+        private PathSaveFile _pathSaveFile;
 
-        public string ContentText { get { return this._xml; } }
-
-        public string Message { get { return MessageDetailed(); } }
-
-        public string PathSaveFileText { get { return PathCompleteOfFile(); } }
-
-        public ImportationMessageResponse(String xml, string embarque, int numberOfmessage)
+        public ImportationMessageResponse(String xml, string embarque, byte numberOfmessage)
         {
             this._xml = xml;
             this._configureService = new ConfigureService();
-            this._message = numberOfmessage;
+            this._numberOfMessage = numberOfmessage;
             this._embarque = embarque;
+            this._pathSaveFile = new PathSaveFile(_configureService.RootLog, embarque, numberOfmessage);
         }
 
-        public bool IsConditionsAcceptableForSaveText()
-        {
-            return (!String.IsNullOrEmpty(this._xml) && this._configureService != null && this._configureService.IsSaveXml);
-        }
+        public string ContentText { get { return this._xml; } }
 
-        private string PathCompleteOfFile()
-        {
-            if (this._configureService != null)
-                return PathSaveFile.PathMessageResponseImportation(_configureService.RootLog, this._embarque, this._message);
-            else
-                return null;
-        }
+        public string Message { get { return MessagesOfReturn.Message(this._numberOfMessage, Option.IMPORTACAO); } }
 
-        private string MessageDetailed()
-        {
-            return String.Format("{0} - {1}", this._message, this._embarque, MessagesOfReturn.IMPORTATION_RESPONSE);
-        }
+        public string PathFileSaveFileText { get { return _pathSaveFile.PathFileMessageResponseImportation; } }
+
+        public string DirectoryFileSaveFileText { get { return _pathSaveFile.DirectoryFileMessageResponse; } }
+
+        public bool IsConditionsAcceptableForSaveText { get { return this._configureService.IsSaveXml; } }
+        
     }
 }

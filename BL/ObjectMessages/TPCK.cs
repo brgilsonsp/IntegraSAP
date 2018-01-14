@@ -27,7 +27,15 @@ namespace BL.ObjectMessages
         public int EmbarqueID { get; set; }
 
         [XmlIgnore]
-        public virtual Embarque Embarque { get; set; }
+        public virtual Embarque Embarque
+        {
+            get { return this._embarque; }
+            set
+            {
+                this._embarque = value;
+                this._sbeln = this._embarque != null ? this._embarque.SBELN : "";
+            }
+        }
         
         [XmlIgnore]
         [Column("ABLFD")]
@@ -45,9 +53,11 @@ namespace BL.ObjectMessages
         
         #region private
         
-        private DateTime? _ablfd;        
-        private DateTime? _bldat;        
+        private DateTime? _ablfd;
+        private DateTime? _bldat;
         private DateTime? _zfbdt;
+        private Embarque _embarque;
+        private string _sbeln;
         private string _docnr;
         private string _pctyp;
         private string _parid;
@@ -66,7 +76,7 @@ namespace BL.ObjectMessages
 
         [XmlElement(Order = 1)]
         [NotMapped]
-        public string SBELN { get; set; }
+        public string SBELN { get { return this._sbeln; } set { this._sbeln = value; } }
         
         [XmlElement(Order = 2)]
         public string DOCNR { get { return ConverterValue.StringNullToEmpty(this._docnr); } set { this._docnr = value; } }

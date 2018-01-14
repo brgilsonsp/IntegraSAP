@@ -3,6 +3,7 @@ using BL.ObjectMessages;
 using BL.InnerUtil;
 using System.Collections.Generic;
 using System;
+using BL.Business;
 
 namespace BL.Command
 {
@@ -22,8 +23,8 @@ namespace BL.Command
             if (status == null)
             {
                 status = new Status();
-                status.CODE = MessagesOfReturn.INTERN_CODE;
-                status.DESC = MessagesOfReturn.DESC_CODE;
+                status.CODE = MessagesOfReturn.InternalCode;
+                status.DESC = MessagesOfReturn.Description;
             }
             status.SBELN = sbeln;
             status.Mensagem = message;
@@ -40,14 +41,13 @@ namespace BL.Command
         /// <param name="embarque">Embarque</param>
         protected void SaveStatus(Status status, Embarque embarque = null)
         {
-             
             if (embarque != null && !string.IsNullOrEmpty(embarque.SBELN))
                 status.SBELN = embarque.SBELN;
 
             new StatusDao().Save(status);
 
             //Salva no BD os detalhes
-            if (status.ERRORS.Count > 0)
+            if (status.ERRORS != null && status.ERRORS.Count > 0)
             {
                 IList<DetalheError> detalhes = new List<DetalheError>();
                 foreach (Status erro in status.ERRORS)
@@ -55,6 +55,20 @@ namespace BL.Command
 
                 new DetalheErrorDao().SaveAll(detalhes);
             }
+        }
+
+        /// <summary>
+        /// Configura o erro e salva no banco de dados
+        /// </summary>
+        /// <param name="xmlResponse">Mensagem de erro enviado pelo Webservice</param>
+        /// <param name="message">Mensagem que se refere o erro</param>
+        /// <param name="option">Opção que se refere o erro (Exportação/Importação)</param>
+        protected void SaveStatusError(string xmlResponse, byte message, string option)
+        {
+            ResponseFatalError returnError = new DeserializeXml<ResponseFatalError>().deserializeXmlForDB(xmlResponse);
+            Status status = new Status(returnError.RESPONSE);
+            ConfigureStatus(status, message, option);
+            SaveStatus(status);
         }
     }
 }

@@ -51,8 +51,7 @@ namespace BL.ObjectMessages
         private int? _dttmstr;
 
         #endregion
-
-
+        
         [XmlAttribute]
         public string Type { get; set; }
 

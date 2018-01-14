@@ -3,8 +3,9 @@ using System;
 using System.Configuration;
 using BL.InnerUtil;
 using System.IO;
+using BL.Business;
 
-namespace BL.Business
+namespace BL.Infra
 {
     /// <summary>
     /// Manipula o arquivo de configuração do serviço
@@ -14,10 +15,10 @@ namespace BL.Business
         private Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
         /// <summary>
-        /// Retorna o Caminho raiz definido pelo usuário aonde o arquivo de Log será salvo
+        /// Obtém do aap.config o caminho que o usuário definiu aonde será salvo o arquivo de log
         /// </summary>
-        public string RootLog { get { return RootForSaveLog(); } }
-
+        public string RootLog { get { return config.AppSettings.Settings[Option.PATH_LOG].Value; } }
+        
         /// <summary>
         /// Verifica se o usuário permitiu a gravação do arquivo XML
         /// </summary>
@@ -46,7 +47,7 @@ namespace BL.Business
             objServiceBkp.systemServiceModel.client.endpoint.address = objService.systemServiceModel.client.endpoint.address;
             objServiceBkp.appSettings.add = objService.appSettings.add;
 
-            XmlForGTE<ObjServiceTrocaXMLConfig> serializa = new XmlForGTE<ObjServiceTrocaXMLConfig>();
+            SerializeXml<ObjServiceTrocaXMLConfig> serializa = new SerializeXml<ObjServiceTrocaXMLConfig>();
             string objSerializado = serializa.serializeXmlForGTE(objServiceBkp);
 
             using (StreamWriter writer = new StreamWriter("ServiceTrocaXML.exe.config", false))
@@ -63,7 +64,7 @@ namespace BL.Business
         private ObjServiceTrocaXMLConfig GetConfigServiceConfigured()
         {
             string xmlConfig = File.ReadAllText("ServiceTrocaXML.exe.config");
-            ObjectForDB<ObjServiceTrocaXMLConfig> objConfig = new ObjectForDB<ObjServiceTrocaXMLConfig>();
+            DeserializeXml<ObjServiceTrocaXMLConfig> objConfig = new DeserializeXml<ObjServiceTrocaXMLConfig>();
             return objConfig.deserializeXmlForDB(xmlConfig);
         }
 
@@ -80,23 +81,6 @@ namespace BL.Business
                 return Int32.Parse(settings.Settings[Option.DELAY_PROCCESS].Value);
             }
             catch (Exception) { return 0; }
-        }
-
-        /// <summary>
-        /// Obtém diretório raiz configurado pelo usuário aonde será salvo os arquivos de log e os arquivos XML
-        /// </summary>
-        /// <returns>string</returns>
-        private string RootForSaveLog()
-        {
-            try
-            {
-                var settings = config.AppSettings;
-                return settings.Settings[Option.PATH_LOG].Value;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
         }
 
         /// <summary>

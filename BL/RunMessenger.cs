@@ -1,18 +1,14 @@
 ﻿using BL.Command;
 using System;
-using BL.InnerException;
-using System.IO;
-using BL.Business;
-using BL.ObjectMessages;
-using System.Collections.Generic;
-using BL.InnerUtil;
 using BL.DAO;
+using BL.Infra;
+using BL.InnerUtil;
+using System.Diagnostics;
 
 namespace BL
 {
     public class RunMessenger
     {
-
         /// <summary>
         /// Instancia as classes do tipo Mensagem do BL.Command 
         /// e invoca o método SwapXmlWithGTE
@@ -20,11 +16,13 @@ namespace BL
         /// <returns></returns>
         public void StartChangeXML()
         {
-            
-            for (int i = 0; i < 4; i++)
+            string tipo = "Exportação";
+            for (int i = 0; i < 5; i++)
             {
                 string retorno = "";
                 int message = i + 1;
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
                 try
                 {
                     //Recarrega o contexto
@@ -39,35 +37,20 @@ namespace BL
 
                     //Efetua a troca da Mensagem com o Web Service do GTE
                     retorno += mensagem.SwapXmlWithGTE();
-                    MakeLog.MakeFileLogUser(retorno, message.ToString(), Option.FILE_LOG_USER);
-                }
-                catch (BaseInnerException iE)
-                {
-                    try
-                    {
-                        //Escreve o arquivo de log se lançar um BaseInnerException
-                        MakeLog.MakeFileBaseException(message, iE);
-                    }
-                    catch (Exception ex)
-                    {
-                        //Se não conseguir criar o arquivo de log, cria um log no c:\ informando
-                        //a mensagem da excetpion que foi lançada
-                        MakeLog.MakeFileExceptionLog(MessagesOfReturn.ERROR_CREATE_LOG_USER, ex.Message);
-                    }
+                    //MakeLog.BuildLogUser(retorno, byte.Parse(message.ToString()), tipo);
                 }
                 catch (Exception ex)
                 {
-                    try
-                    {
-                        //Escreve o arquivo de log se lançar um Exception
-                        MakeLog.MakeFileException(message.ToString(), ex);
-                    }
-                    catch (Exception ex1)
-                    {
-                        //Se não conseguir criar o arquivo de log, cria um log no c:\ informando
-                        //a mensagem da excetpion que foi lançada
-                        MakeLog.MakeFileExceptionLog(MessagesOfReturn.ERRORCREATELOGSUPORT, ex1.Message);
-                    }
+                    string messageError = MessagesOfReturn.ExceptionMessageLogSupport($"Message {message}");
+                    int codeMessageError = MakeLog.BuildErrorLogSupport(ex, messageError, "RunMessenger");
+                    messageError = $"Erro Faltal{Environment.NewLine}";
+                    retorno += MessagesOfReturn.ExceptionMessageLogUser(codeMessageError, message.ToString());
+                    //MakeLog.BuildLogUser(messageError, byte.Parse(message.ToString()), tipo);
+                }
+                finally
+                {
+                    stopwatch.Stop();
+                    MakeLog.BuildLogUser(retorno, byte.Parse(message.ToString()), tipo, stopwatch.Elapsed);
                 }
             }
         }

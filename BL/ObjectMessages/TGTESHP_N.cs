@@ -163,8 +163,7 @@ namespace BL.ObjectMessages
         private string _prod;
 
         #endregion
-
-
+        
         [XmlAttribute]
         [Column("TypeTGTESHPN")]
         public string Type { get; set; }
