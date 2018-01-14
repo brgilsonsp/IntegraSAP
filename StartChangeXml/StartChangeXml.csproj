@@ -90,6 +90,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ApenasTeste\UI.csproj">
+      <Project>{e321972e-fc93-404f-82a5-3f92b952cf12}</Project>
+      <Name>UI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BL\BL.csproj">
       <Project>{91A4D5D2-BE18-475E-AF1E-5B1BF15BB91D}</Project>
       <Name>BL</Name>

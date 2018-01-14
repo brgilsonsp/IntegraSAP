@@ -11,6 +11,7 @@ using System.Threading;
 using BL;
 using System.IO;
 using BL.Business;
+using BL.Infra;
 
 namespace ServiceTrocaXML
 {

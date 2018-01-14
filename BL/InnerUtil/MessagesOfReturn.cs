@@ -4,8 +4,6 @@ namespace BL.InnerUtil
 {
     public static class MessagesOfReturn
     {
-        
-
         public static string ExceptionRequestWebService { get { return $"Ocorreu uma exceção ao efetuar a comunicação com o WebService. Verifique as exceções internas:{Environment.NewLine}"; } }
         public static string ExceptionDeserializeXml { get { return $"Ocorreu uma exceção ao desserializar um arquivo Xml. Verifique as exceções internas:{Environment.NewLine}"; } }
         public static string ExceptionSerializeXml { get { return $"Ocorreu uma exceção ao serializar um arquivo Xml. Verifique as exceções internas:{Environment.NewLine}"; } }
@@ -75,7 +73,16 @@ namespace BL.InnerUtil
         }
         public static string Message(byte message, string tipo)
         {
-            return $"Mensagem: {message} - Tipo: {tipo}";}
+            return $"Mensagem: {message} - Tipo: {tipo}";
+        }
+
+        public static string ErrorOpenFileConfig { get { return "Não foi possível abrir o arquivo de configuração"; } }
+        public static string ErrorInfo { get { return "Error: "; } }
+        public static string Information { get { return "Informação: "; } }
+        public static string SuccessUpdateConfig { get { return "Configurações alteradas com sucesso"; } }
+        public static string NotSaveUpdateTitle { get { return "As configurações não foram alteradas"; } }
+        public static string NotSaveUpdateConfig { get { return "Verifique se você possui acesso ao diretório de configuração do serviço TrocaXML"; } }
+        public static string FieldEmpty { get { return "Os campos não podem ser em branco. Verique o(s)campo(s) abaixo: "; } }
 
     }
 }
