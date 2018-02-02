@@ -8,17 +8,32 @@ namespace BL.InnerUtil
         public static string ExceptionDeserializeXml { get { return $"Ocorreu uma exceção ao desserializar um arquivo Xml. Verifique as exceções internas:{Environment.NewLine}"; } }
         public static string ExceptionSerializeXml { get { return $"Ocorreu uma exceção ao serializar um arquivo Xml. Verifique as exceções internas:{Environment.NewLine}"; } }
         public static string ExceptionGetDatasToRequest { get { return $"Ocorreu uma exceção ao obter os dados para a requisição. Verifique as exceções internas:{Environment.NewLine}"; } }
+        public static string InternalCode { get { return "Interno"; } }
+        public static string Description { get { return "Não recebeu nenhuma informação do WebService"; } }
+        public static string LineDashed { get { return $"---------------------------------------------------------------------------------{Environment.NewLine} "; } }
+        public static string ActualDateInfo { get { return $"Data: {DateTime.Now.ToLocalTime()}{Environment.NewLine}"; } }
+        public static string ErrorOpenFileConfig { get { return "Não foi possível abrir o arquivo de configuração"; } }
+        public static string ErrorInfo { get { return "Error: "; } }
+        public static string Information { get { return "Informação: "; } }
+        public static string SuccessUpdateConfig { get { return "Configurações alteradas com sucesso"; } }
+        public static string NotSaveUpdateTitle { get { return "As configurações não foram alteradas"; } }
+        public static string NotSaveUpdateConfig { get { return "Verifique se você possui acesso ao diretório de configuração do serviço TrocaXML"; } }
+        public static string FieldEmpty { get { return "Os campos não podem ser em branco. Verique o(s)campo(s) abaixo: "; } }
+        public static string NewLine { get { return $"{Environment.NewLine}"; } }
+        public static string CodeErrorInfo(int code) { return $"* Código: {code} *{Environment.NewLine}"; }
+
+
         public static string ExceptionSaveXml(string nameXml)
         {
             return $"Ocorreu erro ao salvar o XML {nameXml}. Verifique se o diretório existe ou se possui permissão de escrita.{Environment.NewLine}";
         }
-        public static string ExceptionMessageLogSupport(string message, string sbeln)
+
+        public static string ExceptionMessageLogSupport(string message, string sbeln, NumberOfMessage numberOfMessage)
         {
-            return $"O processo da {message} para o embarque {sbeln} falhou. Mensagens das exceções:{Environment.NewLine}";
-        }
-        public static string ExceptionMessageLogSupport(string message)
-        {
-            return $"O processo da {message} falhou. Mensagens das exceções:{Environment.NewLine}";
+            if(numberOfMessage == NumberOfMessage.One || string.IsNullOrEmpty(sbeln))
+                return $"O processo da {message} falhou.{Environment.NewLine}Mensagem:{Environment.NewLine}";
+            else
+                return $"O processo da {message} para o embarque {sbeln} falhou.{Environment.NewLine}Mensagem:{Environment.NewLine}";
         }
         public static string ExceptionMessageLogUser(int code, string messageError)
         {
@@ -49,40 +64,25 @@ namespace BL.InnerUtil
         {
             return $"A requisição da {message} não foi solicitada.{Environment.NewLine}";
         }
-        public static string AlertResponseWebServiceErrorWithSbeln(string message, string sbeln)
+        public static string AlertResponseWebServiceError(string message, string identifier, NumberOfMessage numberOfMessage)
         {
-            return $"O Embarque \"{sbeln}\" para o processo \"{message}\" foi enviada com sucesso, porém retornou erro, consulte as tabelas StatusRetorno e DetalheError para maiores informações. {Environment.NewLine}";
-        }
-        public static string AlertResponseWebServiceErrorWithIdBroker(string message, string idBoker)
-        {
-            return $"O processo da {message} requisitado pelo IdBroker {idBoker} foi enviada com sucesso, porém retornou erro, consulte as tabelas StatusRetorno e DetalheError para maiores informações. {Environment.NewLine}";
-        }
-        public static string InternalCode { get { return "Interno"; } }
-        public static string Description { get { return "Não recebeu nenhuma informação do WebService"; } }
-        public static string LineDashed { get { return $"---------------------------------------------------------------------------------{Environment.NewLine} "; } }
-        public static string ActualDateInfo { get { return $"Data: {DateTime.Now.ToLocalTime()}{Environment.NewLine}"; } }
+            if(numberOfMessage == NumberOfMessage.One)
+                return $"O processo da {message} requisitado pelo IdBroker {identifier} foi enviada com sucesso, porém retornou erro, consulte as tabelas StatusRetorno e DetalheError para maiores informações. {Environment.NewLine}";
+            else
+                return $"O Embarque \"{identifier}\" para o processo \"{message}\" foi enviada com sucesso, porém retornou erro, consulte as tabelas StatusRetorno e DetalheError para maiores informações. {Environment.NewLine}";
+        } 
         public static string TotalTime(TimeSpan total)
         {
             return $"Tempo total: {total}{Environment.NewLine}";
         }
-        public static string CodeErrorInfo(int code) { return $"* Código: {code} *{Environment.NewLine}"; }
-
-        public static string TitleLogUser(byte message, string tipo)
+        public static string TitleLogUser(NumberOfMessage message)
         {
-            return $"{Message(message, tipo)}{Environment.NewLine}";
+            return $"Mensagem: {(byte)message}{Environment.NewLine}";
         }
-        public static string Message(byte message, string tipo)
+        public static string Message(NumberOfMessage message, string tipo)
         {
-            return $"Mensagem: {message} - Tipo: {tipo}";
+            return $"Mensagem: {(byte)message} - Tipo: {tipo}";
         }
-
-        public static string ErrorOpenFileConfig { get { return "Não foi possível abrir o arquivo de configuração"; } }
-        public static string ErrorInfo { get { return "Error: "; } }
-        public static string Information { get { return "Informação: "; } }
-        public static string SuccessUpdateConfig { get { return "Configurações alteradas com sucesso"; } }
-        public static string NotSaveUpdateTitle { get { return "As configurações não foram alteradas"; } }
-        public static string NotSaveUpdateConfig { get { return "Verifique se você possui acesso ao diretório de configuração do serviço TrocaXML"; } }
-        public static string FieldEmpty { get { return "Os campos não podem ser em branco. Verique o(s)campo(s) abaixo: "; } }
-
+        
     }
 }

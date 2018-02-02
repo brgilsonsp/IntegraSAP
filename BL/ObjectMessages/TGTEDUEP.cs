@@ -31,7 +31,14 @@ namespace BL.ObjectMessages
 
         [XmlIgnore]
         public virtual Embarque Embarque { get; set; }
-        
+
+        [XmlIgnore]
+        [Column("IDTGTESHKN")]
+        public int TGTESHK_NID { get; set; }
+
+        [XmlIgnore]
+        public virtual TGTESHK_N TGTESHK_N { get; set; }
+
         [XmlIgnore]
         [Column("DUEPOSNR")]
         public int? DUEPOSNRDB { get { return this._dueposnr; } set { this._dueposnr = value; } }
@@ -167,16 +174,16 @@ namespace BL.ObjectMessages
         public string CPNJCPFEXP { get { return ConverterValue.IntNullableToString(this._cpnjcpfexp); } set { this._cpnjcpfexp = ConverterValue.StringToIntNullable(value); } }
 
         [XmlElement("ADDINFO_TAB")]
-        public virtual List<ADDINFO_TAB_TGTEDUEP> ADDINFO_TAB { get; set; }
+        public List<ADDINFO_TAB_TGTEDUEP> ADDINFO_TAB { get; set; }
 
         [XmlElement("NFEREF_TAB")]
-        public virtual List<NFEREF_TAB_TGTEDUEP> NFEREF_TAB { get; set; }
+        public List<NFEREF_TAB_TGTEDUEP> NFEREF_TAB { get; set; }
 
         [XmlElement("ATOCON_TAB")]
-        public virtual List<ATOCON_TAB_TGTEDUEP> ATOCON_TAB { get; set; }
+        public List<ATOCON_TAB_TGTEDUEP> ATOCON_TAB { get; set; }
 
         [XmlElement("DUEATRIB_TAB")]
-        public virtual List<DUEATRIB_TAB_TGTEDUEP> DUEATRIB_TAB { get; set; }
+        public List<DUEATRIB_TAB_TGTEDUEP> DUEATRIB_TAB { get; set; }
     }
     
 }

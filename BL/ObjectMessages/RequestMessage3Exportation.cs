@@ -12,7 +12,6 @@ namespace BL.ObjectMessages
         public RequesExportationtMsg3 REQUEST { get; set; }
     }
 
-    //[XmlInclude(typeof(TGTESHK_N)), XmlInclude(typeof(TGTESHP_N))]
     public class RequesExportationtMsg3
     {
         [XmlAttribute]

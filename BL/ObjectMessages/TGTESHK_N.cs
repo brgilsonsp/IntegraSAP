@@ -2,6 +2,7 @@
 using System.Xml.Serialization;
 using BL.InnerUtil;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace BL.ObjectMessages
 {
@@ -133,8 +134,26 @@ namespace BL.ObjectMessages
         [Column("DTCE")]
         public DateTime? DTCEDB { get { return this._dtce; } set { this._dtce = value; } }
 
+        [XmlIgnore]
+        public List<TGTESHP_N> TGTESHP_N { get; set; }
+
+        [XmlIgnore]
+        public List<TGTERES> TGTERES { get; set; }
+
+        [XmlIgnore]
+        public List<TGTEPRD> TGTEPRD { get; set; }
+
+        [XmlIgnore]
+        public List<SHP_TEXT> SHP_TEXT { get; set; }
+
+        [XmlIgnore]
+        public List<TGTEDUEK> TGTEDUEK { get; set; }
+
+        [XmlIgnore]
+        public List<TGTEDUEP> TGTEDUEP { get; set; }
+
         #endregion
-        
+
 
         #region private
 

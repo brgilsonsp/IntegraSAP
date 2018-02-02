@@ -13,7 +13,7 @@ namespace BL.Infra
         /// </summary>
         /// <param name="xmlOriginal">Objeto que contém as propriedades do XML que será gravado</param>
         /// <exception cref="ChangeXmlException">Lança a exceção do tipo ChangeXmlException com uma mensagem e internamente as exeções que ocorreram</exception>
-        public static void SaveXML(IOriginalText xmlOriginal)
+        public static void SaveXML(ContentText xmlOriginal)
         {
             //Verifica se o arquivo deve ser salva
             if (xmlOriginal.IsConditionsAcceptableForSaveText)
@@ -22,12 +22,8 @@ namespace BL.Infra
                 {
                     RecordFile.CreateDirectorIfNotExisty(xmlOriginal.DirectoryFileSaveFileText);
 
-                    RecordFile.SaveFile(xmlOriginal.PathFileSaveFileText, xmlOriginal.ContentText);
-
-                    //using (var arq = File.AppendText(xmlOriginal.PathFileSaveFileText))
-                    //{
-                    //    arq.WriteLine(xmlOriginal.ContentText);
-                    //}
+                    RecordFile.SaveFile(xmlOriginal.PathFileSaveFileText, xmlOriginal.Content);
+                    
                 }
                 catch (Exception ex)
                 {

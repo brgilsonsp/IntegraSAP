@@ -27,15 +27,7 @@ namespace BL.ObjectMessages
         public int EmbarqueID { get; set; }
 
         [XmlIgnore]
-        public virtual Embarque Embarque
-        {
-            get { return this._embarque; }
-            set
-            {
-                this._embarque = value;
-                this._sbeln = this._embarque != null ? this._embarque.SBELN : "";
-            }
-        }
+        public virtual Embarque Embarque { get; set; }
         
         [XmlIgnore]
         [Column("ABLFD")]
@@ -57,7 +49,6 @@ namespace BL.ObjectMessages
         private DateTime? _bldat;
         private DateTime? _zfbdt;
         private Embarque _embarque;
-        private string _sbeln;
         private string _docnr;
         private string _pctyp;
         private string _parid;
@@ -72,11 +63,11 @@ namespace BL.ObjectMessages
 
         [XmlAttribute]
         [Column("TypePCK")]
-        public string Type;
+        public string Type { get; set; }
 
         [XmlElement(Order = 1)]
         [NotMapped]
-        public string SBELN { get { return this._sbeln; } set { this._sbeln = value; } }
+        public string SBELN { get; set; }
         
         [XmlElement(Order = 2)]
         public string DOCNR { get { return ConverterValue.StringNullToEmpty(this._docnr); } set { this._docnr = value; } }
@@ -115,6 +106,6 @@ namespace BL.ObjectMessages
         public string STATU { get { return ConverterValue.StringNullToEmpty(this._statu); } set { this._statu = value; } }
 
         [XmlElement("TXPNS", Order = 13)]
-        public virtual List<TXPNS> TXPNS { get; set; }
+        public List<TXPNS> TXPNS { get; set; }
     }
 }

@@ -27,6 +27,13 @@ namespace BL.ObjectMessages
         [XmlIgnore]
         public virtual Embarque Embarque { get; set; }
 
+        [XmlIgnore]
+        [Column("IDTGTESHKN")]
+        public int TGTESHK_NID { get; set; }
+
+        [XmlIgnore]
+        public virtual TGTESHK_N TGTESHK_N { get; set; }
+
         #endregion
 
 

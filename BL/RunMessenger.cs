@@ -16,7 +16,6 @@ namespace BL
         /// <returns></returns>
         public void StartChangeXML()
         {
-            string tipo = "Exportação";
             for (int i = 0; i < 5; i++)
             {
                 string retorno = "";
@@ -35,24 +34,36 @@ namespace BL
                     var classe = Activator.CreateInstance(null, objeto);
                     IMessage mensagem = (IMessage)classe.Unwrap();
 
-                    //Efetua a troca da Mensagem com o Web Service do GTE
-                    retorno += mensagem.SwapXmlWithGTE();
-                    //MakeLog.BuildLogUser(retorno, byte.Parse(message.ToString()), tipo);
+                    //Efetua a troca da Mensagem com o Web Service
+                    retorno += mensagem.Execute();
                 }
                 catch (Exception ex)
                 {
-                    string messageError = MessagesOfReturn.ExceptionMessageLogSupport($"Message {message}");
+                    string messageError = MessagesOfReturn.ExceptionMessageLogSupport($"Message {message}", null, GetNumberOfMessage(message));
                     int codeMessageError = MakeLog.BuildErrorLogSupport(ex, messageError, "RunMessenger");
                     messageError = $"Erro Faltal{Environment.NewLine}";
                     retorno += MessagesOfReturn.ExceptionMessageLogUser(codeMessageError, message.ToString());
-                    //MakeLog.BuildLogUser(messageError, byte.Parse(message.ToString()), tipo);
                 }
                 finally
                 {
                     stopwatch.Stop();
-                    MakeLog.BuildLogUser(retorno, byte.Parse(message.ToString()), tipo, stopwatch.Elapsed);
+                    MakeLog.BuildLogUser(retorno, GetNumberOfMessage(message), stopwatch.Elapsed);
                 }
             }
+        }
+
+        private NumberOfMessage GetNumberOfMessage(int message)
+        {
+            if (message.Equals(1))
+                return NumberOfMessage.One;
+            if (message.Equals(2))
+                return NumberOfMessage.Two;
+            if (message.Equals(3))
+                return NumberOfMessage.Three;
+            if (message.Equals(4))
+                return NumberOfMessage.Four;
+            else
+                return NumberOfMessage.Five;
         }
 
     }

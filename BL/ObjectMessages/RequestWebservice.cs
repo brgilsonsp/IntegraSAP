@@ -4,8 +4,12 @@ namespace BL.ObjectMessages
 {
     public class RequestWebservice
     {
+        #region only DB
+
         [XmlIgnore]
         public int IDDadosBroker { get; set; }
+        
+        #endregion
 
         [XmlAttribute]
         public string Type { get; set; }
@@ -22,6 +26,7 @@ namespace BL.ObjectMessages
 
         public string SBELN { get; set; }
 
+
         public RequestWebservice() { }
 
         public RequestWebservice(DataHeaderRequest dadosMessage1)
@@ -37,7 +42,7 @@ namespace BL.ObjectMessages
         public RequestWebservice(DataHeaderRequest dadosMessage1, Embarque embarque)
             : this(dadosMessage1)
         {
-            this.SBELN = embarque.SBELN;
+            SBELN = embarque.SBELN;
         }
     }
 }

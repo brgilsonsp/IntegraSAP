@@ -1,4 +1,5 @@
-﻿using BL.InnerUtil;
+﻿using BL.Business;
+using BL.InnerUtil;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;

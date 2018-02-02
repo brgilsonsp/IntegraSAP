@@ -9,29 +9,29 @@ namespace BL.DAO
 
         private ChangeXMLContext _context = ChangeXMLContext.GetInstance();
 
-        public IList<Embarque> FindConsultaDetalheEnableAsNoTracking()
+        public IList<Embarque> FindConsultaDetalheEnableAsNoTracking(string kindfOeMessge)
         {
-            return _context.Embarques.AsNoTracking().Where(e => e.ConsultaDetalhe == true).ToList();
+            return _context.Embarques.AsNoTracking().Where(e => e.ConsultaDetalhe == true && e.Tipo == kindfOeMessge).ToList();
         }
 
-        public IList<Embarque> FindAtualizaDetalheEnbaleAsNoTracking()
+        public IList<Embarque> FindAtualizaDetalheEnbaleAsNoTracking(string kindfOeMessge)
         {
-            return _context.Embarques.AsNoTracking().Where(e => e.AtualizaDetalhe == true).ToList();
+            return _context.Embarques.AsNoTracking().Where(e => e.AtualizaDetalhe == true && e.Tipo == kindfOeMessge).ToList();
         }
 
-        public IList<Embarque> FindEnviaPrestacaoContaEnbaleAsNoTracking()
+        public IList<Embarque> FindEnviaPrestacaoContaEnbaleAsNoTracking(string kindfOeMessge)
         {
-            return _context.Embarques.AsNoTracking().Where(e => e.EnviaPrestConta == true).ToList();
+            return _context.Embarques.AsNoTracking().Where(e => e.EnviaPrestConta == true && e.Tipo == kindfOeMessge).ToList();
         }
 
-        public IList<Embarque> FindConsultaPrestacaoContaEnbaleAsNoTracking()
+        public IList<Embarque> FindConsultaPrestacaoContaEnbaleAsNoTracking(string kindfOeMessge)
         {
-            return _context.Embarques.AsNoTracking().Where(e => e.ConsultaPrestConta == true).ToList();
+            return _context.Embarques.AsNoTracking().Where(e => e.ConsultaPrestConta == true && e.Tipo == kindfOeMessge).ToList();
         }
 
-        public Embarque FindBySbelnAsNoTracking(string sbeln)
+        public Embarque FindBySbelnAsNoTracking(string sbeln, string kinfOeMessge)
         {
-            return _context.Embarques.AsNoTracking().FirstOrDefault(e => e.SBELN == sbeln);
+            return _context.Embarques.AsNoTracking().FirstOrDefault(e => e.SBELN == sbeln && e.Tipo == kinfOeMessge);
         }
 
         public Embarque FindByIdAsNoTracking(int id)
@@ -39,9 +39,9 @@ namespace BL.DAO
             return _context.Embarques.AsNoTracking().FirstOrDefault(e => e.ID == id);
         }
 
-        public Embarque FindBySbeln(string sbeln)
+        public Embarque FindBySbeln(string sbeln, string kinfOeMessge)
         {
-            return _context.Embarques.FirstOrDefault(e => e.SBELN == sbeln);
+            return _context.Embarques.FirstOrDefault(e => e.SBELN == sbeln && e.Tipo == kinfOeMessge);
         }
 
         public Embarque FindById(int id)
@@ -61,9 +61,9 @@ namespace BL.DAO
             _context.SaveChanges();
         }
 
-        public List<string> GetListSbeln()
+        public List<string> GetListSbeln(string kindOfMessage)
         {
-            return _context.Embarques.Select(e => e.SBELN).ToList();
+            return _context.Embarques.Where(e => e.Tipo == kindOfMessage).Select(e => e.SBELN).ToList();
         }
     }
 }

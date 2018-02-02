@@ -28,7 +28,14 @@ namespace BL.ObjectMessages
 
         [XmlIgnore]
         public virtual Embarque Embarque { get; set; }
-        
+
+        [XmlIgnore]
+        [Column("IDTGTESHKN")]
+        public int TGTESHK_NID { get; set; }
+
+        [XmlIgnore]
+        public virtual TGTESHK_N TGTESHK_N { get; set; }
+
         [XmlIgnore]
         [Column("DDEADT")]
         public DateTime? DDEADTDB { get { return this._ddeadt; } set { this._ddeadt = value; } }

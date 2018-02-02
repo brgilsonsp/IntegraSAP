@@ -31,7 +31,14 @@ namespace BL.ObjectMessages
 
         [XmlIgnore]
         public virtual Embarque Embarque { get; set; }
-        
+
+        [XmlIgnore]
+        [Column("IDTGTESHKN")]
+        public int TGTESHK_NID { get; set; }
+
+        [XmlIgnore]
+        public virtual TGTESHK_N TGTESHK_N { get; set; }
+
         [XmlIgnore]
         [Column("CDRAD")]
         public int? CDRADDB { get { return this._cdrad; } set { this._cdrad = value; } }

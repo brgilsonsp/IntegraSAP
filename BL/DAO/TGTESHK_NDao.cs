@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BL.DAO
 {
-    public class TGTESHK_NDao
+    public class TGTESHK_NDao : IContextChangeXml<TGTESHK_N>
     {
         private ChangeXMLContext _context = ChangeXMLContext.GetInstance();
 
@@ -28,36 +28,65 @@ namespace BL.DAO
             _context.SaveChanges();
         }
 
-        public void Remove(TGTESHK_N item)
+        public void Delete(TGTESHK_N item)
         {
             _context.TGTESHK_Ns.Remove(item);
             _context.SaveChanges();
         }
 
-        public void RemoveAll(IList<TGTESHK_N> itens)
+        public void DeleteAll(IList<TGTESHK_N> itens)
         {
             _context.TGTESHK_Ns.RemoveRange(itens);
             _context.SaveChanges();
         }
 
-        public List<TGTESHK_N> FindByIdEmbarque(int indEmbarque)
+        public TGTESHK_N FindByIdEager(int idItem)
         {
-            return _context.TGTESHK_Ns.Where(t => t.EmbarqueID == indEmbarque).ToList();
+            return AllEager().FirstOrDefault(t => t.ID == idItem);
         }
 
-        public TGTESHK_N FindByID(int id)
+        public TGTESHK_N FindByIdLazy(int idItem)
         {
-            return _context.TGTESHK_Ns.FirstOrDefault(t => t.ID == id);
-        }
-        
-        public List<TGTESHK_N> FindByIdEmbarqueAsNoTracking(int indEmbarque)
-        {
-            return _context.TGTESHK_Ns.AsNoTracking().Where(t => t.EmbarqueID == indEmbarque).ToList();
+            return _context.TGTESHK_Ns.FirstOrDefault(t => t.ID == idItem);
         }
 
-        public TGTESHK_N FindByIDAsNoTracking(int id)
+        public IList<TGTESHK_N> FindByIdEmbarqueEager(int idEmbarque)
         {
-            return _context.TGTESHK_Ns.AsNoTracking().FirstOrDefault(t => t.ID == id);
+            return AllEager().Where(t => t.EmbarqueID == idEmbarque).ToList();
+        }
+
+        public IList<TGTESHK_N> FindByIdEmbarqueLazy(int idEmbarque)
+        {
+            return _context.TGTESHK_Ns.Where(t => t.EmbarqueID == idEmbarque).ToList();
+        }
+
+        public IList<TGTESHK_N> FindAllEager()
+        {
+            return AllEager().ToList();
+        }
+
+        public IList<TGTESHK_N> FindAllLazy()
+        {
+            return _context.TGTESHK_Ns.ToList();
+        }
+
+        private IQueryable<TGTESHK_N> AllEager()
+        {
+            return from tgteshkn in _context.TGTESHK_Ns
+           .Include("TGTESHP_N")
+           .Include("TGTESHP_N.MAKTX_TEXT")
+           .Include("TGTERES")
+           .Include("TGTEPRD")
+           .Include("SHP_TEXT")
+           .Include("TGTEDUEK")
+           .Include("TGTEDUEK.ADDRESS_TAB")
+           .Include("TGTEDUEK.ADDINFO_TAB")
+           .Include("TGTEDUEP")
+           .Include("TGTEDUEP.ADDINFO_TAB")
+           .Include("TGTEDUEP.NFEREF_TAB")
+           .Include("TGTEDUEP.ATOCON_TAB")
+           .Include("TGTEDUEP.DUEATRIB_TAB")
+            select tgteshkn;
         }
     }
 }

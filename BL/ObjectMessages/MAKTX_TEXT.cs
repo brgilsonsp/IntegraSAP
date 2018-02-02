@@ -22,10 +22,10 @@ namespace BL.ObjectMessages
 
         [XmlIgnore]
         [Column("IdTGTESHPN")]
-        public int TGTESHPNID { get; set; }
+        public int TGTESHP_NID { get; set; }
 
         [XmlIgnore]
-        public virtual TGTESHP_N TGTESHPN { get; set; }
+        public virtual TGTESHP_N TGTESHP_N { get; set; }
 
         #endregion
 

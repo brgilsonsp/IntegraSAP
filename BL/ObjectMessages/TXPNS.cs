@@ -36,17 +36,21 @@ namespace BL.ObjectMessages
         
         private decimal? _netwr;
         private string _kschl;
+        private string _unrealized;
 
         #endregion
 
-        [XmlAttribute][Column("TypeTXPNS")]
-        public string Type;
+        [XmlAttribute]
+        [Column("TypeTXPNS")]
+        public string Type { get; set; }
 
         public string KSCHL { get { return ConverterValue.StringNullToEmpty(this._kschl); } set { this._kschl = value; } }
 
         [NotMapped]
         public string NETWR { get { return ConverterValue.DecimalNullableToString(this._netwr); } set { this._netwr = ConverterValue.StringToDecimalNullable(value); } }
 
-        
+        public string UNREALIZED { get { return ConverterValue.StringNullToEmpty(_unrealized); } set { _unrealized = value; } }
+
+
     }
 }

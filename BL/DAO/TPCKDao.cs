@@ -1,10 +1,11 @@
 ﻿using BL.ObjectMessages;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace BL.DAO
 {
-    public class TPCKDao
+    public class TPCKDao : IContextChangeXml<TPCK>
     {
         private ChangeXMLContext _context = ChangeXMLContext.GetInstance();
 
@@ -21,36 +22,57 @@ namespace BL.DAO
             _context.SaveChanges();
         }
 
-        public void Remove(TPCK item)
+        public void Update()
+        {
+            _context.SaveChanges();
+        }
+        
+        public void Delete(TPCK item)
         {
             _context.TPCKs.Remove(item);
             _context.SaveChanges();
         }
 
-        public void RemoveAll(IList<TPCK> itens)
+        public void DeleteAll(IList<TPCK> itens)
         {
             _context.TPCKs.RemoveRange(itens);
             _context.SaveChanges();
         }
-
-        public List<TPCK> FindByIdEmbarque(int idEmbarque)
+        
+        public IList<TPCK> FindByIdEmbarqueEager(int idEmbarque)
         {
-            return _context.TPCKs.Include("TXPNS").Include("Embarque").Where(t => t.EmbarqueID == idEmbarque).ToList();
+            return AllEager().Where(t => t.EmbarqueID == idEmbarque).ToList();
         }
 
-        public List<TPCK> FindById(int id)
+        public IList<TPCK> FindByIdEmbarqueLazy(int idEmbarque)
         {
-            return _context.TPCKs.Include("TXPNS").Include("Embarque").Where(t => t.ID == id).ToList();
+            return _context.TPCKs.Where(t => t.EmbarqueID == idEmbarque).ToList();
         }
 
-        public List<TPCK> FindByIdEmbarqueAsNoTracking(int idEmbarque)
+        public TPCK FindByIdEager(int idItem)
         {
-            return _context.TPCKs.Include("TXPNS").Include("Embarque").AsNoTracking().Where(t => t.EmbarqueID == idEmbarque).ToList();
+            return AllEager().FirstOrDefault(t => t.ID == idItem);
         }
 
-        public List<TPCK> FindByIdAsNoTracking(int id)
+        public TPCK FindByIdLazy(int idItem)
         {
-            return _context.TPCKs.Include("TXPNS").Include("Embarque").AsNoTracking().Where(t => t.ID == id).ToList();
+            return _context.TPCKs.FirstOrDefault(t => t.ID == idItem);
+        }
+
+        public IList<TPCK> FindAllEager()
+        {
+            return AllEager().ToList();
+        }
+
+        public IList<TPCK> FindAllLazy()
+        {
+            return _context.TPCKs.ToList();
+        }
+
+        private IQueryable<TPCK> AllEager()
+        {
+            return from tpck in _context.TPCKs.Include("TXPNS")
+                   select tpck;
         }
     }
 }

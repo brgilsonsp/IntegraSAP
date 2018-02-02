@@ -19,6 +19,9 @@ namespace BL.ObjectMessages
         [XmlIgnore]
         public virtual DadosBroker DadosBroker { get; set; }
 
+        [XmlIgnore]
+        public string Tipo { get; set; }
+
         [Column("LASTUP")]
         [XmlIgnore]
         public DateTime? LASTUPDB { get { return this._lastup; } set { this._lastup = value; } }
@@ -64,7 +67,6 @@ namespace BL.ObjectMessages
         [NotMapped]
         public string LASTHR { get; set; }
 
-        [NotMapped]
         public string BFMAR { get; set; }
 
         public override string ToString()

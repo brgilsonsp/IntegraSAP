@@ -30,6 +30,13 @@ namespace BL.ObjectMessages
         public virtual Embarque Embarque { get; set; }
 
         [XmlIgnore]
+        [Column("IDTGTESHKN")]
+        public int TGTESHK_NID { get; set; }
+
+        [XmlIgnore]
+        public virtual TGTESHK_N TGTESHK_N { get; set; }
+
+        [XmlIgnore]
         [Column("FKDAT")]
         public DateTime? FKDATBD { get { return this._fkdat; } set { this._fkdat = value; } }
 
@@ -188,7 +195,7 @@ namespace BL.ObjectMessages
         public string MAKTX { get { return ConverterValue.StringNullToEmpty(this._maktx); } set { this._maktx = value; } }
 
         [XmlElement("MAKTX_TEXT")]
-        public virtual List<MAKTX_TEXT> MAKTX_TEXT { get; set; }
+        public List<MAKTX_TEXT> MAKTX_TEXT { get; set; }
 
         [NotMapped]
         public string QTDITM { get { return ConverterValue.DecimalNullableToString(this._qtditm); } set { this._qtditm = ConverterValue.StringToDecimalNullable(value); } }
