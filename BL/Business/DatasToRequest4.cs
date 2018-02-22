@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace BL.Business
 {
-    class DatasToRequest4 : IDatasOfRequest
+    public class DatasToRequest4 : IDatasOfRequestMessage4
     {
         private string _kindOfMessage;
         private byte _numberOfMessage;
@@ -19,10 +19,10 @@ namespace BL.Business
             _numberOfMessage = (byte)NumberOfMessage.Four;
         }
                 
-        public IDictionary<string, string> GetDatasToRequest()
+        public IDictionary<string, List<string>> GetDatasToRequest()
         {
             try { 
-                IDictionary<string, string> dictonaryForConsulting = new Dictionary<string, string>();
+                IDictionary<string, List<string>> dictonaryForConsulting = new Dictionary<string, List<string>>();
                 IList<Embarque> listEmbarque = new EmbarqueDao().FindEnviaPrestacaoContaEnbaleAsNoTracking(_kindOfMessage);
 
                 foreach (Embarque embarque in listEmbarque)
@@ -33,8 +33,13 @@ namespace BL.Business
                         Cabecalho cabecalho = dadosBroker.DadosBrokerCabecalho.FirstOrDefault(cab => cab.Cabecalho.Mensagem == _numberOfMessage && cab.Cabecalho.Tipo == _kindOfMessage).Cabecalho;
                         if (cabecalho.Mensagem == _numberOfMessage && cabecalho.Tipo == _kindOfMessage)
                         {
-                            RequestMessage4 consulta = GetObject(embarque, cabecalho, dadosBroker);
-                            string xml = new SerializeXml<RequestMessage4>().serializeXmlForGTE(consulta);
+                            List<RequestMessage4> listMessage4 = GetObject(embarque, cabecalho, dadosBroker);
+                            List<string> xml = new List<string>();
+                            foreach (RequestMessage4 consulta in listMessage4)
+                            {
+                                string eachXml = new SerializeXml<RequestMessage4>().serializeXmlForGTE(consulta);
+                                xml.Add(eachXml);
+                            }
                             dictonaryForConsulting.Add(embarque.SBELN, xml);
                         }
                     }
@@ -48,25 +53,34 @@ namespace BL.Business
             }
         }
 
-        private RequestMessage4 GetObject(Embarque embarque, Cabecalho cabecalho, DadosBroker broker)
+        private List<RequestMessage4> GetObject(Embarque embarque, Cabecalho cabecalho, DadosBroker broker)
         {
-            RequestMsg4 request = new RequestMsg4();
-            request.Type = cabecalho.RequestType;
-            request.ACAO = cabecalho.ACAO;
-            request.IDBR = broker.IDBR;
-            request.IDCL = broker.IDCL;
-            request.SHKEY = broker.SHKEY;
-            request.STR = new STR(broker);
+            List<RequestMessage4> listRequestMessage4 = new List<RequestMessage4>();
+            List<TPCK> listTpck = new TPCKDao().FindByIdEmbarqueEager(embarque.ID).ToList();
+            foreach (TPCK eachTpck in listTpck)
+            {
 
-            request.PCK = new TPCKDao().FindByIdEmbarqueEager(embarque.ID).ToList();
-            if (request.PCK != null)
-                request.PCK.ForEach(t => t.SBELN = embarque.SBELN);
+                RequestMsg4 request = new RequestMsg4();
+                request.Type = cabecalho.RequestType;
+                request.ACAO = cabecalho.ACAO;
+                request.IDBR = broker.IDBR;
+                request.IDCL = broker.IDCL;
+                request.SHKEY = broker.SHKEY;
+                request.STR = new STR(broker);
+                request.PCK = eachTpck;
+                request.PCK.SBELN = embarque.SBELN;
+                //Esse campo necessita do valor "S" para o request da Mensagem 4, porém no response da Mensagem 5 esse mesmo campo é
+                //recebido com o valor "L", sendo assim o valor que o Webservice é salvo no banco de dados e nessa requisição é alterado
+                //esse valor aqui manualmente
+                request.PCK.Type = "S";
 
-            RequestMessage4 requestMessage4 = new RequestMessage4();
-            requestMessage4.EDX = cabecalho.MensagemEDX;
-            requestMessage4.REQUEST = request;
+                RequestMessage4 requestMessage4 = new RequestMessage4();
+                requestMessage4.EDX = cabecalho.MensagemEDX;
+                requestMessage4.REQUEST = request;
 
-            return requestMessage4;
+                listRequestMessage4.Add(requestMessage4);
+            }
+            return listRequestMessage4;
         }
     }
 }

@@ -74,6 +74,7 @@
       <DependentUpon>BrokerMessageDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Business\DatasToRequestImportation3.cs" />
+    <Compile Include="Business\IDatasOfRequestMessage4.cs" />
     <Compile Include="Business\ProcessMessage.cs" />
     <Compile Include="Business\ISaveResponse.cs" />
     <Compile Include="Business\TypeMessage.cs" />

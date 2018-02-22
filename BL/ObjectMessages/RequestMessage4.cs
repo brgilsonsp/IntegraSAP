@@ -27,7 +27,7 @@ namespace BL.ObjectMessages
 
         public STR STR { get; set; }
 
-        [XmlElement("TPCK")]
-        public List<TPCK> PCK { get; set; }
+        [XmlElement("PCK")]
+        public TPCK PCK { get; set; }
     }
 }

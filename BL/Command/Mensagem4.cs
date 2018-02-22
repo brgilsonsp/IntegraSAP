@@ -24,7 +24,7 @@ namespace BL.Command
         {
             string kindMessage = Option.EXPORTACAO;
             string message = MessagesOfReturn.Message(numberOfMessage, kindMessage);
-            IDictionary<string, string> objectsToRequest = new DatasToRequest4(kindMessage).GetDatasToRequest();
+            IDictionary<string, List<string>> objectsToRequest = new DatasToRequest4(kindMessage).GetDatasToRequest();
             ContentText contentForSave = new ContentText(numberOfMessage, kindMessage);
 
             return new ProcessMessage<ResponseMessage4>(objectsToRequest, contentForSave).Process();
@@ -34,7 +34,7 @@ namespace BL.Command
         {
             string kindMessage = Option.IMPORTACAO;
             string message = MessagesOfReturn.Message(numberOfMessage, kindMessage);
-            IDictionary<string, string> objectsToRequest = new DatasToRequest4(kindMessage).GetDatasToRequest();
+            IDictionary<string, List<string>> objectsToRequest = new DatasToRequest4(kindMessage).GetDatasToRequest();
             ContentText contentForSave = new ContentText(numberOfMessage, kindMessage);
 
             return new ProcessMessage<ResponseMessage4>(objectsToRequest, contentForSave).Process();

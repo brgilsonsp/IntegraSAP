@@ -9,47 +9,102 @@ namespace BL.Business
     public class ProcessMessage<T> where T : ISaveResponse
     {
         private IDictionary<string, string> _objectsToRequest;
+        private IDictionary<string, List<string>> _objectsToRequestMessage4;
+        private bool _processMessage4;
         private ContentText _contentFile;
 
+        /// <summary>
+        /// Esse objeto deverá ser criado para todas as mensagens, EXCETO a Mensagem 4. Para a Mensagem 4 utilizar o contrutor
+        /// que recebe um IDictionary com a chave uma string e o valor uma lista de string.
+        /// </summary>
+        /// <param name="objectsToRequestMessage4">Um dictionary, sendo a chave o SBELN e o valor uma lista de requisições</param>
+        /// <param name="contentFile">Um ContentText que contém as infomrções para gerar os arquivos de log</param>
         public ProcessMessage(IDictionary<string, string> objectsToRequest, ContentText contentFile)
         {
             _objectsToRequest = objectsToRequest;
             _contentFile = contentFile;
+            _processMessage4 = false;
         }
-        
+
+        /// <summary>
+        /// Esse objeto deverá ser criado apenas para a Mensagem 4, pois poderá conter mais de um request
+        /// para um único Embarque.
+        /// </summary>
+        /// <param name="objectsToRequestMessage4">Um dictionary, sendo a chave o SBELN e o valor uma lista de requisições</param>
+        /// <param name="contentFile">Um ContentText que contém as infomrções para gerar os arquivos de log</param>
+        public ProcessMessage(IDictionary<string, List<string>> objectsToRequestMessage4, ContentText contentFile)
+        {
+            _objectsToRequestMessage4 = objectsToRequestMessage4;
+            _contentFile = contentFile;
+            _processMessage4 = true;
+        }
+
         public string Process()
-        {            
+        {
+            if (_processMessage4)
+                return ProcessOnlyMessage4();
+            else
+                return ProcessMessageExcept4();
+        }
+
+        private string ProcessMessageExcept4()
+        {
             string messageReturn = "";
-            
+
             if (_objectsToRequest.Count > 0)
             {
                 foreach (string key in _objectsToRequest.Keys)
                 {
-                    if (!string.IsNullOrEmpty(_objectsToRequest[key]))
-                    {
-                        try
-                        {
-                            string xmlRequest = _objectsToRequest[key];
-                            string fileName = GetFileName(key);
-
-                            SaveXMLOriginal.SaveXML(_contentFile.ProvideContent(xmlRequest, fileName, TypeContentText.REQUEST));
-                            
-                            string xmlResponse = RequestWebService.doRequestWebService(xmlRequest, _contentFile.Message);
-                            SaveXMLOriginal.SaveXML(_contentFile.ProvideContent(xmlResponse, fileName, TypeContentText.RESPONSE));
-                            
-                            messageReturn += SaveResponseDataBase(xmlResponse, key);
-                        }
-                        catch (Exception ex)
-                        {
-                            BuildLogException(key, ex);
-                        }
-                    }
-                    else
-                        messageReturn += MessagesOfReturn.DatasToRequestEmpty(_contentFile.Message);
+                    messageReturn = ExecuteProcessMessage(key, _objectsToRequest[key]);
                 }
             }
             else
                 messageReturn += MessagesOfReturn.NotRequest(_contentFile.Message);
+
+            return messageReturn;
+        }
+
+        private string ProcessOnlyMessage4()
+        {
+            string messageReturn = "";
+
+            if (_objectsToRequestMessage4.Count > 0)
+            {
+                foreach (string key in _objectsToRequestMessage4.Keys)
+                    foreach(string value in _objectsToRequestMessage4[key])
+                        messageReturn = ExecuteProcessMessage(key, value);
+            }
+            else
+                messageReturn += MessagesOfReturn.NotRequest(_contentFile.Message);
+
+            return messageReturn;
+        }
+
+        private string ExecuteProcessMessage(string key, string value)
+        {
+            string messageReturn = "";
+
+            if (!string.IsNullOrEmpty(value))
+            {
+                try
+                {
+                    string xmlRequest = value;
+                    string fileName = GetFileName(key);
+
+                    SaveXMLOriginal.SaveXML(_contentFile.ProvideContent(xmlRequest, fileName, TypeContentText.REQUEST));
+
+                    string xmlResponse = RequestWebService.doRequestWebService(xmlRequest, _contentFile.Message);
+                    SaveXMLOriginal.SaveXML(_contentFile.ProvideContent(xmlResponse, fileName, TypeContentText.RESPONSE));
+
+                    messageReturn += SaveResponseDataBase(xmlResponse, key);
+                }
+                catch (Exception ex)
+                {
+                    BuildLogException(key, ex);
+                }
+            }
+            else
+                messageReturn += MessagesOfReturn.DatasToRequestEmpty(_contentFile.Message);
 
             return messageReturn;
         }

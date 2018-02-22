@@ -55,6 +55,7 @@ namespace BL.Business
             request.SHKEY = dadosBroker.SHKEY;
             request.STR = new STR(dadosBroker);
             request.MAIN = main;
+            request.MAIN.SBELN = embarque.SBELN;
             request.BUK = main.BUK;
             request.PAR = main.PAR;
             request.PARS = main.PARS;
@@ -62,6 +63,7 @@ namespace BL.Business
             request.DI = main.DI;
             request.BL = main.BL;
             request.SHP = main.SHP;
+            request.SHP.ForEach(s => s.SBELN = embarque.SBELN);
             request.SHP_TEXT_Main = main.SHP_TEXT_Main;
 
             RequestMessage3Importation requestMessage3 = new RequestMessage3Importation();

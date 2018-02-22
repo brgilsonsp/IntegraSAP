@@ -121,9 +121,9 @@ namespace BL.ObjectMessages
         public string INCO1 { get { return ConverterValue.StringNullToEmpty(this._inco1); } set { this._inco1 = value; } }
 
         [XmlElement("ADDRESS_TAB")]
-        public virtual List<ADDRESS_TAB_TGTEDUEK> ADDRESS_TAB { get; set; }
+        public List<ADDRESS_TAB_TGTEDUEK> ADDRESS_TAB { get; set; }
 
         [XmlElement("ADDINFO_TAB")]
-        public virtual List<ADDINFO_TAB_TGTEDUEK> ADDINFO_TAB { get; set; }
+        public List<ADDINFO_TAB_TGTEDUEK> ADDINFO_TAB { get; set; }
     }   
 }
