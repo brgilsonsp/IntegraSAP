@@ -104,9 +104,9 @@ namespace BL.DAO
         #region Factory instance
 
         /// <summary>
-        /// Cria uma instância de ChangeXMLContext e retorna
+        /// Obtém uma instância de ChangeXMLContext
         /// </summary>
-        /// <returns>Instância de ChangeXMLContext</returns>
+        /// <returns>Uma instância de ChangeXMLContext</returns>
         public static ChangeXMLContext GetInstance()
         {
             string stringConnection = ConfigurationManager.ConnectionStrings["BrokerMessageConnectionString"].ConnectionString;
@@ -124,7 +124,7 @@ namespace BL.DAO
         private ChangeXMLContext(string nameConnectionString):base(nameConnectionString) { }
 
         /// <summary>
-        /// Recarrega o contexto, forçando uma nova consulta no banco de dados
+        /// Recarrega o contexto, forçando uma nova instancia do banco de dados
         /// </summary>
         public static void ReloadContext()
         {

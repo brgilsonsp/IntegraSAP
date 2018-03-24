@@ -16,6 +16,18 @@ namespace BL.ObjectMessages
             CODE = responseError.CODE;
             DESC = responseError.DESC;
         }
+                
+        public Status BuildsStatusWithNewDesc(string newDesc)
+        {
+            return new Status
+            {
+                CODE = CODE,
+                DESC = newDesc,
+                Mensagem = Mensagem,
+                SBELN = SBELN,
+                Tipo = Tipo,
+            };
+        }
 
         #region only DB
 

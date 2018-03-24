@@ -58,6 +58,11 @@ namespace BL.DAO
         {
             return _context.TPCKs.FirstOrDefault(t => t.ID == idItem);
         }
+        
+        public IDictionary<string, TPCK> DictionaryByXblnr(int idEmbarque)
+        {
+            return _context.TPCKs.Where(t => t.EmbarqueID == idEmbarque).GroupBy(t => t.XBLNR).ToDictionary(gr => gr.Key, gr => gr.FirstOrDefault());
+        }
 
         public IList<TPCK> FindAllEager()
         {

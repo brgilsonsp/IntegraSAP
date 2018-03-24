@@ -31,7 +31,6 @@ namespace BL.Business
             status.Tipo = kindOfMessage;
         }
 
-
         /// <summary>
         /// Se foi informado um Embarque, insere o SBELN no status
         /// Salva o Status no Banco de dados

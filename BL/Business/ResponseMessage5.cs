@@ -45,29 +45,33 @@ namespace BL.Business
             ConfigStatus.SaveStatus(RESPONSE.STATUS);
             return MessagesOfReturn.AlertResponseWebServiceError(message, RESPONSE.STATUS.SBELN, numberOfMessage);
         }
-
+        
         private string SaveResponseSuccess(string message, string kindOfMessage)
         {
             string sbeln = RESPONSE.PCK.FirstOrDefault(e => !string.IsNullOrEmpty(e.SBELN)).SBELN;
             TPCKDao tpckDao = new TPCKDao();
-
             Embarque embarque = new EmbarqueDao().FindBySbeln(sbeln, kindOfMessage);
-            RemoveRecorded(embarque.ID, tpckDao);
+            IDictionary<string, TPCK> dictionaryTcpkByXblnr = tpckDao.DictionaryByXblnr(embarque.ID);
+            IList<Status> listStatus = new List<Status>();
+            foreach (var itemTpck in RESPONSE.PCK)
+            {
+                string newDesc = "";
+                if (dictionaryTcpkByXblnr.ContainsKey(itemTpck.XBLNR))
+                {
+                    dictionaryTcpkByXblnr[itemTpck.XBLNR].STATU = itemTpck.STATU;
+                    newDesc = MessagesOfReturn.DescriptionUpdateXblnrSuccess(itemTpck.XBLNR, RESPONSE.STATUS.DESC);
+                }else
+                    newDesc = MessagesOfReturn.DescriptionUpdateXblnrNotFound(itemTpck.XBLNR, RESPONSE.STATUS.DESC);
 
-            RESPONSE.PCK.ForEach(t => t.Embarque = embarque);
-            tpckDao.SaveAll(RESPONSE.PCK);
+                listStatus.Add(RESPONSE.STATUS.BuildsStatusWithNewDesc(newDesc));
+            }
 
-            if (RESPONSE.STATUS != null)
-                ConfigStatus.SaveStatus(RESPONSE.STATUS, embarque);
+            tpckDao.Update();
+
+            foreach (var itemStatus in listStatus)
+                ConfigStatus.SaveStatus(itemStatus, embarque);
 
             return MessagesOfReturn.ProcessMessageSuccess(message, embarque.SBELN);
-        }
-
-        private void RemoveRecorded(int idEmbarque, TPCKDao tpckDao)
-        {
-            IList<TPCK> toRemove = tpckDao.FindByIdEmbarqueLazy(idEmbarque);
-            if(toRemove != null && toRemove.Count > 0)
-                tpckDao.DeleteAll(toRemove);
         }
     }
 

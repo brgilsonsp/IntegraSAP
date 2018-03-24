@@ -49,7 +49,6 @@ namespace BL.DAO
             return _context.Embarques.FirstOrDefault(e => e.ID == id);
         }
 
-
         public void Save(Embarque item)
         {
             _context.Embarques.Add(item);

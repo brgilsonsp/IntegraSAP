@@ -2,6 +2,9 @@
 
 namespace BL.InnerUtil
 {
+    /// <summary>
+    /// Mensagens que serão utilizados nos log, tanto em arquivo quanto no bando de dados
+    /// </summary>
     public static class MessagesOfReturn
     {
         public static string ExceptionRequestWebService { get { return $"Ocorreu uma exceção ao efetuar a comunicação com o WebService. Verifique as exceções internas:{Environment.NewLine}"; } }
@@ -21,8 +24,7 @@ namespace BL.InnerUtil
         public static string FieldEmpty { get { return "Os campos não podem ser em branco. Verique o(s)campo(s) abaixo: "; } }
         public static string NewLine { get { return $"{Environment.NewLine}"; } }
         public static string CodeErrorInfo(int code) { return $"* Código: {code} *{Environment.NewLine}"; }
-
-
+        
         public static string ExceptionSaveXml(string nameXml)
         {
             return $"Ocorreu erro ao salvar o XML {nameXml}. Verifique se o diretório existe ou se possui permissão de escrita.{Environment.NewLine}";
@@ -83,6 +85,13 @@ namespace BL.InnerUtil
         {
             return $"Mensagem: {(byte)message} - Tipo: {tipo}";
         }
-        
+        public static string DescriptionUpdateXblnrSuccess(string xblnr, string originalDesc)
+        {
+            return $"{originalDesc} - STATU do XBLNR {xblnr} atualizado com sucesso.";
+        }
+        public static string DescriptionUpdateXblnrNotFound(string xblnr, string originalDesc)
+        {
+            return $"{originalDesc} - STATU do XBLNR {xblnr} enviado pelo Webservice, porém não localizado no banco de dados.";
+        }
     }
 }
