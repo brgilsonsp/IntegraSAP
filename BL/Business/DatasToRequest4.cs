@@ -70,8 +70,7 @@ namespace BL.Business
                 request.PCK = eachTpck;
                 request.PCK.SBELN = embarque.SBELN;
                 //Esse campo necessita do valor "S" para o request da Mensagem 4, porém no response da Mensagem 5 esse mesmo campo é
-                //recebido com o valor "L", sendo assim o valor que o Webservice é salvo no banco de dados e nessa requisição é alterado
-                //esse valor aqui manualmente
+                //recebido com o valor "L", sendo assim o valor que do Webservice é salvo no banco de dados necessitando assim essa alteração
                 request.PCK.Type = "S";
 
                 RequestMessage4 requestMessage4 = new RequestMessage4();

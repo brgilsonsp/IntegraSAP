@@ -29,24 +29,9 @@ namespace BL.DAO
             return _context.Embarques.AsNoTracking().Where(e => e.ConsultaPrestConta == true && e.Tipo == kindfOeMessge).ToList();
         }
 
-        public Embarque FindBySbelnAsNoTracking(string sbeln, string kinfOeMessge)
-        {
-            return _context.Embarques.AsNoTracking().FirstOrDefault(e => e.SBELN == sbeln && e.Tipo == kinfOeMessge);
-        }
-
-        public Embarque FindByIdAsNoTracking(int id)
-        {
-            return _context.Embarques.AsNoTracking().FirstOrDefault(e => e.ID == id);
-        }
-
         public Embarque FindBySbeln(string sbeln, string kinfOeMessge)
         {
             return _context.Embarques.FirstOrDefault(e => e.SBELN == sbeln && e.Tipo == kinfOeMessge);
-        }
-
-        public Embarque FindById(int id)
-        {
-            return _context.Embarques.FirstOrDefault(e => e.ID == id);
         }
 
         public void Save(Embarque item)

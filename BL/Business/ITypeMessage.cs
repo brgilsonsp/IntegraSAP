@@ -1,6 +1,6 @@
 ﻿namespace BL.Business
 {
-    interface TypeMessage
+    interface ITypeMessage
     {
         /// <summary>
         /// Define o compartamento da troca de Mensagem com o WebService e o armazenamento 

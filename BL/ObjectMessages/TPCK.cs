@@ -48,7 +48,6 @@ namespace BL.ObjectMessages
         private DateTime? _ablfd;
         private DateTime? _bldat;
         private DateTime? _zfbdt;
-        private Embarque _embarque;
         private string _docnr;
         private string _pctyp;
         private string _parid;

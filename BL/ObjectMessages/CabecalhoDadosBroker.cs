@@ -4,8 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BL.ObjectMessages
 {
     public class CabecalhoDadosBroker
-    {
-        
+    {        
         public int ID { get; set; }
 
         [Column("IdCabecalho")]

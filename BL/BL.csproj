@@ -77,7 +77,7 @@
     <Compile Include="Business\IDatasOfRequestMessage4.cs" />
     <Compile Include="Business\ProcessMessage.cs" />
     <Compile Include="Business\ISaveResponse.cs" />
-    <Compile Include="Business\TypeMessage.cs" />
+    <Compile Include="Business\ITypeMessage.cs" />
     <Compile Include="Business\ConfigStatus.cs" />
     <Compile Include="DAO\DetalheErrorDao.cs" />
     <Compile Include="DAO\EmbarqueDao.cs" />

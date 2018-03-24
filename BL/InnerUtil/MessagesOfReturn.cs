@@ -93,5 +93,13 @@ namespace BL.InnerUtil
         {
             return $"{originalDesc} - STATU do XBLNR {xblnr} enviado pelo Webservice, porém não localizado no banco de dados.";
         }
+        public static string DetailProcessWithIdBroker(string message, string idBroker)
+        {
+            return $"{message} - ID Broker {idBroker}";
+        }
+        public static string DetailProcessWithSblen(string message, string sblen)
+        {
+            return $"{message} - Embarque {sblen}";
+        }
     }
 }

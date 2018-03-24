@@ -9,7 +9,6 @@ namespace BL.Infra
 {
     public static class RecordFile
     {
-
         public static void SaveFile(string file, string text)
         {
             using (StreamWriter str = File.AppendText(file))

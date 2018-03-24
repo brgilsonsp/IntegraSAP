@@ -6,7 +6,6 @@ namespace BL.Command
 {
     public class Mensagem3 : IMessage
     {
-
         public string Execute()
         {
             string messageReturn = "";

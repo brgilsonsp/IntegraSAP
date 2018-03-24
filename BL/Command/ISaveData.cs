@@ -2,7 +2,6 @@
 
 namespace BL.Command
 {
-    //interface ISaveData<R, E>
     interface ISaveData<T>
     {
         /// <summary>

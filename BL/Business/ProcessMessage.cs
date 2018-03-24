@@ -39,6 +39,11 @@ namespace BL.Business
             _processMessage4 = true;
         }
 
+        /// <summary>
+        /// Executa o processo de Obter os dados do banco de dados para efetuar a requisição no Webservice e 
+        /// gravar o retorno do Webservice no banco dados e nos arquivos de log (arquivos de log apenas se o usuário solicitou nas configurações)
+        /// </summary>
+        /// <returns></returns>
         public string Process()
         {
             if (_processMessage4)
@@ -148,9 +153,9 @@ namespace BL.Business
             string detailProcess = "";
 
             if (_contentFile.NumberOfMessage == NumberOfMessage.One)
-                detailProcess = $"{_contentFile.Message} - ID Broker {identifier}";
+                detailProcess = MessagesOfReturn.DetailProcessWithIdBroker(_contentFile.Message, identifier);
             else
-                detailProcess = $"{_contentFile.Message} - Embarque: {identifier}";
+                detailProcess = MessagesOfReturn.DetailProcessWithSblen(_contentFile.Message, identifier);
 
             int codeMessageError = MakeLog.BuildErrorLogSupport(ex, messageError, detailProcess);
 

@@ -8,7 +8,6 @@ namespace BL.InnerUtil
         private string _xml;
         private NumberOfMessage _numberOfMessage;
         private PathSaveFile _pathSaveFile;
-        private TypeContentText _typeContent;
         private string _kindOfMessage;
 
         public ContentText(NumberOfMessage numberOfMessage, string kind)
@@ -18,10 +17,19 @@ namespace BL.InnerUtil
             _configureService = new ConfigureService();
         }
 
+        /// <summary>
+        /// Altera os valores informado nos parâmetros do objeto atual. A alteração desses valores irão alterar os seguintes campos:
+        /// * Content
+        /// * PathFileSaveFileText
+        /// * DirectoryFileSaveFileText
+        /// </summary>
+        /// <param name="content">String com o conteúdo que será salvo, o XML</param>
+        /// <param name="fileName">Nome do arquivo que será salvo o XML</param>
+        /// <param name="typeContent">Enum que informa qual o tipo da transação, Request/Response </param>
+        /// <returns></returns>
         public ContentText ProvideContent(string content, string fileName, TypeContentText typeContent)
         {
-            _xml = content;
-            _typeContent = typeContent;            
+            _xml = content;           
             _pathSaveFile = new PathSaveFile(_configureService.RootLog, fileName, _numberOfMessage, _kindOfMessage, typeContent);
 
             return this;
