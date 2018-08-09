@@ -27,7 +27,7 @@ namespace BL.ObjectMessages
 
         public STR STR { get; set; }
 
-        [XmlElement("TGTESHK_N ")]
+        [XmlElement("TGTESHK_N")]
         public TGTESHK_N TGTESHK_N { get; set; }
 
         [XmlElement("TGTESHP_N")]

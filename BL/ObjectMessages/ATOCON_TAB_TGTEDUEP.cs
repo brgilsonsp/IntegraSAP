@@ -45,7 +45,7 @@ namespace BL.ObjectMessages
 
         [XmlIgnore]
         [Column("CNPJ_BENEF")]
-        public int? CNPJ_BENEFDB { get { return this._cnpj_benef; } set { this._cnpj_benef = value; } }
+        public long? CNPJ_BENEFDB { get { return this._cnpj_benef; } set { this._cnpj_benef = value; } }
         #endregion
 
         #region private
@@ -57,7 +57,7 @@ namespace BL.ObjectMessages
         private decimal? _vlrcomcob;
         private decimal? _vlrsemcob;
         private string _steuc;
-        private int? _cnpj_benef;
+        private long? _cnpj_benef;
 
         #endregion
         
@@ -84,6 +84,6 @@ namespace BL.ObjectMessages
         public string STEUC { get { return ConverterValue.StringNullToEmpty(this._steuc); } set { this._steuc = value; } }
 
         [NotMapped]
-        public string CNPJ_BENEF { get { return ConverterValue.IntNullableToString(this._cnpj_benef); } set { this._cnpj_benef = ConverterValue.StringToIntNullable(value); } }
+        public string CNPJ_BENEF { get { return ConverterValue.LongNullableToString(this._cnpj_benef); } set { this._cnpj_benef = ConverterValue.StringToLongNullable(value); } }
     }
 }

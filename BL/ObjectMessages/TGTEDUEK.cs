@@ -65,7 +65,7 @@ namespace BL.ObjectMessages
 
         [XmlIgnore]
         [Column("CNPJ_DESP")]
-        public int? CNPJ_DESPDB { get { return this._cnpj_desp; } set { this._cnpj_desp = value; } }
+        public long? CNPJ_DESPDB { get { return this._cnpj_desp; } set { this._cnpj_desp = value; } }
         #endregion
 
         #region private
@@ -79,7 +79,7 @@ namespace BL.ObjectMessages
         private decimal? _longitude;
         private int? _cdrae;
         private int? _emrae;
-        private int? _cnpj_desp;
+        private long? _cnpj_desp;
         private string _waers;
         private string _inco1;
 
@@ -114,7 +114,7 @@ namespace BL.ObjectMessages
         public string EMRAE { get { return ConverterValue.IntNullableToString(this._emrae); } set { this._emrae = ConverterValue.StringToIntNullable(value); } }
 
         [NotMapped]
-        public string CNPJ_DESP { get { return ConverterValue.IntNullableToString(this._cnpj_desp); } set { this._cnpj_desp = ConverterValue.StringToIntNullable(value); } }
+        public string CNPJ_DESP { get { return ConverterValue.LongNullableToString(this._cnpj_desp); } set { this._cnpj_desp = ConverterValue.StringToLongNullable(value); } }
 
         public string WAERS { get { return ConverterValue.StringNullToEmpty(this._waers); } set { this._waers = value; } }
 

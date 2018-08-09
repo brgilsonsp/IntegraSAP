@@ -81,11 +81,11 @@ namespace BL.ObjectMessages
 
         [XmlIgnore]
         [Column("CNPJCPF")]
-        public int? CNPJCPFDB { get { return this._cnpjcpf; } set { this._cnpjcpf = value; } }
+        public long? CNPJCPFDB { get { return this._cnpjcpf; } set { this._cnpjcpf = value; } }
 
         [XmlIgnore]
         [Column("CPNJCPFEXP")]
-        public int? CPNJCPFEXPDB { get { return this._cpnjcpfexp; } set { this._cpnjcpfexp = value; } }
+        public long? CPNJCPFEXPDB { get { return this._cpnjcpfexp; } set { this._cpnjcpfexp = value; } }
 
         #endregion
 
@@ -108,10 +108,10 @@ namespace BL.ObjectMessages
         private decimal? _pctcom;
         private string _chavenfe;
         private int? _tpcdrem;
-        private int? _cnpjcpf;
+        private long? _cnpjcpf;
         private string _chavenf_form;
         private string _cdnfr;
-        private int? _cpnjcpfexp;
+        private long? _cpnjcpfexp;
 
         #endregion
 
@@ -164,14 +164,14 @@ namespace BL.ObjectMessages
         public string TPCDREM { get { return ConverterValue.IntNullableToString(this._tpcdrem); } set { this._tpcdrem = ConverterValue.StringToIntNullable(value); } }
 
         [NotMapped]
-        public string CNPJCPF { get { return ConverterValue.IntNullableToString(this._cnpjcpf); } set { this._cnpjcpf = ConverterValue.StringToIntNullable(value); } }
+        public string CNPJCPF { get { return ConverterValue.LongNullableToString(this._cnpjcpf); } set { this._cnpjcpf = ConverterValue.StringToLongNullable(value); } }
 
         public string CHAVENF_FORM { get { return ConverterValue.StringNullToEmpty(this._chavenf_form); } set { this._chavenf_form = value; } }
 
         public string CDNFR { get { return ConverterValue.StringNullToEmpty(this._cdnfr); } set { this._cdnfr = value; } }
 
         [NotMapped]
-        public string CPNJCPFEXP { get { return ConverterValue.IntNullableToString(this._cpnjcpfexp); } set { this._cpnjcpfexp = ConverterValue.StringToIntNullable(value); } }
+        public string CPNJCPFEXP { get { return ConverterValue.LongNullableToString(this._cpnjcpfexp); } set { this._cpnjcpfexp = ConverterValue.StringToLongNullable(value); } }
 
         [XmlElement("ADDINFO_TAB")]
         public List<ADDINFO_TAB_TGTEDUEP> ADDINFO_TAB { get; set; }

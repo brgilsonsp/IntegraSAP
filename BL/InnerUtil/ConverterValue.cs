@@ -24,11 +24,33 @@ namespace BL.InnerUtil
         }
 
         /// <summary>
-        /// Converte o valor de number para string. Caso o number seja nulo, retorna uma string vazia
+        /// Converte o valor de int para string. Caso o number seja nulo, retorna uma string vazia
         /// </summary>
         /// <param name="intValue">Int?</param>
         /// <returns>String</returns>
         public static string IntNullableToString(int? intValue)
+        {
+            return intValue != null ? intValue.ToString() : "";
+        }
+
+        /// <summary>
+        /// Converte uma string em um long?. Caso a string seja null ou vazia ou não possua um valor possível de converter
+        /// para long, retorna um long? null, caso contrário, retorna o valor convertido para long?.
+        /// </summary>
+        /// <param name="numberText">String com um conteúdo possível de alterar para long</param>
+        /// <returns>Um valor convertido para long?</returns>
+        public static long? StringToLongNullable(string numberText)
+        {
+            long outInt;
+            return long.TryParse(numberText, out outInt) ? outInt : (long?)null;
+        }
+
+        /// <summary>
+        /// Converte o valor de long para string. Caso o long seja nulo, retorna uma string vazia
+        /// </summary>
+        /// <param name="intValue">long?</param>
+        /// <returns>String</returns>
+        public static string LongNullableToString(long? intValue)
         {
             return intValue != null ? intValue.ToString() : "";
         }
@@ -50,13 +72,17 @@ namespace BL.InnerUtil
         }
 
         /// <summary>
-        /// Converte o valor de decimal para string. Caso o number seja nulo, retorna uma string vazia
+        /// Converte o valor de decimal para string no padrão en-US. Caso o number seja nulo, retorna uma string vazia
         /// </summary>
         /// <param name="number">Int?</param>
         /// <returns>String</returns>
         public static string DecimalNullableToString(decimal? decimalValue)
         {
-            return decimalValue != null ? decimalValue.ToString() : "";
+            if(decimalValue != null)
+            {
+                return decimalValue.Value.ToString(CultureInfo.CreateSpecificCulture("en-US"));
+            }
+            return "";
         }
 
         #endregion
